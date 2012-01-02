@@ -11,7 +11,6 @@
 
 int main (int argc, const char * argv[])
 {
-
     @autoreleasepool 
     {
         NSMutableArray *files = [NSMutableArray array];
@@ -32,8 +31,6 @@ int main (int argc, const char * argv[])
             [parser parse];
             
             NSLog(@"%@ = %@", [oneFile lastPathComponent], [parser scanResults]);
-            
-            [parser release];
         }
         
         NSLog(@"Parsing Finished");
