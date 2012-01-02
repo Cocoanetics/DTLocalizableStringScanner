@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A775234114ACEF7A0035CDCA /* Foundation.framework */; };
-		A775234514ACEF7A0035CDCA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A775234414ACEF7A0035CDCA /* main.m */; };
-		A775234914ACEF7A0035CDCA /* genstrings2.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = A775234814ACEF7A0035CDCA /* genstrings2.1 */; };
+		A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
+		A79AC07C14B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */; };
+		A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
+		A79AC08314B1A49800489FA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC08214B1A49800489FA3 /* main.m */; };
+		A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -19,7 +22,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				A775234914ACEF7A0035CDCA /* genstrings2.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -28,9 +30,20 @@
 /* Begin PBXFileReference section */
 		A775233D14ACEF7A0035CDCA /* genstrings2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = genstrings2; sourceTree = BUILT_PRODUCTS_DIR; };
 		A775234114ACEF7A0035CDCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		A775234414ACEF7A0035CDCA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A775234714ACEF7A0035CDCA /* genstrings2-Prefix.pch */ = {isa = PBXFileReference; path = "genstrings2-Prefix.pch"; sourceTree = "<group>"; };
-		A775234814ACEF7A0035CDCA /* genstrings2.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = genstrings2.1; sourceTree = "<group>"; };
+		A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringScanner.h; sourceTree = "<group>"; };
+		A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringScanner.m; sourceTree = "<group>"; };
+		A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+DTLocalizableStringScanner.h"; sourceTree = "<group>"; };
+		A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+DTLocalizableStringScanner.m"; sourceTree = "<group>"; };
+		A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DTLocalizableStringScanner.h"; sourceTree = "<group>"; };
+		A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTLocalizableStringScanner.m"; sourceTree = "<group>"; };
+		A79AC07F14B1A49800489FA3 /* genstrings2-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "genstrings2-Prefix.pch"; sourceTree = "<group>"; };
+		A79AC08014B1A49800489FA3 /* genstrings2.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = genstrings2.1; sourceTree = "<group>"; };
+		A79AC08214B1A49800489FA3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A79AC08814B1A51800489FA3 /* libDTLocalizableStringScanner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDTLocalizableStringScanner.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A79AC08914B1A51800489FA3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		A79AC08C14B1A51800489FA3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		A79AC08D14B1A51800489FA3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		A79AC08E14B1A51800489FA3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,13 +55,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A79AC08514B1A51800489FA3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		A775233214ACEF790035CDCA = {
 			isa = PBXGroup;
 			children = (
-				A775234314ACEF7A0035CDCA /* genstrings2 */,
+				A79AC07314B1A48A00489FA3 /* Core */,
+				A79AC07E14B1A49800489FA3 /* Demo */,
 				A775234014ACEF7A0035CDCA /* Frameworks */,
 				A775233E14ACEF7A0035CDCA /* Products */,
 			);
@@ -58,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				A775233D14ACEF7A0035CDCA /* genstrings2 */,
+				A79AC08814B1A51800489FA3 /* libDTLocalizableStringScanner.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -66,34 +89,77 @@
 			isa = PBXGroup;
 			children = (
 				A775234114ACEF7A0035CDCA /* Foundation.framework */,
+				A79AC08914B1A51800489FA3 /* Cocoa.framework */,
+				A79AC08B14B1A51800489FA3 /* Other Frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A775234314ACEF7A0035CDCA /* genstrings2 */ = {
+		A79AC07314B1A48A00489FA3 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				A775234414ACEF7A0035CDCA /* main.m */,
-				A775234814ACEF7A0035CDCA /* genstrings2.1 */,
-				A775234614ACEF7A0035CDCA /* Supporting Files */,
+				A79AC07414B1A48A00489FA3 /* Source */,
 			);
-			path = genstrings2;
+			path = Core;
 			sourceTree = "<group>";
 		};
-		A775234614ACEF7A0035CDCA /* Supporting Files */ = {
+		A79AC07414B1A48A00489FA3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				A775234714ACEF7A0035CDCA /* genstrings2-Prefix.pch */,
+				A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */,
+				A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */,
+				A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */,
+				A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */,
+				A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */,
+				A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */,
 			);
-			name = "Supporting Files";
+			path = Source;
+			sourceTree = "<group>";
+		};
+		A79AC07E14B1A49800489FA3 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				A79AC07F14B1A49800489FA3 /* genstrings2-Prefix.pch */,
+				A79AC08014B1A49800489FA3 /* genstrings2.1 */,
+				A79AC08114B1A49800489FA3 /* Source */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		A79AC08114B1A49800489FA3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A79AC08214B1A49800489FA3 /* main.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		A79AC08B14B1A51800489FA3 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A79AC08C14B1A51800489FA3 /* AppKit.framework */,
+				A79AC08D14B1A51800489FA3 /* CoreData.framework */,
+				A79AC08E14B1A51800489FA3 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		A79AC08614B1A51800489FA3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		A775233C14ACEF7A0035CDCA /* genstrings2 */ = {
+		A775233C14ACEF7A0035CDCA /* Command Line Tool */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A775234C14ACEF7A0035CDCA /* Build configuration list for PBXNativeTarget "genstrings2" */;
+			buildConfigurationList = A775234C14ACEF7A0035CDCA /* Build configuration list for PBXNativeTarget "Command Line Tool" */;
 			buildPhases = (
 				A775233914ACEF7A0035CDCA /* Sources */,
 				A775233A14ACEF7A0035CDCA /* Frameworks */,
@@ -103,10 +169,27 @@
 			);
 			dependencies = (
 			);
-			name = genstrings2;
+			name = "Command Line Tool";
 			productName = genstrings2;
 			productReference = A775233D14ACEF7A0035CDCA /* genstrings2 */;
 			productType = "com.apple.product-type.tool";
+		};
+		A79AC08714B1A51800489FA3 /* Static Library */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A79AC09514B1A51800489FA3 /* Build configuration list for PBXNativeTarget "Static Library" */;
+			buildPhases = (
+				A79AC08414B1A51800489FA3 /* Sources */,
+				A79AC08514B1A51800489FA3 /* Frameworks */,
+				A79AC08614B1A51800489FA3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Static Library";
+			productName = DTLocalizableStringScanner;
+			productReference = A79AC08814B1A51800489FA3 /* libDTLocalizableStringScanner.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -129,7 +212,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A775233C14ACEF7A0035CDCA /* genstrings2 */,
+				A775233C14ACEF7A0035CDCA /* Command Line Tool */,
+				A79AC08714B1A51800489FA3 /* Static Library */,
 			);
 		};
 /* End PBXProject section */
@@ -139,7 +223,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A775234514ACEF7A0035CDCA /* main.m in Sources */,
+				A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */,
+				A79AC07C14B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */,
+				A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
+				A79AC08314B1A49800489FA3 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A79AC08414B1A51800489FA3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,8 +289,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "genstrings2/genstrings2-Prefix.pch";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
+				PRODUCT_NAME = genstrings2;
 			};
 			name = Debug;
 		};
@@ -204,8 +298,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "genstrings2/genstrings2-Prefix.pch";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
+				PRODUCT_NAME = genstrings2;
+			};
+			name = Release;
+		};
+		A79AC09614B1A51800489FA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DTLocalizableStringScanner/DTLocalizableStringScanner-Prefix.pch";
+				PRODUCT_NAME = DTLocalizableStringScanner;
+			};
+			name = Debug;
+		};
+		A79AC09714B1A51800489FA3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DTLocalizableStringScanner/DTLocalizableStringScanner-Prefix.pch";
+				PRODUCT_NAME = DTLocalizableStringScanner;
 			};
 			name = Release;
 		};
@@ -221,11 +335,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A775234C14ACEF7A0035CDCA /* Build configuration list for PBXNativeTarget "genstrings2" */ = {
+		A775234C14ACEF7A0035CDCA /* Build configuration list for PBXNativeTarget "Command Line Tool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A775234D14ACEF7A0035CDCA /* Debug */,
 				A775234E14ACEF7A0035CDCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A79AC09514B1A51800489FA3 /* Build configuration list for PBXNativeTarget "Static Library" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A79AC09614B1A51800489FA3 /* Debug */,
+				A79AC09714B1A51800489FA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
