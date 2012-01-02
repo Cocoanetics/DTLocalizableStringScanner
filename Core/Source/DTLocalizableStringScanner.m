@@ -23,6 +23,16 @@
     NSMutableDictionary *_validMacros;
     
     NSMutableArray *_scanResults;
+    
+    // lookup bitmask what delegate methods are implemented
+	struct 
+	{
+		unsigned int delegateSupportsStart:1;
+		unsigned int delegateSupportsEnd:1;
+        unsigned int delegateSupportsDidFindToken:1;
+	} _delegateFlags;
+    
+    __weak id <DTLocalizableStringScannerDelegate> _delegate;
 }
 
 - (id)initWithContentsOfURL:(NSURL *)url
@@ -35,41 +45,35 @@
         
         if (!_string)
         {
-            [self autorelease];
             return nil;
         }
-    
+        
         _url = [url copy]; // to have a reference later
     }
     
     return self;
 }
 
-- (void)dealloc
-{
-    [_url release];
-    [_string release];
-    [_validMacros release];
-    [_scanResults release];
-    
-    [super dealloc];
-}
-
 - (BOOL)parse
 {
+    if (_delegateFlags.delegateSupportsStart)
+    {
+        [_delegate localizableStringScannerDidStartDocument:self];
+    }
+    
     NSScanner *scanner = [NSScanner scannerWithString:_string];
     
     _scanResults = [[NSMutableArray alloc] init];
     
     NSDictionary *validMacros = self.validMacros;
-
+    
     NSCharacterSet *validMacroCharacters = [NSCharacterSet alphanumericCharacterSet];
     
     while (![scanner isAtEnd]) 
     {
         NSString *macro = nil;
         NSArray *parameters = nil;
-
+        
         // skip to next word
         [scanner scanUpToCharactersFromSet:validMacroCharacters intoString:NULL];
         
@@ -98,6 +102,12 @@
                         [tmpDict setObject:paramValue forKey:paramName];
                     }
                     
+                    if (_delegateFlags.delegateSupportsDidFindToken)
+                    {
+                        [_delegate localizableStringScanner:self
+                                               didFindToken:tmpDict];
+                    }
+                    
                     [_scanResults addObject:tmpDict];
                 }
                 else
@@ -113,12 +123,17 @@
         }
     }
     
+    if (_delegateFlags.delegateSupportsEnd)
+    {
+        [_delegate localizableStringScannerDidEndDocument:self];
+    }
+    
     return YES;
 }
 
 - (NSArray *)scanResults
 {
-    return [[_scanResults copy] autorelease];
+    return [_scanResults copy];
 }
 
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString
@@ -148,7 +163,7 @@
     if (!_validMacros)
     {
         _validMacros = [[NSMutableDictionary alloc] init];
-
+        
         // register the standard macros
         [self registerMacroWithPrototypeString:@"NSLocalizedString(key, comment)"];
         [self registerMacroWithPrototypeString:@"NSLocalizedStringFromTable(key, tbl, comment)"];
@@ -166,6 +181,19 @@
     return _validMacros;
 }
 
+- (void)setDelegate:(id<DTLocalizableStringScannerDelegate>)delegate
+{
+    if (_delegate != delegate)
+    {
+        _delegateFlags.delegateSupportsStart = [delegate respondsToSelector:@selector(localizableStringScannerDidStartDocument:)];
+        _delegateFlags.delegateSupportsEnd = [delegate respondsToSelector:@selector(localizableStringScannerDidEndDocument:)];   
+        _delegateFlags.delegateSupportsDidFindToken = [delegate respondsToSelector:@selector(localizableStringScanner:didFindToken:)];
+        
+        _delegate = delegate;
+    }
+}
+
 @synthesize validMacros = _validMacros;
+@synthesize delegate = _delegate;
 
 @end

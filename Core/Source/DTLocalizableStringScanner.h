@@ -8,8 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DTLocalizableStringScanner : NSObject
+@class DTLocalizableStringScanner;
 
+@protocol DTLocalizableStringScannerDelegate <NSObject>
+@optional
+
+- (void)localizableStringScannerDidStartDocument:(DTLocalizableStringScanner *)scanner;
+- (void)localizableStringScannerDidEndDocument:(DTLocalizableStringScanner *)scanner;
+- (void)localizableStringScanner:(DTLocalizableStringScanner *)scanner didFindToken:(NSDictionary *)token;
+
+@end
+
+
+@interface DTLocalizableStringScanner : NSObject
 
 - (id)initWithContentsOfURL:(NSURL *)url;
 
@@ -18,4 +29,9 @@
 
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString;
 
+@property (nonatomic, weak) id <DTLocalizableStringScannerDelegate> delegate;
+
 @end
+
+
+

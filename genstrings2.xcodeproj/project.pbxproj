@@ -13,6 +13,9 @@
 		A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
 		A79AC08314B1A49800489FA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC08214B1A49800489FA3 /* main.m */; };
 		A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
+		A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */; };
+		A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
+		A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +49,8 @@
 		A79AC08E14B1A51800489FA3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A79AC09914B1A6C700489FA3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A79AC09A14B1A6C700489FA3 /* Readme.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme.markdown; sourceTree = "<group>"; };
+		A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringAggregator.h; sourceTree = "<group>"; };
+		A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringAggregator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +120,8 @@
 				A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */,
 				A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */,
 				A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */,
+				A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */,
+				A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -163,6 +170,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +247,7 @@
 				A79AC07C14B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */,
 				A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
 				A79AC08314B1A49800489FA3 /* main.m in Sources */,
+				A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +267,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -283,6 +294,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
