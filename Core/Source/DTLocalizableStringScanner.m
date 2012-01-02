@@ -22,8 +22,6 @@
     NSURL *_url;
     NSMutableDictionary *_validMacros;
     
-    NSMutableArray *_scanResults;
-    
     // lookup bitmask what delegate methods are implemented
 	struct 
 	{
@@ -54,7 +52,7 @@
     return self;
 }
 
-- (BOOL)parse
+- (BOOL)scanFile
 {
     if (_delegateFlags.delegateSupportsStart)
     {
@@ -62,8 +60,6 @@
     }
     
     NSScanner *scanner = [NSScanner scannerWithString:_string];
-    
-    _scanResults = [[NSMutableArray alloc] init];
     
     NSDictionary *validMacros = self.validMacros;
     
@@ -107,8 +103,6 @@
                         [_delegate localizableStringScanner:self
                                                didFindToken:tmpDict];
                     }
-                    
-                    [_scanResults addObject:tmpDict];
                 }
                 else
                 {
@@ -129,11 +123,6 @@
     }
     
     return YES;
-}
-
-- (NSArray *)scanResults
-{
-    return [_scanResults copy];
 }
 
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString

@@ -24,8 +24,7 @@
 
 - (id)initWithContentsOfURL:(NSURL *)url;
 
-- (BOOL)parse;
-- (NSArray *)scanResults;
+- (BOOL)scanFile;
 
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString;
 

@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DTLocalizableStringAggregator : NSObject
+#import "DTLocalizableStringScanner.h"
+
+@interface DTLocalizableStringAggregator : NSObject <DTLocalizableStringScannerDelegate>
+
+- (id)initWithFileURLs:(NSArray *)fileURLs;
+- (void)setOutputFolderURL:(NSURL *)outputFolderURL;
+
+- (void)processFiles;
 
 @end

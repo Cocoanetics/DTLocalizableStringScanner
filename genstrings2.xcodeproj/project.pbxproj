@@ -116,12 +116,12 @@
 			children = (
 				A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */,
 				A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */,
+				A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */,
+				A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */,
 				A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */,
 				A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */,
 				A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */,
 				A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */,
-				A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */,
-				A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";

@@ -8,34 +8,25 @@
 
 #import <Foundation/Foundation.h>
 #import "DTLocalizableStringScanner.h"
+#import "DTLocalizableStringAggregator.h"
 
 int main (int argc, const char * argv[])
 {
     @autoreleasepool 
     {
+        // assemble absolute file URLs for the passed files
         NSMutableArray *files = [NSMutableArray array];
-        
         for (NSInteger i=1; i<argc; i++)
         {
             NSString *fileName = [NSString stringWithUTF8String:argv[i]];
-            [files addObject:fileName];
-        }
-
-        NSLog(@"Start Parsing");
-        
-        for (NSString *oneFile in files)
-        {
-            NSURL *url = [NSURL fileURLWithPath:oneFile];
-            DTLocalizableStringScanner *parser = [[DTLocalizableStringScanner alloc] initWithContentsOfURL:url];
-
-            [parser parse];
+            NSURL *url = [NSURL fileURLWithPath:fileName];
             
-            NSLog(@"%@ = %@", [oneFile lastPathComponent], [parser scanResults]);
+            [files addObject:url];
         }
-        
-        NSLog(@"Parsing Finished");
-        
-        
+ 
+        // process all files
+        DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] initWithFileURLs:files];
+        [aggregator processFiles];
     }
     return 0;
 }
