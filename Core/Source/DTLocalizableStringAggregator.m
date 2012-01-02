@@ -47,9 +47,7 @@
 
 - (void)processFiles
 {
-    SYNCHRONIZE_START(selfLock)
-    {
-        // set output dir to current working dir if not set
+         // set output dir to current working dir if not set
         if (!_outputFolderURL)
         {
             NSString *cwd = [[NSFileManager defaultManager] currentDirectoryPath];
@@ -103,13 +101,11 @@
             
             NSLog(@"%@", [tableURL path]);
         }
-    }
-    SYNCHRONIZE_END(selfLock)
 }
 
 - (void)addTokenToTables:(NSDictionary *)token
 {
-    // needs to be synchronized because it might be called from background threads
+    // needs to be synchronized because it might be called from multiple background threads
     SYNCHRONIZE_START(selfLock)
     {
         if (!_stringTables)
