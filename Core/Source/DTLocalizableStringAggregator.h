@@ -12,6 +12,8 @@
 
 @interface DTLocalizableStringAggregator : NSObject <DTLocalizableStringScannerDelegate>
 
+@property (nonatomic, assign) dispatch_semaphore_t selfLock;
+
 - (id)initWithFileURLs:(NSArray *)fileURLs;
 - (void)setOutputFolderURL:(NSURL *)outputFolderURL;
 
