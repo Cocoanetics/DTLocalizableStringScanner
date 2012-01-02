@@ -44,6 +44,8 @@
 		A79AC08C14B1A51800489FA3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		A79AC08D14B1A51800489FA3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A79AC08E14B1A51800489FA3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A79AC09914B1A6C700489FA3 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A79AC09A14B1A6C700489FA3 /* Readme.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme.markdown; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 		A775233214ACEF790035CDCA = {
 			isa = PBXGroup;
 			children = (
+				A79AC09814B1A6AD00489FA3 /* Docs */,
 				A79AC07314B1A48A00489FA3 /* Core */,
 				A79AC07E14B1A49800489FA3 /* Demo */,
 				A775234014ACEF7A0035CDCA /* Frameworks */,
@@ -142,6 +145,15 @@
 				A79AC08E14B1A51800489FA3 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		A79AC09814B1A6AD00489FA3 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				A79AC09914B1A6C700489FA3 /* LICENSE */,
+				A79AC09A14B1A6C700489FA3 /* Readme.markdown */,
+			);
+			name = Docs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
