@@ -10,6 +10,8 @@
 #import "DTLocalizableStringScanner.h"
 #import "DTLocalizableStringAggregator.h"
 
+void showUsage(void);
+
 int main (int argc, const char *argv[])
 {
     @autoreleasepool 
@@ -69,6 +71,14 @@ int main (int argc, const char *argv[])
             [files addObject:url];
         }
         
+        if (optionsInvalid || ![files count])
+        {
+            showUsage();
+            exit(1);
+        }
+            
+
+        
         // process all files
         DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] initWithFileURLs:files];
         aggregator.noPositionalParameters = noPositionalParameters;
@@ -83,4 +93,24 @@ int main (int argc, const char *argv[])
     }
     return 0;
 }
+
+
+void showUsage(void)
+{
+    printf("Usage: genstrings2 [OPTION] file1.[mc] ... filen.[mc]\n\n");
+    printf("    Options\n");
+ //   printf("    -j                       sets the input language to Java.\n");
+ //   printf("    -a                       append output to the old strings files.\n");
+ //   printf("    -s substring             substitute 'substring' for NSLocalizedString.\n");
+    printf("    -skipTable tablename     skip over the file for 'tablename'.\n");
+    printf("    -noPositionalParameters  turns off positional parameter support.\n");
+ //   printf("    -u                       allow unicode characters.\n");
+ //   printf("    -macRoman                read files as MacRoman not UTF-8.\n");
+ //   printf("    -q                       turns off multiple key/value pairs warning.\n");
+ //   printf("    -bigEndian               output generated with big endian byte order.\n");
+ //   printf("    -littleEndian            output generated with little endian byte order.\n");
+    printf("    -o dir                   place output files in 'dir'.\n\n");
+    printf("    Please see the genstrings2(1) man page for full documentation\n");
+}
+
 

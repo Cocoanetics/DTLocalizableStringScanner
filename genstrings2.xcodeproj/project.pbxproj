@@ -22,7 +22,7 @@
 		A775233B14ACEF7A0035CDCA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/;
 			dstSubfolderSpec = 0;
 			files = (
 			);
@@ -40,7 +40,7 @@
 		A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DTLocalizableStringScanner.h"; sourceTree = "<group>"; };
 		A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTLocalizableStringScanner.m"; sourceTree = "<group>"; };
 		A79AC07F14B1A49800489FA3 /* genstrings2-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "genstrings2-Prefix.pch"; sourceTree = "<group>"; };
-		A79AC08014B1A49800489FA3 /* genstrings2.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = genstrings2.1; sourceTree = "<group>"; };
+		A79AC08014B1A49800489FA3 /* genstrings2.1 */ = {isa = PBXFileReference; explicitFileType = text.man; fileEncoding = 4; path = genstrings2.1; sourceTree = "<group>"; };
 		A79AC08214B1A49800489FA3 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A79AC08814B1A51800489FA3 /* libDTLocalizableStringScanner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDTLocalizableStringScanner.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A79AC08914B1A51800489FA3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -375,6 +375,7 @@
 				A79AC09714B1A51800489FA3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
