@@ -31,6 +31,8 @@
 	} _delegateFlags;
     
     __weak id <DTLocalizableStringScannerDelegate> _delegate;
+    
+    BOOL _noPositionalParameters;
 }
 
 - (id)initWithContentsOfURL:(NSURL *)url
@@ -93,7 +95,10 @@
                         NSString *paramValue = [parameters objectAtIndex:i];
                         
                         // number the parameters if necessary
-                        paramValue = [paramValue stringByNumberingFormatPlaceholders];
+                        if (!_noPositionalParameters)
+                        {
+                            paramValue = [paramValue stringByNumberingFormatPlaceholders];
+                        }
                         
                         [tmpDict setObject:paramValue forKey:paramName];
                     }
@@ -184,5 +189,6 @@
 
 @synthesize validMacros = _validMacros;
 @synthesize delegate = _delegate;
+@synthesize noPositionalParameters = _noPositionalParameters;
 
 @end

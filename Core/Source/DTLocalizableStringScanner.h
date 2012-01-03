@@ -30,6 +30,8 @@
 
 @property (nonatomic, weak) id <DTLocalizableStringScannerDelegate> delegate;
 
+@property (nonatomic, assign) BOOL noPositionalParameters;
+
 @end
 
 
