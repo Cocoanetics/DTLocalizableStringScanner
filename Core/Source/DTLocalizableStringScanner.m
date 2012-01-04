@@ -164,12 +164,11 @@
         [self registerMacroWithPrototypeString:@"NSLocalizedStringFromTableInBundle(key, tbl, bundle, comment)"];
         [self registerMacroWithPrototypeString:@"NSLocalizedStringWithDefaultValue(key, tbl, bundle, val, comment)"];
         
-        /* fehlen noch: statt @"bla" wird CFSTR("bla") verwendet
-         #define CFCopyLocalizedString(key, comment) \
-         #define CFCopyLocalizedStringFromTable(key, tbl, comment) \
-         #define CFCopyLocalizedStringFromTableInBundle(key, tbl, bundle, comment) \
-         #define CFCopyLocalizedStringWithDefaultValue(key, tbl, bundle, value, comment) \
-         */
+        // register old CF style macros
+        [self registerMacroWithPrototypeString:@"CFCopyLocalizedString(key, comment)"];
+        [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTable(key, tbl, comment)"];
+        [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTableInBundle(key, tbl, bundle, comment)"];
+        [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringWithDefaultValue(key, tbl, bundle, value, comment)"];
     }
     
     return _validMacros;
