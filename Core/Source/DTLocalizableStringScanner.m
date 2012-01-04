@@ -30,7 +30,7 @@
         unsigned int delegateSupportsDidFindToken:1;
 	} _delegateFlags;
     
-    __weak id <DTLocalizableStringScannerDelegate> _delegate;
+    __unsafe_unretained id <DTLocalizableStringScannerDelegate> _delegate;
 }
 
 - (id)initWithContentsOfURL:(NSURL *)url
