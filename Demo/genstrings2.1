@@ -5,7 +5,7 @@
 .\"/usr/share/misc/mdoc.template
 .Dd 29.12.11               \" DATE 
 .Dt genstrings2 1      \" Program name and manual section number 
-.Os Mac OS X
+.Os Darwin
 .Sh NAME                 \" Section Header - required - don't modify 
 .Nm genstrings2
 .\" The following lines are read in generating the apropos(man -k) database. Use only key
@@ -14,10 +14,11 @@
 .Nd generate string table from source code
 .Sh SYNOPSIS             \" Section Header - required - don't modify
 .Nm
-.Op Fl noPositionalParameters              \" [-abcd]
-.Op Fl skipTable Ar table              \" [-skipTable table]
-.Op Fl o Ar outputDir         \" [-o <outputDir>] 
-.Op Ar                   \" [file ...]
+.Op Fl noPositionalParameters              \" [-noPositionalParameters]
+.Op Fl s Ar <routine>              \" [-s routine]
+.Op Fl skipTable Ar <table>              \" [-skipTable table]
+.Op Fl o Ar <outputDir>         \" [-o <outputDir>] 
+.Ar                   \" [file ...]
 .Sh DESCRIPTION          \" Section Header - required - don't modify
 The 
 .Nm
@@ -33,8 +34,19 @@ The original genstrings for example would crash whenever a macro would contain n
 
 Keys and values of string file entries can include formatting characters.  For value strings with multiple formatting arguments, positional parameters are generated.  These allow the order of arguments to be changed as needed by each localization (e.g. "File %1$@ contains %2$d bytes." could become "%2$d bytes are contained in file %1$@." in another localization).
 
+* Encoding:
+
+.Nm
+tries to read souce code files regardless of their string format.
+
+Generated .strings files are UTF-16 encoded.  Host endianness is used unless the -bigEndian or -littleEndian option is specified.
+
 .Sh OPTIONS
 .Bl -tag -width - indent
+.It Fl s Ar routine
+ Substitutes routine for NSLocalizedString.  For example, 
+ -s MyLocalString will catch calls to MyLocalString and 
+ MyLocalStringFromTable. 
 .It Fl skipTable Ar table
  Causes genstrings to skip over the file for 
 .Ar Table .
