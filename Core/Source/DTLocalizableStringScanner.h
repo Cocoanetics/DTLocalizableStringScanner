@@ -30,7 +30,7 @@
 - (void)registerMacrosWithPrefix:(NSString *)macroPrefix;
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString;
 
-@property (nonatomic, assign) id <DTLocalizableStringScannerDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id <DTLocalizableStringScannerDelegate> delegate;
 
 @end
 
