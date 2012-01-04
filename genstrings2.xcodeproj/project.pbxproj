@@ -16,6 +16,13 @@
 		A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */; };
 		A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 		A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
+		A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
+		A79AC0A714B4A35800489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */; };
+		A79AC0A814B4A35800489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
+		A79AC0A914B4A36100489FA3 /* DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */; };
+		A79AC0AA14B4A36100489FA3 /* NSScanner+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */; };
+		A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */; };
+		A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +58,7 @@
 		A79AC09A14B1A6C700489FA3 /* Readme.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme.markdown; sourceTree = "<group>"; };
 		A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringAggregator.h; sourceTree = "<group>"; };
 		A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringAggregator.m; sourceTree = "<group>"; };
+		A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DTLocalizableStringScanner-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +114,7 @@
 		A79AC07314B1A48A00489FA3 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */,
 				A79AC07414B1A48A00489FA3 /* Source */,
 			);
 			path = Core;
@@ -171,6 +180,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */,
+				A79AC0A914B4A36100489FA3 /* DTLocalizableStringScanner.h in Headers */,
+				A79AC0AA14B4A36100489FA3 /* NSScanner+DTLocalizableStringScanner.h in Headers */,
+				A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */,
+				A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +269,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
+				A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */,
+				A79AC0A714B4A35800489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */,
+				A79AC0A814B4A35800489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,7 +348,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DTLocalizableStringScanner/DTLocalizableStringScanner-Prefix.pch";
+				GCC_PREFIX_HEADER = "Core/DTLocalizableStringScanner-Prefix.pch";
 				PRODUCT_NAME = DTLocalizableStringScanner;
 			};
 			name = Debug;
@@ -342,7 +358,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DTLocalizableStringScanner/DTLocalizableStringScanner-Prefix.pch";
+				GCC_PREFIX_HEADER = "Core/DTLocalizableStringScanner-Prefix.pch";
 				PRODUCT_NAME = DTLocalizableStringScanner;
 			};
 			name = Release;
