@@ -31,8 +31,6 @@
 	} _delegateFlags;
     
     __weak id <DTLocalizableStringScannerDelegate> _delegate;
-    
-    BOOL _noPositionalParameters;
 }
 
 - (id)initWithContentsOfURL:(NSURL *)url
@@ -63,7 +61,11 @@
     
     NSScanner *scanner = [NSScanner scannerWithString:_string];
     
-    NSDictionary *validMacros = self.validMacros;
+    // register the default macros if there is no custom prefix
+    if (![_validMacros count])
+    {
+        [self registerDefaultMacros];
+    }
     
     NSCharacterSet *validMacroCharacters = [NSCharacterSet alphanumericCharacterSet];
     
@@ -77,7 +79,7 @@
         
         if ([scanner scanMacro:&macro andParameters:&parameters parametersAreBare:NO])
         {
-            NSArray *paramNames = [validMacros objectForKey:macro];
+            NSArray *paramNames = [_validMacros objectForKey:macro];
             
             if (paramNames)
             {
@@ -86,19 +88,12 @@
                 if ([paramNames count] == [parameters count])
                 {
                     // scanned parameters must match up with registered names
-                    
                     NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
                     
                     for (NSUInteger i=0; i<[paramNames count]; i++)
                     {
                         NSString *paramName = [paramNames objectAtIndex:i];
                         NSString *paramValue = [parameters objectAtIndex:i];
-                        
-                        // number the parameters if necessary
-                        if (!_noPositionalParameters)
-                        {
-                            paramValue = [paramValue stringByNumberingFormatPlaceholders];
-                        }
                         
                         [tmpDict setObject:paramValue forKey:paramName];
                     }
@@ -130,6 +125,45 @@
     return YES;
 }
 
+
+#pragma mark Macro handling
+- (void)registerMacrosWithPrefix:(NSString *)macroPrefix
+{
+    self.validMacros = nil;
+
+    NSArray *defaultMacros = [NSArray arrayWithObjects:@"NSLocalizedString(key, comment)",
+                              @"NSLocalizedStringFromTable(key, tbl, comment)",
+                              @"NSLocalizedStringFromTableInBundle(key, tbl, bundle, comment)",
+                              @"NSLocalizedStringWithDefaultValue(key, tbl, bundle, val, comment)", nil];
+    
+    for (NSString *macro in defaultMacros)
+    {
+        NSString *usedMacro;
+        
+        if (macroPrefix)
+        {
+           usedMacro = [macro stringByReplacingOccurrencesOfString:@"NSLocalizedString" withString:macroPrefix];
+        }
+        else
+        {
+            usedMacro = macro;
+        }
+        
+        [self registerMacroWithPrototypeString:usedMacro];
+    }
+}
+
+- (void)registerDefaultMacros
+{
+    [self registerMacrosWithPrefix:nil];
+    
+    // register old CF style macros
+    [self registerMacroWithPrototypeString:@"CFCopyLocalizedString(key, comment)"];
+    [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTable(key, tbl, comment)"];
+    [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTableInBundle(key, tbl, bundle, comment)"];
+    [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringWithDefaultValue(key, tbl, bundle, value, comment)"];    
+}
+
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString
 {
     NSString *macroName = nil;
@@ -157,18 +191,6 @@
     if (!_validMacros)
     {
         _validMacros = [[NSMutableDictionary alloc] init];
-        
-        // register the standard macros
-        [self registerMacroWithPrototypeString:@"NSLocalizedString(key, comment)"];
-        [self registerMacroWithPrototypeString:@"NSLocalizedStringFromTable(key, tbl, comment)"];
-        [self registerMacroWithPrototypeString:@"NSLocalizedStringFromTableInBundle(key, tbl, bundle, comment)"];
-        [self registerMacroWithPrototypeString:@"NSLocalizedStringWithDefaultValue(key, tbl, bundle, val, comment)"];
-        
-        // register old CF style macros
-        [self registerMacroWithPrototypeString:@"CFCopyLocalizedString(key, comment)"];
-        [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTable(key, tbl, comment)"];
-        [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTableInBundle(key, tbl, bundle, comment)"];
-        [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringWithDefaultValue(key, tbl, bundle, value, comment)"];
     }
     
     return _validMacros;
@@ -188,6 +210,5 @@
 
 @synthesize validMacros = _validMacros;
 @synthesize delegate = _delegate;
-@synthesize noPositionalParameters = _noPositionalParameters;
 
 @end

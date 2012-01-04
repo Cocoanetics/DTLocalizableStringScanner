@@ -26,11 +26,11 @@
 
 - (BOOL)scanFile;
 
+- (void)registerDefaultMacros;
+- (void)registerMacrosWithPrefix:(NSString *)macroPrefix;
 - (void)registerMacroWithPrototypeString:(NSString *)prototypeString;
 
 @property (nonatomic, weak) id <DTLocalizableStringScannerDelegate> delegate;
-
-@property (nonatomic, assign) BOOL noPositionalParameters;
 
 @end
 
