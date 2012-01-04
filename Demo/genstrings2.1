@@ -5,7 +5,7 @@
 .\"/usr/share/misc/mdoc.template
 .Dd 29.12.11               \" DATE 
 .Dt genstrings2 1      \" Program name and manual section number 
-.Os Darwin
+.Os Mac OS X
 .Sh NAME                 \" Section Header - required - don't modify 
 .Nm genstrings2
 .\" The following lines are read in generating the apropos(man -k) database. Use only key
@@ -28,6 +28,10 @@ in the Cocoa Developer Documentation.
 
 This utility is a complete rewrite of Apple's genstrings using modern techniques like GCD and designed to be more intelligent.
 The original genstrings for example would crash whenever a macro would contain non-literal parameters.
+
+* Format Strings and Positional Parameters:
+
+Keys and values of string file entries can include formatting characters.  For value strings with multiple formatting arguments, positional parameters are generated.  These allow the order of arguments to be changed as needed by each localization (e.g. "File %1$@ contains %2$d bytes." could become "%2$d bytes are contained in file %1$@." in another localization).
 
 .Sh OPTIONS
 .Bl -tag -width - indent
