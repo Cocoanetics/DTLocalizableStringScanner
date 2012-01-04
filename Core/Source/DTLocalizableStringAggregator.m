@@ -17,12 +17,12 @@
 {
     NSArray *_fileURLs;
     NSMutableDictionary *_stringTables;
-    NSURL *_outputFolderURL;
     
     dispatch_semaphore_t selfLock;
     
     BOOL _noPositionalParameters;
     NSSet *_tablesToSkip;
+    NSURL *_outputFolderURL;
 }
 
 - (id)initWithFileURLs:(NSArray *)fileURLs
@@ -101,8 +101,6 @@
             printf("Unable to write string table %s, %s\n", [oneTableName UTF8String], [[error localizedDescription] UTF8String]);
             exit(1);
         }
-        
-        NSLog(@"%@", [tableURL path]);
     }
 }
 
@@ -153,5 +151,6 @@
 
 @synthesize noPositionalParameters = _noPositionalParameters;
 @synthesize tablesToSkip = _tablesToSkip;
+@synthesize outputFolderURL = _outputFolderURL;
 
 @end

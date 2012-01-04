@@ -13,11 +13,11 @@
 @interface DTLocalizableStringAggregator : NSObject <DTLocalizableStringScannerDelegate>
 
 - (id)initWithFileURLs:(NSArray *)fileURLs;
-- (void)setOutputFolderURL:(NSURL *)outputFolderURL;
 
 - (void)processFiles;
 
 @property (nonatomic, assign) BOOL noPositionalParameters;
 @property (nonatomic, retain) NSSet *tablesToSkip;
+@property (nonatomic, retain) NSURL *outputFolderURL;
 
 @end
