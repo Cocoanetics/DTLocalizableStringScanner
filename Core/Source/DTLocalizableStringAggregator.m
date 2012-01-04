@@ -8,10 +8,17 @@
 
 #import "DTLocalizableStringAggregator.h"
 #import "DTLocalizableStringScanner.h"
+#import "NSString+DTLocalizableStringScanner.h"
 
 // Commented code useful to find deadlocks
 #define SYNCHRONIZE_START(lock) /* NSLog(@"LOCK: FUNC=%s Line=%d", __func__, __LINE__), */dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
 #define SYNCHRONIZE_END(lock) dispatch_semaphore_signal(lock) /*, NSLog(@"UN-LOCK")*/;
+
+@interface DTLocalizableStringAggregator ()
+
+- (void)writeStringTables;
+
+@end
 
 @implementation DTLocalizableStringAggregator
 {
@@ -23,6 +30,8 @@
     BOOL _noPositionalParameters;
     NSSet *_tablesToSkip;
     NSURL *_outputFolderURL;
+    NSString *_customMacroPrefix;
+    NSStringEncoding _outputStringEncoding;
 }
 
 - (id)initWithFileURLs:(NSArray *)fileURLs
@@ -34,6 +43,9 @@
         
         // create the lock
         selfLock = dispatch_semaphore_create(1);
+        
+        // default encoding
+        _outputStringEncoding = NSUTF16StringEncoding;
     }
     return self;
 }
@@ -41,11 +53,6 @@
 - (void)dealloc 
 {
 	dispatch_release(selfLock);
-}
-
-- (void)setOutputFolderURL:(NSURL *)outputFolderURL
-{
-    _outputFolderURL = outputFolderURL;
 }
 
 - (void)processFiles
@@ -66,42 +73,20 @@
         dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             DTLocalizableStringScanner *scanner = [[DTLocalizableStringScanner alloc] initWithContentsOfURL:oneFile];
             scanner.delegate = self;
+            
+            if (_customMacroPrefix)
+            {
+                [scanner registerMacrosWithPrefix:_customMacroPrefix];
+            }
+            
             [scanner scanFile];
         });
     }
     
     // wait for all blocks in group to finish
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-    
-    NSArray *tableNames = [_stringTables allKeys];
-    
-    for (NSString *oneTableName in tableNames)
-    {
-        NSString *fileName = [oneTableName stringByAppendingPathExtension:@"strings"];
-        NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:_outputFolderURL];
         
-        NSArray *tokens = [_stringTables objectForKey:oneTableName];
-        
-        NSMutableString *tmpString = [NSMutableString string];
-        
-        for (NSDictionary *oneToken in tokens)
-        {
-            NSString *comment = [oneToken objectForKey:@"comment"];
-            NSString *key = [oneToken objectForKey:@"key"];
-            
-            [tmpString appendFormat:@"/* %@ */\n\"%@\" = \"%@\";\n\n", comment, key, key];
-        }
-        
-        NSError *error = nil;
-        if (![tmpString writeToURL:tableURL
-                        atomically:YES
-                          encoding:NSUTF16StringEncoding
-                             error:&error])
-        {
-            printf("Unable to write string table %s, %s\n", [oneTableName UTF8String], [[error localizedDescription] UTF8String]);
-            exit(1);
-        }
-    }
+    [self writeStringTables];
 }
 
 - (void)addTokenToTables:(NSDictionary *)token
@@ -140,6 +125,56 @@
     SYNCHRONIZE_END(selfLock)
 }
 
+- (void)writeStringTables
+{
+    NSArray *tableNames = [_stringTables allKeys];
+    
+    for (NSString *oneTableName in tableNames)
+    {
+        NSString *fileName = [oneTableName stringByAppendingPathExtension:@"strings"];
+        NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:_outputFolderURL];
+        
+        NSArray *tokens = [_stringTables objectForKey:oneTableName];
+        
+        NSMutableString *tmpString = [NSMutableString string];
+        
+        for (NSDictionary *oneToken in tokens)
+        {
+            NSString *comment = [oneToken objectForKey:@"comment"];
+            NSString *key = [oneToken objectForKey:@"key"];
+            NSString *value;
+            
+            // if no or zero-length comment, use default
+            if (![comment length])
+            {
+                comment = @"No comment provided by engineer.";
+            }
+            
+            if (_noPositionalParameters)
+            {
+                value = key;
+            }
+            else
+            {
+                value = [key stringByNumberingFormatPlaceholders];
+            }
+            
+            [tmpString appendFormat:@"/* %@ */\n\"%@\" = \"%@\";\n\n", comment, key, value];
+        }
+        
+        NSError *error = nil;
+        if (![tmpString writeToURL:tableURL
+                        atomically:YES
+                          encoding:_outputStringEncoding
+                             error:&error])
+        {
+            printf("Unable to write string table %s, %s\n", [oneTableName UTF8String], [[error localizedDescription] UTF8String]);
+            exit(1);
+        }
+    }
+}
+
+
 #pragma mark DTLocalizableStringScannerDelegate
 
 - (void)localizableStringScanner:(DTLocalizableStringScanner *)scanner didFindToken:(NSDictionary *)token
@@ -152,5 +187,7 @@
 @synthesize noPositionalParameters = _noPositionalParameters;
 @synthesize tablesToSkip = _tablesToSkip;
 @synthesize outputFolderURL = _outputFolderURL;
+@synthesize customMacroPrefix = _customMacroPrefix;
+@synthesize outputStringEncoding = _outputStringEncoding;
 
 @end

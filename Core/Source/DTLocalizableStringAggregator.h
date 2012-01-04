@@ -19,5 +19,7 @@
 @property (nonatomic, assign) BOOL noPositionalParameters;
 @property (nonatomic, retain) NSSet *tablesToSkip;
 @property (nonatomic, retain) NSURL *outputFolderURL;
+@property (nonatomic, retain) NSString *customMacroPrefix;
+@property (nonatomic, assign) NSStringEncoding outputStringEncoding;
 
 @end
