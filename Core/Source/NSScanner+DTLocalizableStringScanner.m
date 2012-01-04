@@ -15,8 +15,26 @@
     NSUInteger positionBeforeScanning = [self scanLocation];
     NSCharacterSet *quoteOrSlash = [NSCharacterSet characterSetWithCharactersInString:@"\\\""];
     
-    // skip AT, it's optional (at least for comments)
-    [self scanString:@"@" intoString:NULL];
+    BOOL seenCFSTR = NO;
+    
+    // skip AT, it's optional (at least for comments, but we don't care)
+    if (![self scanString:@"@" intoString:NULL])
+    {
+        // could be a CF string macro
+        if ([self scanString:@"CFSTR" intoString:NULL])
+        {
+            seenCFSTR = YES;
+        }
+        
+    }
+    
+    // CFSTR expects opening bracket
+    if (seenCFSTR && ![self scanString:@"(" intoString:NULL])
+    {
+        // missing (
+        self.scanLocation = positionBeforeScanning;
+        return NO;
+    }
     
     if (![self scanString:@"\"" intoString:NULL])
     {
@@ -53,6 +71,15 @@
         self.scanLocation = positionBeforeScanning;
         return NO;
     }
+    
+    // CFSTR expects closing bracket
+    if (seenCFSTR && ![self scanString:@")" intoString:NULL])
+    {
+        // missing (
+        self.scanLocation = positionBeforeScanning;
+        return NO;
+    }
+
     
     if (value)
     {
