@@ -156,7 +156,7 @@ int main (int argc, const char *argv[])
 
 void showUsage(void)
 {
-    printf("Usage: genstrings2 [OPTION] file1.[mc] ... filen.[mc]\n\n");
+    printf("Usage: genstrings2 [OPTIONS] file...\n\n");
     printf("    Options\n");
     //   printf("    -j                       sets the input language to Java.\n");
     //   printf("    -a                       append output to the old strings files.\n");

@@ -85,7 +85,7 @@
     
     // wait for all blocks in group to finish
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        
+    
     [self writeStringTables];
 }
 
@@ -150,16 +150,27 @@
                 comment = @"No comment provided by engineer.";
             }
             
-            if (_noPositionalParameters)
+            
+            [tmpString appendFormat:@"/* %@ */\n", comment];
+             
+            // support for predicate token splitting
+            NSArray *keyVariants = [key variantsFromPredicateVariations];
+            
+            for (NSString *oneVariant in keyVariants)
             {
-                value = key;
-            }
-            else
-            {
-                value = [key stringByNumberingFormatPlaceholders];
+                if (_noPositionalParameters)
+                {
+                    value = oneVariant;
+                }
+                else
+                {
+                    value = [oneVariant stringByNumberingFormatPlaceholders];
+                }
+                
+                [tmpString appendFormat:@"\"%@\" = \"%@\";\n", oneVariant, value];
             }
             
-            [tmpString appendFormat:@"/* %@ */\n\"%@\" = \"%@\";\n\n", comment, key, value];
+            [tmpString appendString:@"\n"];
         }
         
         NSError *error = nil;

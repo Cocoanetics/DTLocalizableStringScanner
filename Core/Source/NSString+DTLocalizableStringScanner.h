@@ -12,4 +12,6 @@
 
 - (NSString *)stringByNumberingFormatPlaceholders;
 
+- (NSArray *)variantsFromPredicateVariations;
+
 @end
