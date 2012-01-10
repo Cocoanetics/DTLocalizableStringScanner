@@ -14,6 +14,8 @@
 
 @property (nonatomic, retain) NSMutableDictionary *validMacros;
 
+- (NSCharacterSet *)validMacroCharacters;
+
 @end
 
 @implementation DTLocalizableStringScanner
@@ -67,7 +69,7 @@
         [self registerDefaultMacros];
     }
     
-    NSCharacterSet *validMacroCharacters = [NSCharacterSet alphanumericCharacterSet];
+    NSCharacterSet *validMacroCharacters = [self validMacroCharacters];
     
     while (![scanner isAtEnd]) 
     {
@@ -194,6 +196,21 @@
     }
     
     return _validMacros;
+}
+
+- (NSCharacterSet *)validMacroCharacters
+{
+	// make a string from all names
+	NSString *allChars = [[_validMacros allKeys] componentsJoinedByString:@""];
+
+	// make character set from that
+	NSMutableCharacterSet *tmpSet = [NSMutableCharacterSet characterSetWithCharactersInString:allChars];
+	
+	// remove whitespace
+	NSCharacterSet *nonWhiteSet = [[NSCharacterSet whitespaceAndNewlineCharacterSet] invertedSet];
+	[tmpSet formIntersectionWithCharacterSet:nonWhiteSet];
+	
+	return tmpSet;
 }
 
 - (void)setDelegate:(id<DTLocalizableStringScannerDelegate>)delegate
