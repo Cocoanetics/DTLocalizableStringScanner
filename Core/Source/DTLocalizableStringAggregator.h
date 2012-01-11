@@ -8,15 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "DTLocalizableStringScanner.h"
-
-@interface DTLocalizableStringAggregator : NSObject <DTLocalizableStringScannerDelegate>
+@interface DTLocalizableStringAggregator : NSObject
 
 - (id)initWithFileURLs:(NSArray *)fileURLs;
 
 - (void)processFiles;
 
-@property (nonatomic, assign) BOOL noPositionalParameters;
+@property (nonatomic, assign) BOOL wantsPositionalParameters;
 @property (nonatomic, retain) NSSet *tablesToSkip;
 @property (nonatomic, retain) NSURL *outputFolderURL;
 @property (nonatomic, retain) NSString *customMacroPrefix;

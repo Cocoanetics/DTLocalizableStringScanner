@@ -7,12 +7,11 @@
 //
 
 #import "DTLocalizableStringScanner.h"
+#import "DTLocalizableStringEntry.h"
 #import "NSScanner+DTLocalizableStringScanner.h"
 #import "NSString+DTLocalizableStringScanner.h"
 
 @interface DTLocalizableStringScanner ()
-
-@property (nonatomic, retain) NSMutableDictionary *validMacros;
 
 - (NSCharacterSet *)validMacroCharacters;
 
@@ -22,20 +21,12 @@
 {
     NSString *_string;
     NSURL *_url;
-    NSMutableDictionary *_validMacros;
-    
-    // lookup bitmask what delegate methods are implemented
-	struct 
-	{
-		unsigned int delegateSupportsStart:1;
-		unsigned int delegateSupportsEnd:1;
-        unsigned int delegateSupportsDidFindToken:1;
-	} _delegateFlags;
-    
-    __unsafe_unretained id <DTLocalizableStringScannerDelegate> _delegate;
+    NSDictionary *_validMacros;
 }
 
-- (id)initWithContentsOfURL:(NSURL *)url
+@synthesize entryFoundCallback=_entryFoundCallback;
+
+- (id)initWithContentsOfURL:(NSURL *)url validMacros:(NSDictionary *)validMacros
 {
     self = [super init];
     
@@ -49,25 +40,16 @@
         }
         
         _url = [url copy]; // to have a reference later
+        _validMacros = validMacros;
     }
     
     return self;
 }
 
-- (BOOL)scanFile
+- (void)main
 {
-    if (_delegateFlags.delegateSupportsStart)
-    {
-        [_delegate localizableStringScannerDidStartDocument:self];
-    }
     
     NSScanner *scanner = [NSScanner scannerWithString:_string];
-    
-    // register the default macros if there is no custom prefix
-    if (![_validMacros count])
-    {
-        [self registerDefaultMacros];
-    }
     
     NSCharacterSet *validMacroCharacters = [self validMacroCharacters];
     
@@ -90,20 +72,19 @@
                 if ([paramNames count] == [parameters count])
                 {
                     // scanned parameters must match up with registered names
-                    NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
+                    DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
                     
                     for (NSUInteger i=0; i<[paramNames count]; i++)
                     {
                         NSString *paramName = [paramNames objectAtIndex:i];
                         NSString *paramValue = [parameters objectAtIndex:i];
                         
-                        [tmpDict setObject:paramValue forKey:paramName];
+                        [entry setValue:paramValue forKey:paramName];
                     }
                     
-                    if (_delegateFlags.delegateSupportsDidFindToken)
+                    if (_entryFoundCallback)
                     {
-                        [_delegate localizableStringScanner:self
-                                               didFindToken:tmpDict];
+                        _entryFoundCallback(entry);
                     }
                 }
                 else
@@ -118,85 +99,9 @@
             [scanner scanCharactersFromSet:validMacroCharacters intoString:NULL];
         }
     }
-    
-    if (_delegateFlags.delegateSupportsEnd)
-    {
-        [_delegate localizableStringScannerDidEndDocument:self];
-    }
-    
-    return YES;
-}
-
-
-#pragma mark Macro handling
-- (void)registerMacrosWithPrefix:(NSString *)macroPrefix
-{
-    self.validMacros = nil;
-
-    NSArray *defaultMacros = [NSArray arrayWithObjects:@"NSLocalizedString(key, comment)",
-                              @"NSLocalizedStringFromTable(key, tbl, comment)",
-                              @"NSLocalizedStringFromTableInBundle(key, tbl, bundle, comment)",
-                              @"NSLocalizedStringWithDefaultValue(key, tbl, bundle, val, comment)", nil];
-    
-    for (NSString *macro in defaultMacros)
-    {
-        NSString *usedMacro;
-        
-        if (macroPrefix)
-        {
-           usedMacro = [macro stringByReplacingOccurrencesOfString:@"NSLocalizedString" withString:macroPrefix];
-        }
-        else
-        {
-            usedMacro = macro;
-        }
-        
-        [self registerMacroWithPrototypeString:usedMacro];
-    }
-}
-
-- (void)registerDefaultMacros
-{
-    [self registerMacrosWithPrefix:nil];
-    
-    // register old CF style macros
-    [self registerMacroWithPrototypeString:@"CFCopyLocalizedString(key, comment)"];
-    [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTable(key, tbl, comment)"];
-    [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringFromTableInBundle(key, tbl, bundle, comment)"];
-    [self registerMacroWithPrototypeString:@"CFCopyLocalizedStringWithDefaultValue(key, tbl, bundle, value, comment)"];    
-}
-
-- (void)registerMacroWithPrototypeString:(NSString *)prototypeString
-{
-    NSString *macroName = nil;
-    NSArray *parameters = nil;
-    
-    NSScanner *scanner = [NSScanner scannerWithString:prototypeString];
-    
-    if ([scanner scanMacro:&macroName andParameters:&parameters parametersAreBare:YES])
-    {
-        if (macroName && parameters)
-        {
-            [self.validMacros setObject:parameters forKey:macroName];
-        }
-    }
-    else
-    {
-        NSLog(@"Invalid Macro: %@", prototypeString);
-    }
 }
 
 #pragma mark Properties
-
-- (NSMutableDictionary *)validMacros
-{
-    if (!_validMacros)
-    {
-        _validMacros = [[NSMutableDictionary alloc] init];
-    }
-    
-    return _validMacros;
-}
 
 - (NSCharacterSet *)validMacroCharacters
 {
@@ -212,20 +117,5 @@
 	
 	return tmpSet;
 }
-
-- (void)setDelegate:(id<DTLocalizableStringScannerDelegate>)delegate
-{
-    if (_delegate != delegate)
-    {
-        _delegateFlags.delegateSupportsStart = [delegate respondsToSelector:@selector(localizableStringScannerDidStartDocument:)];
-        _delegateFlags.delegateSupportsEnd = [delegate respondsToSelector:@selector(localizableStringScannerDidEndDocument:)];   
-        _delegateFlags.delegateSupportsDidFindToken = [delegate respondsToSelector:@selector(localizableStringScanner:didFindToken:)];
-        
-        _delegate = delegate;
-    }
-}
-
-@synthesize validMacros = _validMacros;
-@synthesize delegate = _delegate;
 
 @end

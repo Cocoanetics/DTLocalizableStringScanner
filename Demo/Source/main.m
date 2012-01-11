@@ -22,7 +22,7 @@ int main (int argc, const char *argv[])
         // default output encoding
         NSStringEncoding outputStringEncoding = NSUTF16StringEncoding;
         
-        BOOL noPositionalParameters = NO;
+        BOOL wantsPositionalParameters = YES;
         NSMutableSet *tablesToSkip = [NSMutableSet set];
         NSString *customMacroPrefix = nil;
         
@@ -54,7 +54,7 @@ int main (int argc, const char *argv[])
             else if (!strcmp("-noPositionalParameters", argv[i]))
             {
                 // do not add positions to parameters
-                noPositionalParameters = YES;
+                wantsPositionalParameters = NO;
             }
             else if (!strcmp("-o", argv[i]))
             {
@@ -135,7 +135,7 @@ int main (int argc, const char *argv[])
         DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] initWithFileURLs:files];
         
         // set the parameters
-        aggregator.noPositionalParameters = noPositionalParameters;
+        aggregator.wantsPositionalParameters = wantsPositionalParameters;
         aggregator.outputFolderURL = outputFolderURL;
         aggregator.customMacroPrefix = customMacroPrefix;
         aggregator.outputStringEncoding = outputStringEncoding;

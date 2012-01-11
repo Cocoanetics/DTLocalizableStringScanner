@@ -8,14 +8,13 @@
 
 #import "DTLocalizableStringAggregator.h"
 #import "DTLocalizableStringScanner.h"
+#import "DTLocalizableStringEntry.h"
 #import "NSString+DTLocalizableStringScanner.h"
-
-// Commented code useful to find deadlocks
-#define SYNCHRONIZE_START(lock) /* NSLog(@"LOCK: FUNC=%s Line=%d", __func__, __LINE__), */ dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
-#define SYNCHRONIZE_END(lock) dispatch_semaphore_signal(lock) /*, NSLog(@"UN-LOCK")*/;
+#import "NSScanner+DTLocalizableStringScanner.h"
 
 @interface DTLocalizableStringAggregator ()
 
+- (void)addEntryToTables:(DTLocalizableStringEntry *)entry;
 - (void)writeStringTables;
 
 @end
@@ -25,14 +24,17 @@
     NSArray *_fileURLs;
     NSMutableDictionary *_stringTables;
     
-    dispatch_semaphore_t selfLock;
-    
-    BOOL _noPositionalParameters;
-    NSSet *_tablesToSkip;
-    NSURL *_outputFolderURL;
-    NSString *_customMacroPrefix;
-    NSStringEncoding _outputStringEncoding;
+    NSOperationQueue *_processingQueue;
+    dispatch_queue_t _tableQueue;
 }
+
+#pragma mark properties
+
+@synthesize wantsPositionalParameters = _wantsPositionalParameters;
+@synthesize tablesToSkip = _tablesToSkip;
+@synthesize outputFolderURL = _outputFolderURL;
+@synthesize customMacroPrefix = _customMacroPrefix;
+@synthesize outputStringEncoding = _outputStringEncoding;
 
 - (id)initWithFileURLs:(NSArray *)fileURLs
 {
@@ -41,8 +43,10 @@
     {
         _fileURLs = fileURLs;
         
-        // create the lock
-        selfLock = dispatch_semaphore_create(1);
+        _tableQueue = dispatch_queue_create("DTLocalizableStringAggregator", 0);
+        
+        _processingQueue = [[NSOperationQueue alloc] init];
+        [_processingQueue setMaxConcurrentOperationCount:10];
         
         // default encoding
         _outputStringEncoding = NSUTF16StringEncoding;
@@ -52,7 +56,38 @@
 
 - (void)dealloc 
 {
-	dispatch_release(selfLock);
+	dispatch_release(_tableQueue);
+}
+
+- (NSDictionary *)validMacros {
+    NSArray *prefixes = [NSArray arrayWithObjects:@"NSLocalizedString", @"CFCopyLocalizedString", _customMacroPrefix, nil];
+    NSArray *suffixes = [NSArray arrayWithObjects:
+                         @"(key, comment)",
+                         @"FromTable(key, tableName, comment)",
+                         @"FromTableInBundle(key, tableName, bundle, comment)",
+                         @"WithDefaultValue(key, tableName, bundle, value, comment)", nil];
+    
+    NSMutableDictionary *validMacros = [NSMutableDictionary dictionary];
+    for (NSString *prefix in prefixes) {
+        for (NSString *suffix in suffixes) {
+            NSString *macroTemplate = [prefix stringByAppendingString:suffix];
+            
+            NSString *macroName = nil;
+            NSArray *parameters = nil;
+            
+            NSScanner *scanner = [NSScanner scannerWithString:macroTemplate];
+            
+            if ([scanner scanMacro:&macroName andParameters:&parameters parametersAreBare:YES]) {
+                if (macroName && parameters) {
+                    [validMacros setObject:parameters forKey:macroName];
+                }
+            } else {
+                NSLog(@"Invalid Macro: %@", macroTemplate);
+            }
+        }
+    }
+    
+    return validMacros;
 }
 
 - (void)processFiles
@@ -64,65 +99,53 @@
         _outputFolderURL = [NSURL fileURLWithPath:cwd];
     }
     
-    // create one dispatch group
-    dispatch_group_t group = dispatch_group_create();
+    NSDictionary *validMacros = [self validMacros];
     
     // create one block for each file
     for (NSURL *oneFile in _fileURLs)
     {
-        dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            DTLocalizableStringScanner *scanner = [[DTLocalizableStringScanner alloc] initWithContentsOfURL:oneFile];
-            scanner.delegate = self;
-            
-            if (_customMacroPrefix)
-            {
-                [scanner registerMacrosWithPrefix:_customMacroPrefix];
-            }
-            
-            [scanner scanFile];
-        });
+        
+        DTLocalizableStringScanner *scanner = [[DTLocalizableStringScanner alloc] initWithContentsOfURL:oneFile validMacros:validMacros];
+        [scanner setEntryFoundCallback:^(DTLocalizableStringEntry *entry) {
+            dispatch_async(_tableQueue, ^{
+                [self addEntryToTables:entry];
+            });
+        }];
+        
+        [_processingQueue addOperation:scanner];
     }
     
-    // wait for all blocks in group to finish
-    dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    [_processingQueue waitUntilAllOperationsAreFinished];
     
     [self writeStringTables];
 }
 
-- (void)addTokenToTables:(NSDictionary *)token
+- (void)addEntryToTables:(DTLocalizableStringEntry *)entry
 {
-    // needs to be synchronized because it might be called from multiple background threads
-    SYNCHRONIZE_START(selfLock)
+    NSAssert(dispatch_get_current_queue() == _tableQueue, @"method called from invalid queue");
+    if (!_stringTables)
     {
-        if (!_stringTables)
-        {
-            _stringTables = [NSMutableDictionary dictionary];
-        }
-        
-        NSString *tableName = [token objectForKey:@"tbl"];
-        if (!tableName)
-        {
-            tableName = @"Localizable";
-        }
-        
-        BOOL shouldSkip = [_tablesToSkip containsObject:tableName];
-        
-        if (!shouldSkip)
-        {
-            // find the string table for this token, or create it
-            NSMutableArray *table = [_stringTables objectForKey:tableName];
-            if (!table)
-            {
-                // need to create it
-                table = [NSMutableArray array];
-                [_stringTables setObject:table forKey:tableName];
-            }
-            
-            // add token to this table
-            [table addObject:token];
-        }
+        _stringTables = [NSMutableDictionary dictionary];
     }
-    SYNCHRONIZE_END(selfLock)
+    
+    NSString *tableName = [entry tableName];
+    
+    BOOL shouldSkip = [_tablesToSkip containsObject:tableName];
+    
+    if (!shouldSkip)
+    {
+        // find the string table for this token, or create it
+        NSMutableArray *table = [_stringTables objectForKey:tableName];
+        if (!table)
+        {
+            // need to create it
+            table = [NSMutableArray array];
+            [_stringTables setObject:table forKey:tableName];
+        }
+        
+        // add token to this table
+        [table addObject:entry];
+    }
 }
 
 - (void)writeStringTables
@@ -134,21 +157,14 @@
         NSString *fileName = [oneTableName stringByAppendingPathExtension:@"strings"];
         NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:_outputFolderURL];
         
-        NSArray *tokens = [_stringTables objectForKey:oneTableName];
+        NSArray *entries = [_stringTables objectForKey:oneTableName];
         
         NSMutableString *tmpString = [NSMutableString string];
         
-        for (NSDictionary *oneToken in tokens)
+        for (DTLocalizableStringEntry *entry in entries)
         {
-            NSString *comment = [oneToken objectForKey:@"comment"];
-            NSString *key = [oneToken objectForKey:@"key"];
-            NSString *value;
-            
-            // if no or zero-length comment, use default
-            if (![comment length])
-            {
-                comment = @"No comment provided by engineer.";
-            }
+            NSString *comment = [entry comment];
+            NSString *key = [entry key];
             
             
             [tmpString appendFormat:@"/* %@ */\n", comment];
@@ -158,11 +174,8 @@
             
             for (NSString *oneVariant in keyVariants)
             {
-                if (_noPositionalParameters)
-                {
-                    value = oneVariant;
-                }
-                else
+                NSString *value = oneVariant;
+                if (_wantsPositionalParameters)
                 {
                     value = [oneVariant stringByNumberingFormatPlaceholders];
                 }
@@ -184,21 +197,5 @@
         }
     }
 }
-
-
-#pragma mark DTLocalizableStringScannerDelegate
-
-- (void)localizableStringScanner:(DTLocalizableStringScanner *)scanner didFindToken:(NSDictionary *)token
-{
-    [self addTokenToTables:token];
-}
-
-#pragma mark properties
-
-@synthesize noPositionalParameters = _noPositionalParameters;
-@synthesize tablesToSkip = _tablesToSkip;
-@synthesize outputFolderURL = _outputFolderURL;
-@synthesize customMacroPrefix = _customMacroPrefix;
-@synthesize outputStringEncoding = _outputStringEncoding;
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55951D0014BD3C1700E4A63E /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 		A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A775234114ACEF7A0035CDCA /* Foundation.framework */; };
 		A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
 		A79AC07C14B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */; };
@@ -38,6 +39,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		55951CFE14BD3C1700E4A63E /* DTLocalizableStringEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringEntry.h; sourceTree = "<group>"; };
+		55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringEntry.m; sourceTree = "<group>"; };
 		A775233D14ACEF7A0035CDCA /* genstrings2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = genstrings2; sourceTree = BUILT_PRODUCTS_DIR; };
 		A775234114ACEF7A0035CDCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringScanner.h; sourceTree = "<group>"; };
@@ -123,6 +126,8 @@
 		A79AC07414B1A48A00489FA3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				55951CFE14BD3C1700E4A63E /* DTLocalizableStringEntry.h */,
+				55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */,
 				A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */,
 				A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */,
 				A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */,
@@ -261,6 +266,7 @@
 				A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
 				A79AC08314B1A49800489FA3 /* main.m in Sources */,
 				A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
+				55951D0014BD3C1700E4A63E /* DTLocalizableStringEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

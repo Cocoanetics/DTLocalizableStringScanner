@@ -8,29 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class DTLocalizableStringScanner;
+@class DTLocalizableStringEntry;
 
-@protocol DTLocalizableStringScannerDelegate <NSObject>
-@optional
+typedef void(^DTLocalizableStringEntryFoundCallback)(DTLocalizableStringEntry *);
 
-- (void)localizableStringScannerDidStartDocument:(DTLocalizableStringScanner *)scanner;
-- (void)localizableStringScannerDidEndDocument:(DTLocalizableStringScanner *)scanner;
-- (void)localizableStringScanner:(DTLocalizableStringScanner *)scanner didFindToken:(NSDictionary *)token;
+@interface DTLocalizableStringScanner : NSOperation
 
-@end
+- (id)initWithContentsOfURL:(NSURL *)url validMacros:(NSDictionary *)validMacros;
 
-
-@interface DTLocalizableStringScanner : NSObject
-
-- (id)initWithContentsOfURL:(NSURL *)url;
-
-- (BOOL)scanFile;
-
-- (void)registerDefaultMacros;
-- (void)registerMacrosWithPrefix:(NSString *)macroPrefix;
-- (void)registerMacroWithPrototypeString:(NSString *)prototypeString;
-
-@property (nonatomic, unsafe_unretained) id <DTLocalizableStringScannerDelegate> delegate;
+@property (nonatomic, copy) DTLocalizableStringEntryFoundCallback entryFoundCallback;
 
 @end
 
