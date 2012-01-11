@@ -241,10 +241,6 @@
             printf("Unable to write string table %s, %s\n", [oneTableName UTF8String], [[error localizedDescription] UTF8String]);
             exit(1);
         }
-		else
-		{
-			NSLog(@"%@", [tableURL path]);
-		}
     }
 }
 

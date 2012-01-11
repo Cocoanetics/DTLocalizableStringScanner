@@ -12,20 +12,6 @@ NSAlert *alert = [NSAlert alertWithMessageText:message
 
 // these should be ignored!
 
-NSString *functionCall = nil;
-if([stringsFileName isEqualToString:@"Localizable.strings"])
-{
-	functionCall = [NSString stringWithFormat:@"NSLocalizedString(@\"%@\", %@)", key, comment];
-}
-else
-{
-	functionCall = [NSString stringWithFormat:@"NSLocalizedStringFromTable(@\"%@\", @\"%@\", %@)", 
-					key, 
-					[stringsFileName stringByDeletingPathExtension], 
-					comment];
-}
-
-
 
 
 [document _queueAlert:alert withFile:fileObject];
