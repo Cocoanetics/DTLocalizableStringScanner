@@ -49,4 +49,13 @@
 	return tmpString;
 }
 
+- (void)setTableName:(NSString *)tableName
+{
+	// keep "Localizable" if the tableName is nil or @"";
+	if ([tableName length])
+	{
+		_tableName = tableName;
+	}
+}
+
 @end
