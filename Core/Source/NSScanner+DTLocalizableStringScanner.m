@@ -127,6 +127,15 @@
         return NO;
     }
     
+    NSSet *reservedNames = [NSSet setWithObjects:@"if", @"do", @"while", @"switch", nil];
+    
+    if ([reservedNames containsObject:macroName])
+    {
+        // this is not a macro, but a reserved name
+        self.scanLocation = previousScanLocation;
+        return NO;
+    }
+    
     if (![self scanString:@"(" intoString:NULL])
     {
         // opening bracket missing
