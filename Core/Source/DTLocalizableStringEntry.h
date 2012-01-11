@@ -16,4 +16,7 @@
 @property (nonatomic, copy) NSString *bundle;
 @property (nonatomic, copy) NSString *comment;
 
+// used for output sorting
+- (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry;
+
 @end

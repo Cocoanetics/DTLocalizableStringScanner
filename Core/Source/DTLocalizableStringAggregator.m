@@ -182,8 +182,7 @@
         
         NSArray *entries = [_stringTables objectForKey:oneTableName];
 		
-		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES];
-		NSArray *sortedEntries = [entries sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+		NSArray *sortedEntries = [entries sortedArrayUsingSelector:@selector(compare:)];
         
         NSMutableString *tmpString = [NSMutableString string];
         

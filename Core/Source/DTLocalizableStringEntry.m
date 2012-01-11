@@ -20,7 +20,7 @@
     self = [super init];
     if (self) {
         _tableName = @"Localizable";
-        _comment = @"No comment provided by engineer";
+        _comment = @"No comment provided by engineer.";
     }
     return self;
 }
@@ -47,6 +47,11 @@
 	[tmpString appendString:@">"];
 	
 	return tmpString;
+}
+
+- (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry
+{
+    return [_key localizedStandardCompare:otherEntry.key];
 }
 
 #pragma mark Properties
