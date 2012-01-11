@@ -49,12 +49,22 @@
 	return tmpString;
 }
 
+#pragma mark Properties
 - (void)setTableName:(NSString *)tableName
 {
 	// keep "Localizable" if the tableName is nil or @"";
 	if ([tableName length])
 	{
-		_tableName = tableName;
+		_tableName = [tableName copy];
+	}
+}
+
+- (void)setComment:(NSString *)comment
+{
+	// keep default comment if the parameter is nil or @"";
+	if ([comment length])
+	{
+		_comment = [comment copy];
 	}
 }
 
