@@ -173,6 +173,12 @@
     {
         NSString *fileName = [oneTableName stringByAppendingPathExtension:@"strings"];
         NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:_outputFolderURL];
+		
+		if (!tableURL)
+		{
+			// this must be junk
+			continue;
+		}
         
         NSArray *entries = [_stringTables objectForKey:oneTableName];
         
@@ -232,6 +238,10 @@
             printf("Unable to write string table %s, %s\n", [oneTableName UTF8String], [[error localizedDescription] UTF8String]);
             exit(1);
         }
+		else
+		{
+			NSLog(@"%@", [tableURL path]);
+		}
     }
 }
 

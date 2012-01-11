@@ -153,7 +153,7 @@
 				if ([self scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"),"]
 									 intoString:&code])
 				{
-					[tmpArray addObject:code]; // need to add something so that parameters don't shift
+					[tmpArray addObject:@""]; // need to add something so that parameters don't shift
 				}
 			}
         }

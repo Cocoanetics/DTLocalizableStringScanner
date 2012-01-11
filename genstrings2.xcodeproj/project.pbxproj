@@ -24,6 +24,7 @@
 		A79AC0AA14B4A36100489FA3 /* NSScanner+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */; };
 		A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */; };
 		A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */; };
+		A7E19B4A14BDBD0500493494 /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -288,6 +289,7 @@
 				A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */,
 				A79AC0A714B4A35800489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */,
 				A79AC0A814B4A35800489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
+				A7E19B4A14BDBD0500493494 /* DTLocalizableStringEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

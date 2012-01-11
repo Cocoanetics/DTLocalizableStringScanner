@@ -1,3 +1,20 @@
+// these should be ignored!
+
+NSString *functionCall = nil;
+if([stringsFileName isEqualToString:@"Localizable.strings"])
+{
+	functionCall = [NSString stringWithFormat:@"NSLocalizedString(@\"%@\", %@)", key, comment];
+}
+else
+{
+	functionCall = [NSString stringWithFormat:@"NSLocalizedStringFromTable(@\"%@\", @\"%@\", %@)", 
+					key, 
+					[stringsFileName stringByDeletingPathExtension], 
+					comment];
+}
+
+
+// some regular test cases
 
 NSLocalizedString(@"Accounts", nil);
 NSLocalizedStringWithDefaultValue(@"A Key %@ %@", nil, nil, @"Default Value %@ %@", nil);
