@@ -78,17 +78,9 @@
             }
             else
             {
-                // we have a slash ...
-                
-                if ([self scanString:@"\"" intoString:NULL])
-                {
-                    //... and a quote, escaped
-                    [tmpString appendString:@"\\\""];
-                }
-                else
-                {
-                    [tmpString appendString:@"\\"];
-                }
+                // we just copy that
+                // Note: does not deal with """""""", we assume syntax is correct
+                [tmpString appendString:part];
                 
                 needsLoop = YES;
             }
