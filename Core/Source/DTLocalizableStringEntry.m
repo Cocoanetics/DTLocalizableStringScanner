@@ -25,4 +25,28 @@
     return self;
 }
 
+- (NSString *)description
+{
+	NSMutableString *tmpString = [NSMutableString stringWithFormat:@"<%@ key='%@'", NSStringFromClass([self class]), self.key];
+	
+	if (_value)
+	{
+		[tmpString appendFormat:@" value='%@'", _value];
+	}
+	
+	if ([_comment length] && ![_comment isEqualToString:@"No comment provided by engineer"])
+	{
+		[tmpString appendFormat:@" comment='%@'", _comment];
+	}
+
+	if (![_tableName isEqualToString:@"Localizable"])
+	{
+		[tmpString appendFormat:@" table='%@'", _tableName];
+	}
+	
+	[tmpString appendString:@">"];
+	
+	return tmpString;
+}
+
 @end
