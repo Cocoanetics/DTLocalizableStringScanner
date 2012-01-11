@@ -145,6 +145,17 @@
             {
                 [tmpArray addObject:parameter];
             }
+			else
+			{
+				// try to skip this parameter, might be a bundle pointer, which is not a string literal
+				// TODO: make this skipping of code more robust
+				NSString *code = nil;
+				if ([self scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"),"]
+									 intoString:&code])
+				{
+					[tmpArray addObject:code]; // need to add something so that parameters don't shift
+				}
+			}
         }
         
         if ([self scanString:@")" intoString:NULL])
