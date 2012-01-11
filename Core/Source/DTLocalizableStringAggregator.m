@@ -181,10 +181,13 @@
 		}
         
         NSArray *entries = [_stringTables objectForKey:oneTableName];
+		
+		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES];
+		NSArray *sortedEntries = [entries sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
         
         NSMutableString *tmpString = [NSMutableString string];
         
-        for (DTLocalizableStringEntry *entry in entries)
+        for (DTLocalizableStringEntry *entry in sortedEntries)
         {
             NSString *comment = [entry comment];
             NSString *key = [entry key];
