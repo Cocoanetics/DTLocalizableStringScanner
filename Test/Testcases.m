@@ -1,5 +1,8 @@
 
 NSLocalizedString(@"Accounts", nil);
+NSLocalizedStringWithDefaultValue(@"A Key %@ %@", nil, nil, @"Default Value %@ %@", nil);
+
+NSLocalizedString(@"%[one, two] %[A, B]", @"predicate test");
 
 
 // from Adium
@@ -30,3 +33,6 @@ NSLocalizedString(@"Accounts", nil);
                                 if ([[menuItem title] isEqualToString:NSLocalizedStringFromTableInBundle(@"Open Link", nil, [NSBundle bundleForClass:[WebView class]], nil)])
                                         [webViewMenuItems removeObjectIdenticalTo:menuItem];                                    
                         }
+
+
+
