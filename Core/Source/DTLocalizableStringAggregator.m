@@ -182,23 +182,43 @@
         {
             NSString *comment = [entry comment];
             NSString *key = [entry key];
-            
-            
+			NSString *value = [entry value];
+			
+			// output comment
             [tmpString appendFormat:@"/* %@ */\n", comment];
-             
-            // support for predicate token splitting
-            NSArray *keyVariants = [key variantsFromPredicateVariations];
+			
+			if (value)
+			{
+				// ...WithDefaultValue
+				
+				NSString *outputValue = value;
+				if (_wantsPositionalParameters)
+				{
+					outputValue = [value stringByNumberingFormatPlaceholders];
+				}
+				
+				[tmpString appendFormat:@"\"%@\" = \"%@\";\n", key, outputValue];
+			}
+			else
+			{
+				// all other options use the key and variations thereof
+				
+				// support for predicate token splitting
+				NSArray *keyVariants = [key variantsFromPredicateVariations];
+				
+				// output all variants
+				for (NSString *oneVariant in keyVariants)
+				{
+					NSString *value = oneVariant;
+					if (_wantsPositionalParameters)
+					{
+						value = [oneVariant stringByNumberingFormatPlaceholders];
+					}
+					
+					[tmpString appendFormat:@"\"%@\" = \"%@\";\n", oneVariant, value];
+				}
+			}
             
-            for (NSString *oneVariant in keyVariants)
-            {
-                NSString *value = oneVariant;
-                if (_wantsPositionalParameters)
-                {
-                    value = [oneVariant stringByNumberingFormatPlaceholders];
-                }
-                
-                [tmpString appendFormat:@"\"%@\" = \"%@\";\n", oneVariant, value];
-            }
             
             [tmpString appendString:@"\n"];
         }
