@@ -38,9 +38,21 @@
     
     if (![self scanString:@"\"" intoString:NULL])
     {
-        // missing @ and opening quote
-        self.scanLocation = positionBeforeScanning;
-        return NO;
+		// could be a nil, that's also acceptable
+		if ([self scanString:@"nil" intoString:NULL])
+		{
+			if (value)
+			{
+				*value = @"";
+			}
+			return YES;
+		}
+		else
+		{
+			// missing @ and opening quote
+			self.scanLocation = positionBeforeScanning;
+			return NO;
+		}
     }
     
     NSMutableString *tmpString = [NSMutableString string];
