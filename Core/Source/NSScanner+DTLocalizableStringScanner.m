@@ -68,13 +68,32 @@
         needsLoop = NO;
 		NSString *part = nil;
      
-		if ([self scanString:@"\\\"" intoString:NULL])
-		{
-			// escaped quote
-			[tmpString appendString:@"\\\""];
-			needsLoop = YES;
-		}
-		else if ([self scanUpToCharactersFromSet:quoteOrSlash intoString:&part])
+        if ([self scanCharactersFromSet:quoteOrSlash
+                             intoString:&part])
+        {
+            if ([part isEqualToString:@"\""])
+            {
+                // closing quote
+                break; // we're done
+            }
+            else
+            {
+                // we have a slash ...
+                
+                if ([self scanString:@"\"" intoString:NULL])
+                {
+                    //... and a quote, escaped
+                    [tmpString appendString:@"\\\""];
+                }
+                else
+                {
+                    [tmpString appendString:@"\\"];
+                }
+                
+                needsLoop = YES;
+            }
+        }
+        else if ([self scanUpToCharactersFromSet:quoteOrSlash intoString:&part])
 		{
             [tmpString appendString:part];
 			needsLoop = YES;
@@ -84,12 +103,12 @@
 	// restore previous setting
 	self.charactersToBeSkipped = charactersToBeSkipped;
     
-    if (![self scanString:@"\"" intoString:NULL])
-    {
-        // missing closing quote
-        self.scanLocation = positionBeforeScanning;
-        return NO;
-    }
+//    if (![self scanString:@"\"" intoString:NULL])
+//    {
+//        // missing closing quote
+//        self.scanLocation = positionBeforeScanning;
+//        return NO;
+//    }
     
     // CFSTR expects closing bracket
     if (seenCFSTR && ![self scanString:@")" intoString:NULL])
