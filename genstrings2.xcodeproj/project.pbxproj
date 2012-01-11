@@ -62,6 +62,7 @@
 		A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringAggregator.h; sourceTree = "<group>"; };
 		A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringAggregator.m; sourceTree = "<group>"; };
 		A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DTLocalizableStringScanner-Prefix.pch"; sourceTree = "<group>"; };
+		A7E19B4314BD938E00493494 /* Testcases.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Testcases.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +88,7 @@
 		A775233214ACEF790035CDCA = {
 			isa = PBXGroup;
 			children = (
+				A7E19B4214BD938E00493494 /* Test */,
 				A79AC09814B1A6AD00489FA3 /* Docs */,
 				A79AC07314B1A48A00489FA3 /* Core */,
 				A79AC07E14B1A49800489FA3 /* Demo */,
@@ -175,6 +177,14 @@
 				A79AC09A14B1A6C700489FA3 /* Readme.markdown */,
 			);
 			name = Docs;
+			sourceTree = "<group>";
+		};
+		A7E19B4214BD938E00493494 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				A7E19B4314BD938E00493494 /* Testcases.m */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
