@@ -103,13 +103,6 @@
 	// restore previous setting
 	self.charactersToBeSkipped = charactersToBeSkipped;
     
-//    if (![self scanString:@"\"" intoString:NULL])
-//    {
-//        // missing closing quote
-//        self.scanLocation = positionBeforeScanning;
-//        return NO;
-//    }
-    
     // CFSTR expects closing bracket
     if (seenCFSTR && ![self scanString:@")" intoString:NULL])
     {
