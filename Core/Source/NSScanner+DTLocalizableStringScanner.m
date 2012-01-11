@@ -68,10 +68,11 @@
         needsLoop = NO;
 		NSString *part = nil;
      
+        // Note: does not deal with """""""", we assume syntax is correct
         if ([self scanCharactersFromSet:quoteOrSlash
                              intoString:&part])
         {
-            if ([part isEqualToString:@"\""])
+            if ([part hasPrefix:@"\""])
             {
                 // closing quote
                 break; // we're done
@@ -79,7 +80,6 @@
             else
             {
                 // we just copy that
-                // Note: does not deal with """""""", we assume syntax is correct
                 [tmpString appendString:part];
                 
                 needsLoop = YES;
@@ -102,7 +102,6 @@
         self.scanLocation = positionBeforeScanning;
         return NO;
     }
-
     
     if (value)
     {
