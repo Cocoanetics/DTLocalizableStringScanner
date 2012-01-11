@@ -1,3 +1,4 @@
+
 //
 //  DTLocalizableStringAggregator.m
 //  genstrings2
@@ -66,10 +67,22 @@
                          @"FromTable(key, tableName, comment)",
                          @"FromTableInBundle(key, tableName, bundle, comment)",
                          @"WithDefaultValue(key, tableName, bundle, value, comment)", nil];
-    
+	
+	
+	// make a string from all names
+	NSString *allChars = [prefixes componentsJoinedByString:@""];
+	
+	// add the possible suffixes
+	allChars = [allChars stringByAppendingString:@"FromTableInBundleWithDefaultValue"];
+	
+	// make character set from that
+	NSMutableCharacterSet *validMacroChars = [NSMutableCharacterSet characterSetWithCharactersInString:allChars];
+	
     NSMutableDictionary *validMacros = [NSMutableDictionary dictionary];
-    for (NSString *prefix in prefixes) {
-        for (NSString *suffix in suffixes) {
+    for (NSString *prefix in prefixes) 
+	{
+        for (NSString *suffix in suffixes) 
+		{
             NSString *macroTemplate = [prefix stringByAppendingString:suffix];
             
             NSString *macroName = nil;
@@ -77,11 +90,15 @@
             
             NSScanner *scanner = [NSScanner scannerWithString:macroTemplate];
             
-            if ([scanner scanMacro:&macroName andParameters:&parameters parametersAreBare:YES]) {
-                if (macroName && parameters) {
+            if ([scanner scanMacro:&macroName validMacroCharacters:validMacroChars andParameters:&parameters parametersAreBare:YES]) 
+			{
+                if (macroName && parameters) 
+				{
                     [validMacros setObject:parameters forKey:macroName];
                 }
-            } else {
+            } 
+			else 
+			{
                 NSLog(@"Invalid Macro: %@", macroTemplate);
             }
         }

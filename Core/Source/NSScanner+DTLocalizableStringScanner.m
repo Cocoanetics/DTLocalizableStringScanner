@@ -101,12 +101,17 @@
     return YES;
 }
 
-- (BOOL)scanMacro:(NSString **)macro andParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare
+- (BOOL)scanMacro:(NSString **)macro  validMacroCharacters:(NSCharacterSet *)macroCharacterSet andParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare
 {
     NSString *macroName = nil;
     NSUInteger previousScanLocation = [self scanLocation];
+	
+	if (!macroCharacterSet)
+	{
+		macroCharacterSet = [NSCharacterSet alphanumericCharacterSet];
+	}
     
-    if (![self scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&macroName])
+    if (![self scanCharactersFromSet:macroCharacterSet intoString:&macroName])
     {
         self.scanLocation = previousScanLocation;
         return NO;

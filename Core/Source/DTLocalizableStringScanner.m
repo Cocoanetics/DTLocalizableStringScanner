@@ -61,7 +61,7 @@
         // skip to next word
         [scanner scanUpToCharactersFromSet:validMacroCharacters intoString:NULL];
         
-        if ([scanner scanMacro:&macro andParameters:&parameters parametersAreBare:NO])
+        if ([scanner scanMacro:&macro validMacroCharacters:validMacroCharacters andParameters:&parameters parametersAreBare:NO])
         {
             NSArray *paramNames = [_validMacros objectForKey:macro];
             
