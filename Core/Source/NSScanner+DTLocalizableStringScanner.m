@@ -54,28 +54,35 @@
 			return NO;
 		}
     }
-    
+
+	// preserve the setting, the quote itself does not skip
+    NSCharacterSet *charactersToBeSkipped = self.charactersToBeSkipped;
+	self.charactersToBeSkipped = nil;
+	
     NSMutableString *tmpString = [NSMutableString string];
     
     BOOL needsLoop = NO;
-    NSString *part = nil;
     
     do
     {
         needsLoop = NO;
-        
-        if ([self scanUpToCharactersFromSet:quoteOrSlash intoString:&part])
-        {
+		NSString *part = nil;
+     
+		if ([self scanString:@"\\\"" intoString:NULL])
+		{
+			// escaped quote
+			[tmpString appendString:@"\\\""];
+			needsLoop = YES;
+		}
+		else if ([self scanUpToCharactersFromSet:quoteOrSlash intoString:&part])
+		{
             [tmpString appendString:part];
-            
-            if ([self scanString:@"\\\"" intoString:NULL])
-            {
-                // escaped quote
-                [tmpString appendString:@"\""];
-                needsLoop = YES;
-            }
-        }
+			needsLoop = YES;
+		}
     } while (needsLoop);
+	
+	// restore previous setting
+	self.charactersToBeSkipped = charactersToBeSkipped;
     
     if (![self scanString:@"\"" intoString:NULL])
     {

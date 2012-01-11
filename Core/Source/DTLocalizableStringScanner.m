@@ -82,10 +82,18 @@
                         [entry setValue:paramValue forKey:paramName];
                     }
                     
-                    if (_entryFoundCallback)
-                    {
-                        _entryFoundCallback(entry);
-                    }
+					// key is mandatory
+					if ([entry.key length])
+					{
+						if (_entryFoundCallback)
+						{
+							_entryFoundCallback(entry);
+						}
+					}
+					else
+					{
+						NSLog(@"Illegal Key on %@", entry);
+					}
                 }
                 else
                 {

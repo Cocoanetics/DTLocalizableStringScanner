@@ -1,3 +1,15 @@
+// some regular test cases
+
+NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has been changed on disk.", @"External File Change"), [path lastPathComponent]];
+
+NSAlert *alert = [NSAlert alertWithMessageText:message
+								 defaultButton:NSLocalizedString(@"Do Not Reload", @"External File Change")
+							   alternateButton:NSLocalizedString(@"Reload from Disk", @"External File Change")
+								   otherButton:nil
+					 informativeTextWithFormat:NSLocalizedString(@"Do you want to reload the file?\n\n(Reloading overwrites any changes you made since the last save.)", @"External File Change")];
+
+
+
 // these should be ignored!
 
 NSString *functionCall = nil;
@@ -14,7 +26,9 @@ else
 }
 
 
-// some regular test cases
+
+
+[document _queueAlert:alert withFile:fileObject];
 
 NSLocalizedString(@"Accounts", nil);
 NSLocalizedStringWithDefaultValue(@"A Key %@ %@", nil, nil, @"Default Value %@ %@", nil);
