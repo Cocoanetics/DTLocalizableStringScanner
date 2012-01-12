@@ -16,7 +16,7 @@ int main (int argc, const char *argv[])
 {
     @autoreleasepool 
     {
-        // default output folder = current working dir
+		// default output folder = current working dir
         NSURL *outputFolderURL = nil;
         
         // default output encoding
@@ -136,9 +136,7 @@ int main (int argc, const char *argv[])
         
         // set the parameters
         aggregator.wantsPositionalParameters = wantsPositionalParameters;
-        aggregator.outputFolderURL = outputFolderURL;
         aggregator.customMacroPrefix = customMacroPrefix;
-        aggregator.outputStringEncoding = outputStringEncoding;
         
         if ([tablesToSkip count])
         {
@@ -148,6 +146,21 @@ int main (int argc, const char *argv[])
         
         // go, go, go!
         [aggregator processFiles];
+		
+		// set output dir to current working dir if not set
+		if (!outputFolderURL)
+		{
+			NSString *cwd = [[NSFileManager defaultManager] currentDirectoryPath];
+			outputFolderURL = [NSURL fileURLWithPath:cwd];
+		}
+		
+		// output the tables
+		NSError *error = nil;
+		if (![aggregator writeStringTablesToFolderAtURL:outputFolderURL encoding:outputStringEncoding error:&error])
+		{
+			printf("%s\n", [[error localizedDescription] UTF8String]);
+			exit(1); // exit due to error
+		}
     }
     
     return 0;

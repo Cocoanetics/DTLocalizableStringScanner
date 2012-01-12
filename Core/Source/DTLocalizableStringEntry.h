@@ -14,6 +14,10 @@
 @property (nonatomic, copy) NSString *value;
 @property (nonatomic, copy) NSString *tableName;
 @property (nonatomic, copy) NSString *bundle;
-@property (nonatomic, copy) NSString *comment;
+
+- (void)setComment:(NSString *)comment; // for KVC
+
+- (void)addComment:(NSString *)comment;
+- (NSArray *)sortedComments;
 
 @end

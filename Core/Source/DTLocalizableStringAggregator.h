@@ -14,10 +14,10 @@
 
 - (void)processFiles;
 
+- (BOOL)writeStringTablesToFolderAtURL:(NSURL *)URL encoding:(NSStringEncoding)encoding error:(NSError **)error;
+
 @property (nonatomic, assign) BOOL wantsPositionalParameters;
 @property (nonatomic, retain) NSSet *tablesToSkip;
-@property (nonatomic, retain) NSURL *outputFolderURL;
 @property (nonatomic, retain) NSString *customMacroPrefix;
-@property (nonatomic, assign) NSStringEncoding outputStringEncoding;
 
 @end

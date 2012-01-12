@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSScanner (DTStringFileParser)
+@interface NSScanner (DTLocalizableStringScanner)
 
 - (BOOL)scanQuotedAndEscapedString:(NSString **)value;
 

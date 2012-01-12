@@ -9,18 +9,20 @@
 #import "DTLocalizableStringEntry.h"
 
 @implementation DTLocalizableStringEntry
+{
+	NSMutableSet *_comments;
+}
 
 @synthesize key=_key;
 @synthesize value=_value;
 @synthesize tableName=_tableName;
 @synthesize bundle=_bundle;
-@synthesize comment=_comment;
 
 - (id)init {
     self = [super init];
-    if (self) {
-        _tableName = @"Localizable";
-        _comment = @"No comment provided by engineer";
+    if (self) 
+	{
+		_tableName = @"Localizable";
     }
     return self;
 }
@@ -34,12 +36,7 @@
 		[tmpString appendFormat:@" value='%@'", _value];
 	}
 	
-	if ([_comment length] && ![_comment isEqualToString:@"No comment provided by engineer"])
-	{
-		[tmpString appendFormat:@" comment='%@'", _comment];
-	}
-
-	if (![_tableName isEqualToString:@"Localizable"])
+	if ([_tableName length] && ![_tableName isEqualToString:@"Localizable"])
 	{
 		[tmpString appendFormat:@" table='%@'", _tableName];
 	}
@@ -47,6 +44,23 @@
 	[tmpString appendString:@">"];
 	
 	return tmpString;
+}
+
+#pragma NSCopying
+- (id)copyWithZone:(NSZone *)zone
+{
+	DTLocalizableStringEntry *newEntry = [[DTLocalizableStringEntry allocWithZone:zone] init];
+	newEntry.key = _key;
+	newEntry.value = _value;
+	newEntry.tableName = _tableName;
+	newEntry.bundle = _bundle;
+	
+	for (NSString *oneComment in _comments)
+	{
+		[newEntry addComment:oneComment];
+	}
+	
+	return newEntry;
 }
 
 #pragma mark Properties
@@ -59,13 +73,40 @@
 	}
 }
 
-- (void)setComment:(NSString *)comment
+- (void)setComment:(NSString *)comment; // for KVC
 {
-	// keep default comment if the parameter is nil or @"";
-	if ([comment length])
+	_comments = nil;
+	[self addComment:comment];
+}
+
+- (void)addComment:(NSString *)comment
+{
+	if (![comment length])
 	{
-		_comment = [comment copy];
+		return;
 	}
+
+	if (!_comments)
+	{
+		_comments = [[NSMutableSet alloc] init];
+	}
+	
+	if (![_comments containsObject:comment])
+	{
+		[_comments addObject:[comment copy]];
+	}
+}
+
+- (NSArray *)sortedComments
+{
+	if (!_comments)
+	{
+		return nil;
+	}
+	
+	NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES];
+	
+	return [_comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
 }
 
 @end

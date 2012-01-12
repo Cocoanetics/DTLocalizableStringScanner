@@ -9,6 +9,7 @@
 
 #import "DTLocalizableStringAggregator.h"
 #import "DTLocalizableStringScanner.h"
+#import "DTLocalizableStringTable.h"
 #import "DTLocalizableStringEntry.h"
 #import "NSString+DTLocalizableStringScanner.h"
 #import "NSScanner+DTLocalizableStringScanner.h"
@@ -16,7 +17,6 @@
 @interface DTLocalizableStringAggregator ()
 
 - (void)addEntryToTables:(DTLocalizableStringEntry *)entry;
-- (void)writeStringTables;
 
 @end
 
@@ -33,9 +33,7 @@
 
 @synthesize wantsPositionalParameters = _wantsPositionalParameters;
 @synthesize tablesToSkip = _tablesToSkip;
-@synthesize outputFolderURL = _outputFolderURL;
 @synthesize customMacroPrefix = _customMacroPrefix;
-@synthesize outputStringEncoding = _outputStringEncoding;
 
 - (id)initWithFileURLs:(NSArray *)fileURLs
 {
@@ -48,9 +46,6 @@
         
         _processingQueue = [[NSOperationQueue alloc] init];
         [_processingQueue setMaxConcurrentOperationCount:10];
-        
-        // default encoding
-        _outputStringEncoding = NSUTF16StringEncoding;
     }
     return self;
 }
@@ -109,13 +104,6 @@
 
 - (void)processFiles
 {
-    // set output dir to current working dir if not set
-    if (!_outputFolderURL)
-    {
-        NSString *cwd = [[NSFileManager defaultManager] currentDirectoryPath];
-        _outputFolderURL = [NSURL fileURLWithPath:cwd];
-    }
-    
     NSDictionary *validMacros = [self validMacros];
     
     // create one block for each file
@@ -133,8 +121,6 @@
     }
     
     [_processingQueue waitUntilAllOperationsAreFinished];
-    
-    [self writeStringTables];
 }
 
 - (void)addEntryToTables:(DTLocalizableStringEntry *)entry
@@ -146,102 +132,70 @@
     }
     
     NSString *tableName = [entry tableName];
-    
+	
     BOOL shouldSkip = [_tablesToSkip containsObject:tableName];
     
     if (!shouldSkip)
     {
         // find the string table for this token, or create it
-        NSMutableArray *table = [_stringTables objectForKey:tableName];
+        DTLocalizableStringTable *table = [_stringTables objectForKey:tableName];
         if (!table)
         {
             // need to create it
-            table = [NSMutableArray array];
+			table = [[DTLocalizableStringTable alloc] initWithName:tableName];
             [_stringTables setObject:table forKey:tableName];
         }
         
-        // add token to this table
-        [table addObject:entry];
+		if (entry.value)
+		{
+			// ...WithDefaultValue
+			if (_wantsPositionalParameters)
+			{
+				entry.value = [entry.value stringByNumberingFormatPlaceholders];
+			}
+			
+			[table addEntry:entry];
+		}
+		else
+		{
+			// all other options use the key and variations thereof
+			
+			// support for predicate token splitting
+			NSArray *keyVariants = [entry.key variantsFromPredicateVariations];
+			
+			// add all variants
+			for (NSString *oneVariant in keyVariants)
+			{
+				DTLocalizableStringEntry *splitEntry = [entry copy];
+				
+				NSString *value = oneVariant;
+				if (_wantsPositionalParameters)
+				{
+					value = [oneVariant stringByNumberingFormatPlaceholders];
+				}
+
+				// adjust key and value of the new entry
+				splitEntry.key = oneVariant;
+				splitEntry.value = value;
+
+				// add token to this table
+				[table addEntry:splitEntry];
+			}
+		}
     }
 }
 
-- (void)writeStringTables
+- (BOOL)writeStringTablesToFolderAtURL:(NSURL *)URL encoding:(NSStringEncoding)encoding error:(NSError **)error
 {
-    NSArray *tableNames = [_stringTables allKeys];
-    
-    for (NSString *oneTableName in tableNames)
-    {
-        NSString *fileName = [oneTableName stringByAppendingPathExtension:@"strings"];
-        NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:_outputFolderURL];
-		
-		if (!tableURL)
+	for (DTLocalizableStringTable *oneTable in [_stringTables allValues])
+	{
+		if (![oneTable writeToFolderAtURL:URL encoding:encoding error:error])
 		{
-			// this must be junk
-			continue;
+			return NO;
 		}
-        
-        NSArray *entries = [_stringTables objectForKey:oneTableName];
-		
-		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES];
-		NSArray *sortedEntries = [entries sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
-        
-        NSMutableString *tmpString = [NSMutableString string];
-        
-        for (DTLocalizableStringEntry *entry in sortedEntries)
-        {
-            NSString *comment = [entry comment];
-            NSString *key = [entry key];
-			NSString *value = [entry value];
-			
-			// output comment
-            [tmpString appendFormat:@"/* %@ */\n", comment];
-			
-			if (value)
-			{
-				// ...WithDefaultValue
-				
-				NSString *outputValue = value;
-				if (_wantsPositionalParameters)
-				{
-					outputValue = [value stringByNumberingFormatPlaceholders];
-				}
-				
-				[tmpString appendFormat:@"\"%@\" = \"%@\";\n", key, outputValue];
-			}
-			else
-			{
-				// all other options use the key and variations thereof
-				
-				// support for predicate token splitting
-				NSArray *keyVariants = [key variantsFromPredicateVariations];
-				
-				// output all variants
-				for (NSString *oneVariant in keyVariants)
-				{
-					NSString *value = oneVariant;
-					if (_wantsPositionalParameters)
-					{
-						value = [oneVariant stringByNumberingFormatPlaceholders];
-					}
-					
-					[tmpString appendFormat:@"\"%@\" = \"%@\";\n", oneVariant, value];
-				}
-			}
-            
-            
-            [tmpString appendString:@"\n"];
-        }
-        
-        NSError *error = nil;
-        if (![tmpString writeToURL:tableURL
-                        atomically:YES
-                          encoding:_outputStringEncoding
-                             error:&error])
-        {
-            printf("Unable to write string table %s, %s\n", [oneTableName UTF8String], [[error localizedDescription] UTF8String]);
-            exit(1);
-        }
-    }
+	}
+	
+	return YES;
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import "NSScanner+DTLocalizableStringScanner.h"
 
-@implementation NSScanner (DTStringFileParser)
+@implementation NSScanner (DTLocalizableStringScanner)
 
 - (BOOL)scanQuotedAndEscapedString:(NSString **)value
 {
