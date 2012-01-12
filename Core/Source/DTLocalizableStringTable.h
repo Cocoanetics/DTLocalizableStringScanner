@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class DTLocalizableStringEntry;
+#import "DTLocalizableStringEntry.h"
 
 @interface DTLocalizableStringTable : NSObject
 
@@ -18,6 +17,6 @@
 
 - (void)addEntry:(DTLocalizableStringEntry *)entry;
 
-- (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error;
+- (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
 
 @end

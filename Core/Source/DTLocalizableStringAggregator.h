@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DTLocalizableStringEntry.h"
 
 @interface DTLocalizableStringAggregator : NSObject
 
@@ -19,5 +20,7 @@
 @property (nonatomic, assign) BOOL wantsPositionalParameters;
 @property (nonatomic, retain) NSSet *tablesToSkip;
 @property (nonatomic, retain) NSString *customMacroPrefix;
+
+@property (nonatomic, copy) DTLocalizableStringEntryWriteCallback entryWriteCallback;
 
 @end

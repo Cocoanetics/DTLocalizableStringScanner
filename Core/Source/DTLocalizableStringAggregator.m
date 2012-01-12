@@ -27,6 +27,8 @@
     
     NSOperationQueue *_processingQueue;
     dispatch_queue_t _tableQueue;
+	
+	DTLocalizableStringEntryWriteCallback _entryWriteCallback;
 }
 
 #pragma mark properties
@@ -116,7 +118,7 @@
                 [self addEntryToTables:entry];
             });
         }];
-        
+		
         [_processingQueue addOperation:scanner];
     }
     
@@ -189,7 +191,10 @@
 {
 	for (DTLocalizableStringTable *oneTable in [_stringTables allValues])
 	{
-		if (![oneTable writeToFolderAtURL:URL encoding:encoding error:error])
+		if (![oneTable writeToFolderAtURL:URL 
+								 encoding:encoding 
+									error:error 
+					   entryWriteCallback:_entryWriteCallback])
 		{
 			return NO;
 		}
@@ -197,5 +202,9 @@
 	
 	return YES;
 }
+
+#pragma mark Properties
+
+@synthesize entryWriteCallback=_entryWriteCallback;
 
 @end

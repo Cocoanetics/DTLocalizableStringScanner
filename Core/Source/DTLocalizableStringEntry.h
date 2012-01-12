@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class DTLocalizableStringEntry;
+
+typedef void(^DTLocalizableStringEntryWriteCallback)(DTLocalizableStringEntry *);
+
 @interface DTLocalizableStringEntry : NSObject
 
 @property (nonatomic, copy) NSString *key;

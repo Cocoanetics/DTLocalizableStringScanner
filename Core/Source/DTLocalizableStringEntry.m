@@ -11,6 +11,8 @@
 @implementation DTLocalizableStringEntry
 {
 	NSMutableSet *_comments;
+	
+	NSArray *_sortedCommentsCache;
 }
 
 @synthesize key=_key;
@@ -94,6 +96,9 @@
 	if (![_comments containsObject:comment])
 	{
 		[_comments addObject:[comment copy]];
+		
+		// invalidates sorted cache
+		_sortedCommentsCache = nil;
 	}
 }
 
@@ -104,9 +109,15 @@
 		return nil;
 	}
 	
-	NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES];
+	if (_sortedCommentsCache)
+	{
+		return _sortedCommentsCache;
+	}
 	
-	return [_comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+	NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES];
+	_sortedCommentsCache = [_comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+	
+	return _sortedCommentsCache;
 }
 
 @end

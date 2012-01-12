@@ -22,9 +22,9 @@
     NSString *_string;
     NSURL *_url;
     NSDictionary *_validMacros;
+	
+	DTLocalizableStringEntryFoundCallback _entryFoundCallback;
 }
-
-@synthesize entryFoundCallback=_entryFoundCallback;
 
 - (id)initWithContentsOfURL:(NSURL *)url validMacros:(NSDictionary *)validMacros
 {
@@ -125,5 +125,7 @@
 	
 	return tmpSet;
 }
+
+@synthesize entryFoundCallback=_entryFoundCallback;
 
 @end

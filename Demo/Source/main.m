@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "DTLocalizableStringScanner.h"
 #import "DTLocalizableStringAggregator.h"
+#import "DTLocalizableStringEntry.h"
 
 void showUsage(void);
 
@@ -23,6 +24,7 @@ int main (int argc, const char *argv[])
         NSStringEncoding outputStringEncoding = NSUTF16StringEncoding;
         
         BOOL wantsPositionalParameters = YES;
+		BOOL wantsMultipleCommentWarning = YES;
         NSMutableSet *tablesToSkip = [NSMutableSet set];
         NSString *customMacroPrefix = nil;
         
@@ -97,6 +99,11 @@ int main (int argc, const char *argv[])
                 
                 customMacroPrefix = [NSString stringWithUTF8String:argv[i]];
             }
+			else if (!strcmp("-q", argv[i]))
+			{
+				// do not warn if multiple different comments are attached to a token
+				wantsMultipleCommentWarning = NO;
+			}
             else if (!strcmp("-skipTable", argv[i]))
             {
                 // tables to be ignored
@@ -144,6 +151,20 @@ int main (int argc, const char *argv[])
             aggregator.tablesToSkip = tablesToSkip;
         }
         
+		if (wantsMultipleCommentWarning)
+		{
+			aggregator.entryWriteCallback = ^(DTLocalizableStringEntry *entry) 
+			{
+				NSArray *comments = [entry sortedComments];
+				
+				if ([comments count]>1)
+				{
+					NSString *tmpString = [comments componentsJoinedByString:@"\" & \""];
+					printf("Warning: Key \"%s\" used with multiple comments \"%s\"\n", [entry.key UTF8String], [tmpString UTF8String]);
+				}	
+			};
+		}
+		
         // go, go, go!
         [aggregator processFiles];
 		
@@ -178,7 +199,7 @@ void showUsage(void)
     printf("    -noPositionalParameters  turns off positional parameter support.\n");
     //   printf("    -u                       allow unicode characters.\n");
     //   printf("    -macRoman                read files as MacRoman not UTF-8.\n");
-    //   printf("    -q                       turns off multiple key/value pairs warning.\n");
+    printf("    -q                       turns off multiple key/value pairs warning.\n");
     printf("    -bigEndian               output generated with big endian byte order.\n");
     printf("    -littleEndian            output generated with little endian byte order.\n");
     printf("    -o dir                   place output files in 'dir'.\n\n");

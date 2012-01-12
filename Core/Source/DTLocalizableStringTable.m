@@ -16,6 +16,8 @@
 	NSString *_name;
 	NSMutableArray *_entries;
 	NSMutableDictionary *_entryIndexByKey;
+	
+	DTLocalizableStringEntryWriteCallback _entryWriteCallback;
 }
 
 - (id)initWithName:(NSString *)name
@@ -71,7 +73,7 @@
 	[_entryIndexByKey setObject:entry forKey:entry.key];
 }
 
-- (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error
+- (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error  entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
 {
 	NSString *fileName = [_name stringByAppendingPathExtension:@"strings"];
 	NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:url];
@@ -89,12 +91,9 @@
 	
 	for (DTLocalizableStringEntry *entry in sortedEntries)
 	{
-		NSArray *comments = [entry sortedComments];
-		
-		if ([comments count]>1)
+		if (entryWriteCallback)
 		{
-			NSString *tmpString = [comments componentsJoinedByString:@"\" & \""];
-			printf("Warning: Key \"%s\" used with multiple comments \"%s\"\n", [entry.key UTF8String], [tmpString UTF8String]);
+			entryWriteCallback(entry);
 		}
 		
 		// multi-line comments are indented
