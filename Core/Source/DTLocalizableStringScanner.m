@@ -58,55 +58,58 @@
     
     while (![scanner isAtEnd]) 
     {
-        NSString *macro = nil;
-        NSArray *parameters = nil;
-        
-        // skip to next macro
-        [scanner scanUpToCharactersFromSet:validMacroCharacters intoString:NULL];
-		
-		// this should be a macro
-		if ([scanner scanCharactersFromSet:validMacroCharacters intoString:&macro])
+		@autoreleasepool 
 		{
-			if ([_macroNameCache containsObject:macro])
+			NSString *macro = nil;
+			NSArray *parameters = nil;
+			
+			// skip to next macro
+			[scanner scanUpToCharactersFromSet:validMacroCharacters intoString:NULL];
+			
+			// this should be a macro
+			if ([scanner scanCharactersFromSet:validMacroCharacters intoString:&macro])
 			{
-				if ([scanner scanMacroParameters:&parameters parametersAreBare:NO])
+				if ([_macroNameCache containsObject:macro])
 				{
-					NSArray *paramNames = [_validMacros objectForKey:macro];
-					
-					if (paramNames)
+					if ([scanner scanMacroParameters:&parameters parametersAreBare:NO])
 					{
-						// ignore macros that are not registered
+						NSArray *paramNames = [_validMacros objectForKey:macro];
 						
-						if ([paramNames count] == [parameters count])
+						if (paramNames)
 						{
-							// scanned parameters must match up with registered names
-							DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
+							// ignore macros that are not registered
 							
-							for (NSUInteger i=0; i<[paramNames count]; i++)
+							if ([paramNames count] == [parameters count])
 							{
-								NSString *paramName = [paramNames objectAtIndex:i];
-								NSString *paramValue = [parameters objectAtIndex:i];
+								// scanned parameters must match up with registered names
+								DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
 								
-								[entry setValue:paramValue forKey:paramName];
-							}
-							
-							// key is mandatory
-							if ([entry.key length])
-							{
-								if (_entryFoundCallback)
+								for (NSUInteger i=0; i<[paramNames count]; i++)
 								{
-									_entryFoundCallback(entry);
+									NSString *paramName = [paramNames objectAtIndex:i];
+									NSString *paramValue = [parameters objectAtIndex:i];
+									
+									[entry setValue:paramValue forKey:paramName];
+								}
+								
+								// key is mandatory
+								if ([entry.key length])
+								{
+									if (_entryFoundCallback)
+									{
+										_entryFoundCallback(entry);
+									}
+								}
+								else
+								{
+									NSLog(@"Illegal Key on %@", entry);
 								}
 							}
 							else
 							{
-								NSLog(@"Illegal Key on %@", entry);
+								//NSLog(@"different parameter count than registered %@ %@", paramNames, parameters);
+								// macro parameter count is different scanned versus registered, ignoring it
 							}
-						}
-						else
-						{
-							NSLog(@"different parameter count than registered %@ %@", paramNames, parameters);
-							// macro parameter count is different scanned versus registered, ignoring it
 						}
 					}
 				}
@@ -121,7 +124,7 @@
 {
 	// make a string from all names
 	NSString *allChars = [[_validMacros allKeys] componentsJoinedByString:@""];
-
+	
 	// make character set from that
 	NSMutableCharacterSet *tmpSet = [NSMutableCharacterSet characterSetWithCharactersInString:allChars];
 	
