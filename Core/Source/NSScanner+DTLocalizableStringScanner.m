@@ -76,6 +76,8 @@
 		
 		if ([self scanCharactersFromSet:quoteOrSlash intoString:&part])
 		{
+			// there might be multiple \"\""
+			
 			while ([part hasSuffix:@"\""]) 
 			{
 				if ([part hasPrefix:@"\""])
@@ -84,10 +86,11 @@
 					part = nil;
 					break;
 				}
-				else if ([part hasPrefix:@"\\\""])
+				else if ([part hasPrefix:@"\\\""] || [part hasPrefix:@"\\\\"])
 				{
-					[tmpString appendString:@"\\\""];
+					[tmpString appendString:[part substringToIndex:2]];
 					part = [part substringFromIndex:2];
+					needsLoop = YES;
 				}
 			}
 			
@@ -95,9 +98,9 @@
 			if (part)
 			{
 				[tmpString appendString:part];
+				needsLoop = YES;
 			}
 		}
-
     } while (needsLoop);
 	
 	// restore previous setting
@@ -106,7 +109,7 @@
     // CFSTR expects closing bracket
     if (seenCFSTR && ![self scanString:@")" intoString:NULL])
     {
-        // missing (
+        // missing )
         self.scanLocation = positionBeforeScanning;
         return NO;
     }

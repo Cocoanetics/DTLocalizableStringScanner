@@ -84,8 +84,7 @@
 		return NO;
 	}
 	
-	NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"key" ascending:YES];
-	NSArray *sortedEntries = [_entries sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+	NSArray *sortedEntries = [_entries sortedArrayUsingSelector:@selector(compare:)];
 	
 	NSMutableString *tmpString = [NSMutableString string];
 	

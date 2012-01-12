@@ -1,9 +1,14 @@
 
+NSLocalizedString(@"here are three \\\\\\\"\"\"\nslashes&quotes: \\\\\\\"\"\"", nil)
+
+NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has been changed on disk.", @"External File Change"), [path lastPathComponent]];
+
+
 NSLocalizedString(@"%@ had been successfully added to the Address Book.\nWould you like to edit the card now?", nil);
 
 // some regular test cases
 
-NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has been changed on disk.", @"External File Change"), [path lastPathComponent]];
+
 
 NSAlert *alert = [NSAlert alertWithMessageText:message
 								 defaultButton:NSLocalizedString(@"Do Not Reload", @"External File Change")
