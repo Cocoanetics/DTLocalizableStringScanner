@@ -24,4 +24,7 @@ typedef void(^DTLocalizableStringEntryWriteCallback)(DTLocalizableStringEntry *)
 - (void)addComment:(NSString *)comment;
 - (NSArray *)sortedComments;
 
+// used for output sorting
+- (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry;
+
 @end

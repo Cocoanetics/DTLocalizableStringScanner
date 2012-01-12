@@ -20,7 +20,8 @@
 @synthesize tableName=_tableName;
 @synthesize bundle=_bundle;
 
-- (id)init {
+- (id)init 
+{
     self = [super init];
     if (self) 
 	{
@@ -48,7 +49,7 @@
 	return tmpString;
 }
 
-#pragma NSCopying
+#pragma mark NSCopying
 - (id)copyWithZone:(NSZone *)zone
 {
 	DTLocalizableStringEntry *newEntry = [[DTLocalizableStringEntry allocWithZone:zone] init];
@@ -63,6 +64,11 @@
 	}
 	
 	return newEntry;
+}
+
+- (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry
+{
+    return [_key localizedStandardCompare:otherEntry.key];
 }
 
 #pragma mark Properties

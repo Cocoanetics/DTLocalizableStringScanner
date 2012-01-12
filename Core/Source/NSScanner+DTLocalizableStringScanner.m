@@ -97,39 +97,11 @@
 				[tmpString appendString:part];
 			}
 		}
-		
-//		
-//		if ([self scanCharactersFromSet:quoteOrSlash intoString:&part])
-//		{
-//			if ([part hasPrefix:@"\""])
-//			{
-//				break; // we're done
-//			}
-//			
-//		}
-//		
-//		if ([self scanString:@"\"" intoString:NULL])
-//		{
-//			break;
-//		}
-//		else if ([self scanString:@"\\\"" intoString:NULL])
-//		{
-//			// escaped quote
-//			[tmpString appendString:@"\\\""];
-//			needsLoop = YES;
-//		}
-//		else 
+
     } while (needsLoop);
 	
 	// restore previous setting
 	self.charactersToBeSkipped = charactersToBeSkipped;
-    
-//    if (![self scanString:@"\"" intoString:NULL])
-//    {
-//        // missing closing quote
-//        self.scanLocation = positionBeforeScanning;
-//        return NO;
-//    }
     
     // CFSTR expects closing bracket
     if (seenCFSTR && ![self scanString:@")" intoString:NULL])
@@ -138,7 +110,6 @@
         self.scanLocation = positionBeforeScanning;
         return NO;
     }
-	
     
     if (value)
     {
@@ -234,41 +205,50 @@
 	{
 		macroCharacterSet = [NSCharacterSet alphanumericCharacterSet];
 	}
-	
-	if (![self scanCharactersFromSet:macroCharacterSet intoString:&macroName])
-	{
-		self.scanLocation = previousScanLocation;
-		return NO;
-	}
-	
-	if (![self scanString:@"(" intoString:NULL])
-	{
-		// opening bracket missing
-		self.scanLocation = previousScanLocation;
-		return NO;
-	}
-	
-	BOOL closingBracketEncountered = NO;
-	
-	NSMutableArray *tmpArray = [NSMutableArray array];
-	
-	while (!closingBracketEncountered && ![self isAtEnd])
-	{
-		NSString *parameter = nil;
-		
-		if (bare)
-		{
-			if ([self scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&parameter])
-			{
-				[tmpArray addObject:parameter];
-			}
-		}
-		else
-		{
-			if ([self scanQuotedAndEscapedString:&parameter])
-			{
-				[tmpArray addObject:parameter];
-			}
+    
+    if (![self scanCharactersFromSet:macroCharacterSet intoString:&macroName])
+    {
+        self.scanLocation = previousScanLocation;
+        return NO;
+    }
+    
+    NSSet *reservedNames = [NSSet setWithObjects:@"if", @"do", @"while", @"switch", nil];
+    
+    if ([reservedNames containsObject:macroName])
+    {
+        // this is not a macro, but a reserved name
+        self.scanLocation = previousScanLocation;
+        return NO;
+    }
+    
+    if (![self scanString:@"(" intoString:NULL])
+    {
+        // opening bracket missing
+        self.scanLocation = previousScanLocation;
+        return NO;
+    }
+
+    BOOL closingBracketEncountered = NO;
+    
+    NSMutableArray *tmpArray = [NSMutableArray array];
+    
+    while (!closingBracketEncountered && ![self isAtEnd])
+    {
+        NSString *parameter = nil;
+        
+        if (bare)
+        {
+            if ([self scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&parameter])
+            {
+                [tmpArray addObject:parameter];
+            }
+        }
+        else
+        {
+            if ([self scanQuotedAndEscapedString:&parameter])
+            {
+                [tmpArray addObject:parameter];
+            }
 			else
 			{
 				// try to skip this parameter, might be a bundle pointer, which is not a string literal

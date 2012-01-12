@@ -15,6 +15,9 @@ Known Issues
 
 Documentation on the inner workings of `genstrings` is non-existent, so there is lots of guessing involved.
 
-- No support for expanding [one, two] style tokens for NSPredicateEditor
+- so far no deduplication is done, genstrings only writes a token with exactly same comment and key once. 
+- if a token differs but has same key genstrings emits a warning, we ignore that
+- genstrings seems to internally unescape character sequences, we just copy them as they are. This causes the sort order to differ with non-alpha characters.
+- no support for unicode sequences yet (-u)
 
 If you find an issue then you are welcome to fix it and contribute your fix via a GitHub pull request.
