@@ -57,7 +57,8 @@
 	dispatch_release(_tableQueue);
 }
 
-- (NSDictionary *)validMacros {
+- (NSDictionary *)validMacros 
+{
     NSArray *prefixes = [NSArray arrayWithObjects:@"NSLocalizedString", @"CFCopyLocalizedString", _customMacroPrefix, nil];
     NSArray *suffixes = [NSArray arrayWithObjects:
                          @"(key, comment)",

@@ -1,3 +1,6 @@
+
+NSLocalizedString(@"%@ had been successfully added to the Address Book.\nWould you like to edit the card now?", nil);
+
 // some regular test cases
 
 NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has been changed on disk.", @"External File Change"), [path lastPathComponent]];

@@ -22,6 +22,7 @@
     NSString *_string;
     NSURL *_url;
     NSDictionary *_validMacros;
+	NSSet *_macroNameCache;
 	
 	DTLocalizableStringEntryFoundCallback _entryFoundCallback;
 }
@@ -41,6 +42,9 @@
         
         _url = [url copy]; // to have a reference later
         _validMacros = validMacros;
+		
+		// fast lookup of macros
+		_macroNameCache = [[NSSet alloc] initWithArray:[_validMacros allKeys]];
     }
     
     return self;
@@ -48,7 +52,6 @@
 
 - (void)main
 {
-    
     NSScanner *scanner = [NSScanner scannerWithString:_string];
     
     NSCharacterSet *validMacroCharacters = [self validMacroCharacters];
@@ -58,54 +61,57 @@
         NSString *macro = nil;
         NSArray *parameters = nil;
         
-        // skip to next word
+        // skip to next macro
         [scanner scanUpToCharactersFromSet:validMacroCharacters intoString:NULL];
-        
-        if ([scanner scanMacro:&macro validMacroCharacters:validMacroCharacters andParameters:&parameters parametersAreBare:NO])
-        {
-            NSArray *paramNames = [_validMacros objectForKey:macro];
-            
-            if (paramNames)
-            {
-                // ignore macros that are not registered
-                
-                if ([paramNames count] == [parameters count])
-                {
-                    // scanned parameters must match up with registered names
-                    DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
-                    
-                    for (NSUInteger i=0; i<[paramNames count]; i++)
-                    {
-                        NSString *paramName = [paramNames objectAtIndex:i];
-                        NSString *paramValue = [parameters objectAtIndex:i];
-                        
-                        [entry setValue:paramValue forKey:paramName];
-                    }
-                    
-					// key is mandatory
-					if ([entry.key length])
+		
+		// this should be a macro
+		if ([scanner scanCharactersFromSet:validMacroCharacters intoString:&macro])
+		{
+			if ([_macroNameCache containsObject:macro])
+			{
+				if ([scanner scanMacroParameters:&parameters parametersAreBare:NO])
+				{
+					NSArray *paramNames = [_validMacros objectForKey:macro];
+					
+					if (paramNames)
 					{
-						if (_entryFoundCallback)
+						// ignore macros that are not registered
+						
+						if ([paramNames count] == [parameters count])
 						{
-							_entryFoundCallback(entry);
+							// scanned parameters must match up with registered names
+							DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
+							
+							for (NSUInteger i=0; i<[paramNames count]; i++)
+							{
+								NSString *paramName = [paramNames objectAtIndex:i];
+								NSString *paramValue = [parameters objectAtIndex:i];
+								
+								[entry setValue:paramValue forKey:paramName];
+							}
+							
+							// key is mandatory
+							if ([entry.key length])
+							{
+								if (_entryFoundCallback)
+								{
+									_entryFoundCallback(entry);
+								}
+							}
+							else
+							{
+								NSLog(@"Illegal Key on %@", entry);
+							}
+						}
+						else
+						{
+							NSLog(@"different parameter count than registered %@ %@", paramNames, parameters);
+							// macro parameter count is different scanned versus registered, ignoring it
 						}
 					}
-					else
-					{
-						NSLog(@"Illegal Key on %@", entry);
-					}
-                }
-                else
-                {
-                    // macro parameter count is different scanned versus registered, ignoring it
-                }
-            }
-        }
-        else
-        {
-            // is a word, but not a valid macro
-            [scanner scanCharactersFromSet:validMacroCharacters intoString:NULL];
-        }
+				}
+			}
+		}
     }
 }
 

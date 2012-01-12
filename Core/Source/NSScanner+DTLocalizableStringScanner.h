@@ -12,6 +12,8 @@
 
 - (BOOL)scanQuotedAndEscapedString:(NSString **)value;
 
+- (BOOL)scanMacroParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare;
+
 - (BOOL)scanMacro:(NSString **)macro validMacroCharacters:(NSCharacterSet *)macroCharacterSet andParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare;
 
 @end

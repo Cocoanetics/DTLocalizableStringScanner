@@ -54,7 +54,7 @@
 			return NO;
 		}
     }
-
+	
 	// preserve the setting, the quote itself does not skip
     NSCharacterSet *charactersToBeSkipped = self.charactersToBeSkipped;
 	self.charactersToBeSkipped = nil;
@@ -67,29 +67,69 @@
     {
         needsLoop = NO;
 		NSString *part = nil;
-     
-		if ([self scanString:@"\\\"" intoString:NULL])
-		{
-			// escaped quote
-			[tmpString appendString:@"\\\""];
-			needsLoop = YES;
-		}
-		else if ([self scanUpToCharactersFromSet:quoteOrSlash intoString:&part])
+		
+		if ([self scanUpToCharactersFromSet:quoteOrSlash intoString:&part])
 		{
             [tmpString appendString:part];
 			needsLoop = YES;
 		}
+		
+		if ([self scanCharactersFromSet:quoteOrSlash intoString:&part])
+		{
+			while ([part hasSuffix:@"\""]) 
+			{
+				if ([part hasPrefix:@"\""])
+				{
+					needsLoop = NO;
+					part = nil;
+					break;
+				}
+				else if ([part hasPrefix:@"\\\""])
+				{
+					[tmpString appendString:@"\\\""];
+					part = [part substringFromIndex:2];
+				}
+			}
+			
+			// add remaining stuff
+			if (part)
+			{
+				[tmpString appendString:part];
+			}
+		}
+		
+//		
+//		if ([self scanCharactersFromSet:quoteOrSlash intoString:&part])
+//		{
+//			if ([part hasPrefix:@"\""])
+//			{
+//				break; // we're done
+//			}
+//			
+//		}
+//		
+//		if ([self scanString:@"\"" intoString:NULL])
+//		{
+//			break;
+//		}
+//		else if ([self scanString:@"\\\"" intoString:NULL])
+//		{
+//			// escaped quote
+//			[tmpString appendString:@"\\\""];
+//			needsLoop = YES;
+//		}
+//		else 
     } while (needsLoop);
 	
 	// restore previous setting
 	self.charactersToBeSkipped = charactersToBeSkipped;
     
-    if (![self scanString:@"\"" intoString:NULL])
-    {
-        // missing closing quote
-        self.scanLocation = positionBeforeScanning;
-        return NO;
-    }
+//    if (![self scanString:@"\"" intoString:NULL])
+//    {
+//        // missing closing quote
+//        self.scanLocation = positionBeforeScanning;
+//        return NO;
+//    }
     
     // CFSTR expects closing bracket
     if (seenCFSTR && ![self scanString:@")" intoString:NULL])
@@ -98,7 +138,7 @@
         self.scanLocation = positionBeforeScanning;
         return NO;
     }
-
+	
     
     if (value)
     {
@@ -108,95 +148,172 @@
     return YES;
 }
 
-- (BOOL)scanMacro:(NSString **)macro  validMacroCharacters:(NSCharacterSet *)macroCharacterSet andParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare
+- (BOOL)scanMacroParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare
 {
-    NSString *macroName = nil;
-    NSUInteger previousScanLocation = [self scanLocation];
-	
-	if (!macroCharacterSet)
-	{
-		macroCharacterSet = [NSCharacterSet alphanumericCharacterSet];
-	}
-    
-    if (![self scanCharactersFromSet:macroCharacterSet intoString:&macroName])
-    {
-        self.scanLocation = previousScanLocation;
-        return NO;
-    }
-    
-    if (![self scanString:@"(" intoString:NULL])
-    {
-        // opening bracket missing
-        self.scanLocation = previousScanLocation;
-        return NO;
-    }
+	NSUInteger previousScanLocation = [self scanLocation];
 
-    BOOL closingBracketEncountered = NO;
-    
-    NSMutableArray *tmpArray = [NSMutableArray array];
-    
-    while (!closingBracketEncountered && ![self isAtEnd])
-    {
-        NSString *parameter = nil;
-        
-        if (bare)
-        {
-            if ([self scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&parameter])
-            {
-                [tmpArray addObject:parameter];
-            }
-        }
-        else
-        {
-            if ([self scanQuotedAndEscapedString:&parameter])
-            {
-                [tmpArray addObject:parameter];
-            }
+	if (![self scanString:@"(" intoString:NULL])
+	{
+		// opening bracket missing
+		self.scanLocation = previousScanLocation;
+		return NO;
+	}
+	
+	BOOL closingBracketEncountered = NO;
+	
+	NSMutableArray *tmpArray = [NSMutableArray array];
+	
+	while (!closingBracketEncountered && ![self isAtEnd])
+	{
+		NSString *parameter = nil;
+		
+		if (bare)
+		{
+			if ([self scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&parameter])
+			{
+				[tmpArray addObject:parameter];
+			}
+		}
+		else
+		{
+			if ([self scanQuotedAndEscapedString:&parameter])
+			{
+				[tmpArray addObject:parameter];
+			}
 			else
 			{
 				// try to skip this parameter, might be a bundle pointer, which is not a string literal
 				// TODO: make this skipping of code more robust
 				NSString *code = nil;
 				if ([self scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"),"]
-									 intoString:&code])
+										 intoString:&code])
 				{
 					[tmpArray addObject:@""]; // need to add something so that parameters don't shift
 				}
 			}
-        }
-        
-        if ([self scanString:@")" intoString:NULL])
-        {
-            closingBracketEncountered = YES;
-            continue;
-        }
-        
-        if (![self scanString:@"," intoString:NULL])
-        {
-            // there should be a comma
-            self.scanLocation = previousScanLocation;
-            return NO;
-        }
-    }
-    
-    if (!closingBracketEncountered)
-    {
-        // closing bracket missing
-        self.scanLocation = previousScanLocation;
-        return NO;
-    }
+		}
+		
+		if ([self scanString:@")" intoString:NULL])
+		{
+			closingBracketEncountered = YES;
+			continue;
+		}
+		
+		if (![self scanString:@"," intoString:NULL])
+		{
+			// there should be a comma
+			self.scanLocation = previousScanLocation;
+			return NO;
+		}
+	}
+	
+	if (!closingBracketEncountered)
+	{
+		// closing bracket missing
+		self.scanLocation = previousScanLocation;
+		return NO;
+	}
+	
+	if (parameters)
+	{
+		*parameters = tmpArray;
+	}
+	
+//	NSString *scannedString = [[self string] substringWithRange:NSMakeRange(previousScanLocation, self.scanLocation - previousScanLocation)];
+//	NSLog(@"%@", scannedString);						   
+	
+	return YES;
+}
 
-    if (macro)
-    {
-        *macro = macroName;
-    }
-    
-    if (parameters)
-    {
-        *parameters = tmpArray;
-    }
-
-    return YES;
+- (BOOL)scanMacro:(NSString **)macro  validMacroCharacters:(NSCharacterSet *)macroCharacterSet andParameters:(NSArray **)parameters parametersAreBare:(BOOL)bare
+{
+	NSString *macroName = nil;
+	NSUInteger previousScanLocation = [self scanLocation];
+	
+	if (!macroCharacterSet)
+	{
+		macroCharacterSet = [NSCharacterSet alphanumericCharacterSet];
+	}
+	
+	if (![self scanCharactersFromSet:macroCharacterSet intoString:&macroName])
+	{
+		self.scanLocation = previousScanLocation;
+		return NO;
+	}
+	
+	if (![self scanString:@"(" intoString:NULL])
+	{
+		// opening bracket missing
+		self.scanLocation = previousScanLocation;
+		return NO;
+	}
+	
+	BOOL closingBracketEncountered = NO;
+	
+	NSMutableArray *tmpArray = [NSMutableArray array];
+	
+	while (!closingBracketEncountered && ![self isAtEnd])
+	{
+		NSString *parameter = nil;
+		
+		if (bare)
+		{
+			if ([self scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&parameter])
+			{
+				[tmpArray addObject:parameter];
+			}
+		}
+		else
+		{
+			if ([self scanQuotedAndEscapedString:&parameter])
+			{
+				[tmpArray addObject:parameter];
+			}
+			else
+			{
+				// try to skip this parameter, might be a bundle pointer, which is not a string literal
+				// TODO: make this skipping of code more robust
+				NSString *code = nil;
+				if ([self scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"),"]
+										 intoString:&code])
+				{
+					[tmpArray addObject:@""]; // need to add something so that parameters don't shift
+				}
+			}
+		}
+		
+		if ([self scanString:@")" intoString:NULL])
+		{
+			closingBracketEncountered = YES;
+			continue;
+		}
+		
+		if (![self scanString:@"," intoString:NULL])
+		{
+			// there should be a comma
+			self.scanLocation = previousScanLocation;
+			return NO;
+		}
+	}
+	
+	if (!closingBracketEncountered)
+	{
+		// closing bracket missing
+		self.scanLocation = previousScanLocation;
+		return NO;
+	}
+	
+	if (macro)
+	{
+		*macro = macroName;
+	}
+	
+	if (parameters)
+	{
+		*parameters = tmpArray;
+	}
+	
+	return YES;
 }
 
 @end
