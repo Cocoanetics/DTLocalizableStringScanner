@@ -1,0 +1,4 @@
+/* testing the splitting into multiple elements for NSPredicateEditor */
+
+NSLocalizedString(@"%[one, two] %[A, B]", @"predicate test");
+

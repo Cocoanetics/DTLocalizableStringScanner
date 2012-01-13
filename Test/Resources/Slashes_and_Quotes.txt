@@ -1,6 +1,3 @@
 /* Tests if the escaping of double quotes and slashes works */
 
-// expect tables: Localizable
-
-
 NSLocalizedString(@"here are three \\\\\\\"\"\"\nslashes&quotes: \\\\\\\"\"\"", nil)

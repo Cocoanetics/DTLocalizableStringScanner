@@ -170,18 +170,8 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
             }
         }
 		
-		
-		
-        //		NSArray *arguments = [NSArray arrayWithObjects:@"/usr/bin/genstrings", nil, [oneCaseURL path], [NSString stringWithFormat:@"-o \"%@\"", genstrings1OutPath], nil];
-		
-        //		[self runScriptWithArguments:arguments];
-		
-		
-		
-		//STFail(@"'%@' failed", [self testCaseNameFromURL:oneCaseURL]);
-		
 		// cleanup
-		//[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
+		[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
 	}
 }
 
