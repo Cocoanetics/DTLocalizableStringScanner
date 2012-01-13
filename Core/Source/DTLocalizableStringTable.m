@@ -76,7 +76,8 @@
 - (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error  entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
 {
 	NSString *fileName = [_name stringByAppendingPathExtension:@"strings"];
-	NSURL *tableURL = [NSURL URLWithString:fileName relativeToURL:url];
+	NSString *tablePath = [[url path] stringByAppendingPathComponent:fileName];
+	NSURL *tableURL = [NSURL fileURLWithPath:tablePath];
 	
 	if (!tableURL)
 	{
