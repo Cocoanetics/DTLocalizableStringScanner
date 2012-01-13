@@ -47,6 +47,8 @@
         
         _processingQueue = [[NSOperationQueue alloc] init];
         [_processingQueue setMaxConcurrentOperationCount:10];
+        
+        _wantsPositionalParameters = YES; // default
     }
     return self;
 }
