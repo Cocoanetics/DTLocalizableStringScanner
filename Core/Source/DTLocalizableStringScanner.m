@@ -95,7 +95,6 @@
     
     // handle the opening quote
     if (_characters[_currentIndex] == '"') {
-        [clean appendFormat:@"%C", _characters[_currentIndex]];
         _currentIndex++;
     }
     
@@ -120,7 +119,10 @@
             }
         }
         
-        [clean appendFormat:@"%C", character];
+        if (keepGoing)
+        {
+            [clean appendFormat:@"%C", character];
+        }
         
         _currentIndex++;
     }

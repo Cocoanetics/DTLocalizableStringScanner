@@ -110,7 +110,7 @@
 		[tmpString appendFormat:@"/* %@ */\n", comment];
 		
 		// output line
-		[tmpString appendFormat:@"%@ = %@;\n", key, value];
+		[tmpString appendFormat:@"\"%@\" = \"%@\";\n", key, value];
 		
 		[tmpString appendString:@"\n"];
 	}
