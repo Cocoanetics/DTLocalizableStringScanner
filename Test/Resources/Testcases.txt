@@ -1,5 +1,10 @@
 /* Other Test Cases */
 
+// CFSTR + Unicode
+
+CFCopyLocalizedString(CFSTR("AB\\U0043D"), "Comment")
+
+
 NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has been changed on disk.", @"External File Change"), [path lastPathComponent]];
 
 
