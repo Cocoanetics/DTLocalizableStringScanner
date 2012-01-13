@@ -1,0 +1,12 @@
+
+#define CONTACT_NAME_MENU_TITLE         NSLocalizedString(@"Contact Name Format",nil)
+
+
+
+
+                                if ([[menuItem title] isEqualToString:NSLocalizedStringFromTableInBundle(@"Open Link", @"Third Table", [NSBundle bundleForClass:[WebView class]], nil)])
+                                        [webViewMenuItems removeObjectIdenticalTo:menuItem];                                    
+                        }
+
+
+
