@@ -14,4 +14,6 @@
 
 - (NSArray *)variantsFromPredicateVariations;
 
+- (NSString *)stringByRemovingSlashEscapes;
+
 @end

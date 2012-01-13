@@ -160,7 +160,7 @@ int main (int argc, const char *argv[])
 				if ([comments count]>1)
 				{
 					NSString *tmpString = [comments componentsJoinedByString:@"\" & \""];
-					printf("Warning: Key \"%s\" used with multiple comments \"%s\"\n", [entry.key UTF8String], [tmpString UTF8String]);
+					printf("Warning: Key \"%s\" used with multiple comments \"%s\"\n", [entry.rawKey UTF8String], [tmpString UTF8String]);
 				}	
 			};
 		}

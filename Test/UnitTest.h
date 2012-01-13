@@ -8,8 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-NSString *testCaseNameFromURL(NSURL *URL);
-
 @interface UnitTest : SenTestCase
 
 - (void)internalTestCaseWithURL:(NSURL *)URL;

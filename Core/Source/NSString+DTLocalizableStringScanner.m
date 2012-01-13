@@ -173,5 +173,17 @@
     }
 }
 
+- (NSString *)stringByRemovingSlashEscapes {
+    // a neat little trick from http://stackoverflow.com/a/2099484
+    NSData *d = [self dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *unescaped = [NSPropertyListSerialization propertyListWithData:d options:NSPropertyListImmutable format:NULL error:NULL];
+    
+    if (![unescaped isKindOfClass:[NSString class]] || [unescaped length] == 0) {
+        // it didn't convert properly
+        return self;
+    }
+    
+    return unescaped;
+}
 
 @end

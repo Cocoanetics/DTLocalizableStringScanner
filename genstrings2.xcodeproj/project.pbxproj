@@ -10,7 +10,6 @@
 		55951D0014BD3C1700E4A63E /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 		A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A775234114ACEF7A0035CDCA /* Foundation.framework */; };
 		A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
-		A79AC07C14B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */; };
 		A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
 		A79AC08314B1A49800489FA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC08214B1A49800489FA3 /* main.m */; };
 		A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
@@ -18,10 +17,8 @@
 		A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 		A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 		A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
-		A79AC0A714B4A35800489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */; };
 		A79AC0A814B4A35800489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
 		A79AC0A914B4A36100489FA3 /* DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */; };
-		A79AC0AA14B4A36100489FA3 /* NSScanner+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */; };
 		A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */; };
 		A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */; };
 		A7E19B4A14BDBD0500493494 /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
@@ -36,12 +33,11 @@
 		A7F65DE414C0465E0092E2EE /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 		A7F65DE514C0465E0092E2EE /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
 		A7F65DE614C0465E0092E2EE /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
-		A7F65DE714C0465E0092E2EE /* NSScanner+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */; };
+		A7F65DE714C0465E0092E2EE /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A7F65DE814C0465E0092E2EE /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
 		A7F65DE914C0465E0092E2EE /* DTLocalizableStringTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E19B9C14BF033000493494 /* DTLocalizableStringTable.m */; };
 		A7F65DEB14C067990092E2EE /* Multiple_Tables.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F65DEA14C067980092E2EE /* Multiple_Tables.txt */; };
 		A7F65DEC14C06C220092E2EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08E14B1A51800489FA3 /* Foundation.framework */; };
-		A7F65DEE14C06CD20092E2EE /* libobjc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F65DED14C06CD20092E2EE /* libobjc.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,8 +59,6 @@
 		A775234114ACEF7A0035CDCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringScanner.h; sourceTree = "<group>"; };
 		A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringScanner.m; sourceTree = "<group>"; };
-		A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+DTLocalizableStringScanner.h"; sourceTree = "<group>"; };
-		A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+DTLocalizableStringScanner.m"; sourceTree = "<group>"; };
 		A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DTLocalizableStringScanner.h"; sourceTree = "<group>"; };
 		A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DTLocalizableStringScanner.m"; sourceTree = "<group>"; };
 		A79AC07F14B1A49800489FA3 /* genstrings2-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "genstrings2-Prefix.pch"; sourceTree = "<group>"; };
@@ -91,7 +85,6 @@
 		A7F65DDB14C040D00092E2EE /* Testcases.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Testcases.txt; sourceTree = "<group>"; };
 		A7F65DE114C043850092E2EE /* Slashes_and_Quotes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Slashes_and_Quotes.txt; sourceTree = "<group>"; };
 		A7F65DEA14C067980092E2EE /* Multiple_Tables.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Multiple_Tables.txt; sourceTree = "<group>"; };
-		A7F65DED14C06CD20092E2EE /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = usr/lib/libobjc.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +108,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7F65DEE14C06CD20092E2EE /* libobjc.dylib in Frameworks */,
 				A7F65DEC14C06C220092E2EE /* Foundation.framework in Frameworks */,
 				A7F65DC014C03E980092E2EE /* SenTestingKit.framework in Frameworks */,
 				A7F65DC114C03E980092E2EE /* Cocoa.framework in Frameworks */,
@@ -128,7 +120,6 @@
 		A775233214ACEF790035CDCA = {
 			isa = PBXGroup;
 			children = (
-				A7F65DED14C06CD20092E2EE /* libobjc.dylib */,
 				A7E19B4214BD938E00493494 /* Test */,
 				A79AC09814B1A6AD00489FA3 /* Docs */,
 				A79AC07314B1A48A00489FA3 /* Core */,
@@ -178,8 +169,6 @@
 				A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */,
 				A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */,
 				A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */,
-				A79AC07714B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.h */,
-				A79AC07814B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m */,
 				A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */,
 				A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */,
 				A7E19B9B14BF032F00493494 /* DTLocalizableStringTable.h */,
@@ -271,7 +260,6 @@
 			files = (
 				A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */,
 				A79AC0A914B4A36100489FA3 /* DTLocalizableStringScanner.h in Headers */,
-				A79AC0AA14B4A36100489FA3 /* NSScanner+DTLocalizableStringScanner.h in Headers */,
 				A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */,
 				A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */,
 				A7E19B9D14BF033000493494 /* DTLocalizableStringTable.h in Headers */,
@@ -396,7 +384,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */,
-				A79AC07C14B1A48A00489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */,
 				A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
 				A79AC08314B1A49800489FA3 /* main.m in Sources */,
 				A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
@@ -411,7 +398,6 @@
 			files = (
 				A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
 				A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */,
-				A79AC0A714B4A35800489FA3 /* NSScanner+DTLocalizableStringScanner.m in Sources */,
 				A79AC0A814B4A35800489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
 				A7E19B4A14BDBD0500493494 /* DTLocalizableStringEntry.m in Sources */,
 				A7E19B9F14BF033000493494 /* DTLocalizableStringTable.m in Sources */,
@@ -426,7 +412,7 @@
 				A7F65DE414C0465E0092E2EE /* DTLocalizableStringEntry.m in Sources */,
 				A7F65DE514C0465E0092E2EE /* DTLocalizableStringScanner.m in Sources */,
 				A7F65DE614C0465E0092E2EE /* DTLocalizableStringAggregator.m in Sources */,
-				A7F65DE714C0465E0092E2EE /* NSScanner+DTLocalizableStringScanner.m in Sources */,
+				A7F65DE714C0465E0092E2EE /* (null) in Sources */,
 				A7F65DE814C0465E0092E2EE /* NSString+DTLocalizableStringScanner.m in Sources */,
 				A7F65DE914C0465E0092E2EE /* DTLocalizableStringTable.m in Sources */,
 			);
