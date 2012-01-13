@@ -525,8 +525,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "UnitTest/UnitTest-Prefix.pch";
-				INFOPLIST_FILE = "UnitTest/UnitTest-Info.plist";
+				GCC_PREFIX_HEADER = "Test/UnitTest-Prefix.pch";
+				INFOPLIST_FILE = "Test/UnitTest-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -537,8 +537,8 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "UnitTest/UnitTest-Prefix.pch";
-				INFOPLIST_FILE = "UnitTest/UnitTest-Info.plist";
+				GCC_PREFIX_HEADER = "Test/UnitTest-Prefix.pch";
+				INFOPLIST_FILE = "Test/UnitTest-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
