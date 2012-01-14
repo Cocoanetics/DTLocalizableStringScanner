@@ -24,6 +24,9 @@
     NSDictionary *_validMacros;
     NSCharacterSet *_validMacroCharacters;
     
+    NSUInteger _minMacroNameLength;
+    NSUInteger _maxMacroNameLength;
+    
     unichar *_characters;
     NSUInteger _stringLength;
     NSUInteger _currentIndex;
@@ -51,6 +54,24 @@
         
         _url = [url copy]; // to have a reference later
         _validMacros = validMacros;
+        
+        // get longest and shortest macro name
+        _minMacroNameLength = NSIntegerMax;
+        _maxMacroNameLength = 0;
+        
+        for (NSString *oneMacro in [_validMacros allKeys])
+        {
+            NSUInteger l = [oneMacro length];
+            
+            if (l<_minMacroNameLength)
+            {
+                _minMacroNameLength = l;
+            }
+            else if (l>_maxMacroNameLength)
+            {
+                _maxMacroNameLength = l;
+            }
+        }
     }
     
     return self;
@@ -130,7 +151,8 @@
     return clean;
 }
 
-- (NSString *)_scanParameter {
+- (NSString *)_scanParameter 
+{
     // TODO: handle comments in parameters
     // eg: NSLocalizedString("Something", /* blah */ nil)
     NSUInteger parameterStartIndex = _currentIndex;
@@ -141,26 +163,34 @@
     
     while (keepGoing) {
         unichar character = _characters[_currentIndex];
-        if (character == ',') {
+        if (character == ',') 
+        {
             keepGoing = NO;
-        } else if (character == '(') {
+        } else if (character == '(') 
+        {
             _currentIndex++;
             parenCount++;
-        } else if (character == ')') {
+        } else if (character == ')') 
+        {
             parenCount--;
-            if (parenCount >= 0) {
+            if (parenCount >= 0) 
+            {
                 _currentIndex++;
-            } else {
+            } else 
+            {
                 keepGoing = NO;
             }
-        } else if (character == '"') {
+        } else if (character == '"') 
+        {
             quotedString = [self _scanQuotedString];
-        } else {
+        } else 
+        {
             _currentIndex++;
         }
     }
     
-    if (quotedString) {
+    if (quotedString) 
+    {
         return quotedString;
     }
     
@@ -168,56 +198,77 @@
     return [[NSString alloc] initWithCharactersNoCopy:(_characters+parameterStartIndex) length:length freeWhenDone:NO];
 }
 
-- (BOOL)_scanMacro {
+- (BOOL)_scanMacro 
+{
     NSUInteger macroStartIndex = _currentIndex;
     NSCharacterSet *macroCharacters = [self validMacroCharacters];
     
     // read as much of the macroName as possible
-    while ([macroCharacters characterIsMember:_characters[_currentIndex]]) {
+    while ([macroCharacters characterIsMember:_characters[_currentIndex]]) 
+    {
         _currentIndex++;
     }
     
     // pull out the macroName:
     NSUInteger macroNameLength = _currentIndex - macroStartIndex;
-    NSString *macroName = [[NSString alloc] initWithCharactersNoCopy:(_characters+macroStartIndex) length:macroNameLength freeWhenDone:NO];
-    NSMutableArray *parameters = [NSMutableArray array];
     
-    if ([_validMacros objectForKey:macroName] != nil) {
+    if (macroNameLength < _minMacroNameLength || macroNameLength > _maxMacroNameLength)
+    {
+        // too short or too long to be one of our macros
+        return NO;
+    }
+    
+    NSString *macroName = [[NSString alloc] initWithCharactersNoCopy:(_characters+macroStartIndex) length:macroNameLength freeWhenDone:NO];
+    
+    if ([_validMacros objectForKey:macroName]) 
+    {
         // we found a macro name!
-        
+
+        NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
+
         // skip any whitespace between here and the (
         [self _scanWhitespace];
         
-        if (_characters[_currentIndex] == '(') {
+        if (_characters[_currentIndex] == '(') 
+        {
             // read the opening parenthesis
             _currentIndex++;
             
-            while (1) {
+            while (1) 
+            {
                 // skip any leading whitespace
                 [self _scanWhitespace];
                 
                 // scan a parameter
                 NSString *parameter = [self _scanParameter];
                 
-                if (parameter != nil) {
+                if (parameter) 
+                {
                     // we found one!
                     [parameters addObject:parameter];
                     
                     // skip any trailing whitespace
                     [self _scanWhitespace];
                     
-                    if (_characters[_currentIndex] == ',') {
+                    if (_characters[_currentIndex] == ',') 
+                    {
                         // consume the comma, but loop again
                         _currentIndex++;
-                    } else if (_characters[_currentIndex] == ')') {
+                    } 
+                    else if (_characters[_currentIndex] == ')') 
+                    {
                         // comsume the closing paren and break
                         _currentIndex++;
                         break;
-                    } else {
+                    } 
+                    else 
+                    {
                         // some other character = not syntactically valid = exit
                         return NO;
                     }
-                } else {
+                } 
+                else 
+                {
                     // we were unable to scan a valid parameter
                     // therefore something must be wrong and we should exit
                     return NO;
@@ -226,17 +277,20 @@
         }
         
         NSArray *expectedParameters = [_validMacros objectForKey:macroName];
-        if ([expectedParameters count] == [parameters count]) {
+        if ([expectedParameters count] == [parameters count]) 
+        {
             // hooray, we successfully scanned!
             
             DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
-            for (NSUInteger i = 0; i < [parameters count]; ++i) {
+            for (NSUInteger i = 0; i < [parameters count]; ++i) 
+            {
                 NSString *property = [expectedParameters objectAtIndex:i];
                 NSString *value = [parameters objectAtIndex:i];
                 [entry setValue:value forKey:property];
             }
             
-            if (_entryFoundCallback){
+            if (_entryFoundCallback)
+            {
                 _entryFoundCallback(entry);
             }
             
