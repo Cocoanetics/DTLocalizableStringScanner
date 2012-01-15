@@ -12,8 +12,6 @@
 
 @interface DTLocalizableStringScanner ()
 
-- (NSCharacterSet *)validMacroCharacters;
-
 - (BOOL)_scanMacro;
 
 @end
@@ -55,6 +53,10 @@
         _url = [url copy]; // to have a reference later
         _validMacros = validMacros;
         
+        // prebuild the valid characters
+        NSString *allChars = [[_validMacros allKeys] componentsJoinedByString:@""];
+        _validMacroCharacters = [NSCharacterSet characterSetWithCharactersInString:allChars];
+        
         // get longest and shortest macro name
         _minMacroNameLength = NSIntegerMax;
         _maxMacroNameLength = 0;
@@ -85,17 +87,22 @@
 
 - (void)main
 {
-    @autoreleasepool {
-        NSCharacterSet *macroCharacters = [self validMacroCharacters];
-        while (_currentIndex < _stringLength) {
+    @autoreleasepool 
+    {
+        while (_currentIndex < _stringLength) 
+        {
             unichar character = _characters[_currentIndex];
-            if ([macroCharacters characterIsMember:character]) {
+            if ([_validMacroCharacters characterIsMember:character]) 
+            {
                 
                 NSUInteger macroStartIndex = _currentIndex;
-                if (![self _scanMacro]) {
+                if (![self _scanMacro]) 
+                {
                     _currentIndex = macroStartIndex + 1;
                 }
-            } else {
+            } 
+            else 
+            {
                 // not a character that can be part of a macro name; keep going
                 _currentIndex++;
             }
@@ -201,10 +208,9 @@
 - (BOOL)_scanMacro 
 {
     NSUInteger macroStartIndex = _currentIndex;
-    NSCharacterSet *macroCharacters = [self validMacroCharacters];
     
     // read as much of the macroName as possible
-    while ([macroCharacters characterIsMember:_characters[_currentIndex]]) 
+    while ([_validMacroCharacters characterIsMember:_characters[_currentIndex]]) 
     {
         _currentIndex++;
     }
@@ -223,9 +229,9 @@
     if ([_validMacros objectForKey:macroName]) 
     {
         // we found a macro name!
-
+        
         NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
-
+        
         // skip any whitespace between here and the (
         [self _scanWhitespace];
         
@@ -300,19 +306,6 @@
     }
     
     return NO;
-}
-
-#pragma mark Properties
-
-- (NSCharacterSet *)validMacroCharacters
-{
-    if (!_validMacroCharacters) {
-        // make a string from all names
-        NSString *allChars = [[_validMacros allKeys] componentsJoinedByString:@""];
-        
-        _validMacroCharacters = [NSCharacterSet characterSetWithCharactersInString:allChars];
-	}
-	return _validMacroCharacters;
 }
 
 @end
