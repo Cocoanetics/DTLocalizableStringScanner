@@ -1,0 +1,24 @@
+/* Tests that the same elements are picked up if -s is used */
+
+NSLocalizedStringFromTable(@"key", @"NSTable", @"Standard Prefix");
+     or CFCopyLocalizedStringFromTable(@"key2", @"NSTable", @"Standard Prefix") ;
+
+
+Source lines containing NSLocalizedStringFromTable(@"key3", @"NSTable", "comment") or CFCopyLocalizedStringFromTable(@"key4", @"CFTable", "comment") will generate an
+     appropriate string table entry in a file named Table.strings.
+
+     Source lines with NSLocalizedStringFromTableInBundle(@"key5", @"NSTable", bundle, "comment") or CFCopyLocalizedStringFromTableInBundle(@"key6", @"CFTable", bundle,
+     "comment") will generate an appropriate string table entry in Table.strings.
+
+     Source lines with NSLocalizedStringWithDefaultValue(@"key7", @"NSTable", bundle, @"value", "comment") or CFCopyLocalizedStringWithDefaultValue("key8", @"CFTable",
+     bundle, @"value", "comment") will generate an appropriate string table entry in Table.strings.
+     
+// custom variant
+
+DTLocalizedString(@"key9", @"Custom Prefix");
+
+DTLocalizedStringFromTable(@"key10", @"DTTable", @"Custom Prefix")
+
+DTLocalizedStringFromTableInBundle(@"key5", @"DTTable", bundle, "comment")
+
+DTLocalizedStringWithDefaultValue(@"key11", @"DTTable", bundle, @"value", "comment")
