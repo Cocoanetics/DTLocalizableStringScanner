@@ -1,3 +1,4 @@
+/* Tests if tokens properly end up in multiple strings tables */
 
 #define CONTACT_NAME_MENU_TITLE         NSLocalizedString(@"Contact Name Format",nil)
 

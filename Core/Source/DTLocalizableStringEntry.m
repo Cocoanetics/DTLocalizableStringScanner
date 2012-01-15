@@ -7,6 +7,7 @@
 //
 
 #import "DTLocalizableStringEntry.h"
+#import "NSString+DTLocalizableStringScanner.h"
 
 @implementation DTLocalizableStringEntry
 {
@@ -15,31 +16,21 @@
 	NSArray *_sortedCommentsCache;
 }
 
-@synthesize key=_key;
-@synthesize value=_value;
+@synthesize rawKey=_key;
+@synthesize rawValue=_value;
 @synthesize tableName=_tableName;
 @synthesize bundle=_bundle;
 
-- (id)init 
-{
-    self = [super init];
-    if (self) 
-	{
-		_tableName = @"Localizable";
-    }
-    return self;
-}
-
 - (NSString *)description
 {
-	NSMutableString *tmpString = [NSMutableString stringWithFormat:@"<%@ key='%@'", NSStringFromClass([self class]), self.key];
+	NSMutableString *tmpString = [NSMutableString stringWithFormat:@"<%@ key='%@'", NSStringFromClass([self class]), self.rawKey];
 	
 	if (_value)
 	{
 		[tmpString appendFormat:@" value='%@'", _value];
 	}
 	
-	if ([_tableName length] && ![_tableName isEqualToString:@"Localizable"])
+	if ([_tableName length])
 	{
 		[tmpString appendFormat:@" table='%@'", _tableName];
 	}
@@ -53,8 +44,8 @@
 - (id)copyWithZone:(NSZone *)zone
 {
 	DTLocalizableStringEntry *newEntry = [[DTLocalizableStringEntry allocWithZone:zone] init];
-	newEntry.key = _key;
-	newEntry.value = _value;
+	newEntry.rawKey = _key;
+	newEntry.rawValue = _value;
 	newEntry.tableName = _tableName;
 	newEntry.bundle = _bundle;
 	
@@ -68,12 +59,31 @@
 
 - (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry
 {
-    return [_key localizedStandardCompare:otherEntry.key];
+    return [_key localizedStandardCompare:otherEntry.rawKey];
+}
+
+- (NSString *)_stringByRecognizingNil:(NSString *)string {
+    NSString *tmp = [string lowercaseString];
+    if ([tmp isEqualToString:@"nil"] || [tmp isEqualToString:@"null"] || [tmp isEqualToString:@"0"]) {
+        string = nil;
+    }
+    return string;
 }
 
 #pragma mark Properties
+
+- (NSString *)tableName {
+    if ([_tableName length] == 0) {
+        return @"Localizable";
+    }
+    return _tableName;
+}
+
 - (void)setTableName:(NSString *)tableName
 {
+    tableName = [tableName stringByRemovingSlashEscapes];
+    tableName = [self _stringByRecognizingNil:tableName];
+    
 	// keep "Localizable" if the tableName is nil or @"";
 	if ([tableName length])
 	{
@@ -89,6 +99,8 @@
 
 - (void)addComment:(NSString *)comment
 {
+    comment = [self _stringByRecognizingNil:comment];
+    
 	if (![comment length])
 	{
 		return;
@@ -119,11 +131,18 @@
 	{
 		return _sortedCommentsCache;
 	}
-	
-	NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES];
-	_sortedCommentsCache = [_comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+    
+    _sortedCommentsCache = [[_comments allObjects] sortedArrayUsingSelector:@selector(compare:)];
 	
 	return _sortedCommentsCache;
+}
+
+- (NSString *)cleanedKey {
+    return [[self rawKey] stringByRemovingSlashEscapes];
+}
+
+- (NSString *)cleanedValue {
+    return [[self rawValue] stringByRemovingSlashEscapes];
 }
 
 @end

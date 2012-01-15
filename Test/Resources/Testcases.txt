@@ -1,5 +1,9 @@
+/* Other Test Cases */
 
-NSLocalizedString(@"here are three \\\\\\\"\"\"\nslashes&quotes: \\\\\\\"\"\"", nil)
+// CFSTR + Unicode
+
+CFCopyLocalizedString(CFSTR("AB\\U0043D"), "Comment")
+
 
 NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has been changed on disk.", @"External File Change"), [path lastPathComponent]];
 
@@ -26,9 +30,6 @@ NSAlert *alert = [NSAlert alertWithMessageText:message
 
 NSLocalizedString(@"Accounts", nil);
 NSLocalizedStringWithDefaultValue(@"A Key %@ %@", nil, nil, @"Default Value %@ %@", nil);
-
-NSLocalizedString(@"%[one, two] %[A, B]", @"predicate test");
-
 
 // from Adium
 // note: AILocalizedString replaced with NSLocalizedString

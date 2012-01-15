@@ -58,9 +58,9 @@
 	dispatch_release(_tableQueue);
 }
 
-#define KEY @"key"
+#define KEY @"rawKey"
 #define COMMENT @"comment"
-#define VALUE @"value"
+#define VALUE @"rawValue"
 #define BUNDLE @"bundle"
 #define TABLE @"tableName"
 
@@ -135,12 +135,12 @@
             [_stringTables setObject:table forKey:tableName];
         }
         
-		if (entry.value)
+		if (entry.rawValue)
 		{
 			// ...WithDefaultValue
 			if (_wantsPositionalParameters)
 			{
-				entry.value = [entry.value stringByNumberingFormatPlaceholders];
+				entry.rawValue = [entry.rawValue stringByNumberingFormatPlaceholders];
 			}
 			
 			[table addEntry:entry];
@@ -150,7 +150,7 @@
 			// all other options use the key and variations thereof
 			
 			// support for predicate token splitting
-			NSArray *keyVariants = [entry.key variantsFromPredicateVariations];
+			NSArray *keyVariants = [entry.rawKey variantsFromPredicateVariations];
 			
 			// add all variants
 			for (NSString *oneVariant in keyVariants)
@@ -164,9 +164,9 @@
 				}
                 
 				// adjust key and value of the new entry
-				splitEntry.key = oneVariant;
-				splitEntry.value = value;
-                
+				splitEntry.rawKey = oneVariant;
+				splitEntry.rawValue = value;
+
 				// add token to this table
 				[table addEntry:splitEntry];
 			}

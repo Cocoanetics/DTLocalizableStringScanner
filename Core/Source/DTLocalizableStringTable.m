@@ -33,9 +33,9 @@
 
 - (void)addEntry:(DTLocalizableStringEntry *)entry
 {
-	NSAssert([entry.tableName isEqualToString:_name], @"Entry does not belong in this table");
+	NSAssert([entry.tableName isEqualToString:_name], @"Entry does not belong in this table: %@ != %@", entry.tableName, _name);
 	
-	NSString *key = entry.key;
+	NSString *key = entry.rawKey;
 	
 	NSParameterAssert(key);
 	
@@ -54,10 +54,10 @@
 	
 	if (existingEntry)
 	{
-		if (![existingEntry.value isEqualToString:entry.value])
+		if (![existingEntry.rawValue isEqualToString:entry.rawValue])
 		{
 			printf("Key \"%s\" used with multiple values. Value \"%s\" kept. Value \"%s\" ignored.\n",
-				   [key UTF8String], [existingEntry.value UTF8String], [entry.value UTF8String]);
+				   [key UTF8String], [existingEntry.rawValue UTF8String], [entry.rawValue UTF8String]);
 		}
 		
 		for (NSString *oneComment in [entry sortedComments])
@@ -70,7 +70,7 @@
 	
 	// add entry to table and key index
 	[_entries addObject:entry];
-	[_entryIndexByKey setObject:entry forKey:entry.key];
+	[_entryIndexByKey setObject:entry forKey:entry.rawKey];
 }
 
 - (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error  entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
@@ -98,8 +98,8 @@
 		
 		// multi-line comments are indented
 		NSString *comment = [[entry sortedComments] componentsJoinedByString:@"\n   "];
-		NSString *key = [entry key];
-		NSString *value = [entry value];
+		NSString *key = [entry rawKey];
+		NSString *value = [entry rawValue];
 		
 		if (!comment)
 		{

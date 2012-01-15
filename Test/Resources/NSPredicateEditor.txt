@@ -1,0 +1,8 @@
+/* testing the splitting into multiple elements for NSPredicateEditor */
+
+// with missing trailing @
+NSLocalizedString(@"%[one, two] %[A, B]", @"predicate test");
+
+// properly
+NSLocalizedString(@"%[one, two]@ %[A, B]@", @"predicate test");
+
