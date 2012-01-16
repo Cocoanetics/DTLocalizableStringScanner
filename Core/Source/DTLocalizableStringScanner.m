@@ -12,7 +12,7 @@
 
 @interface DTLocalizableStringScanner ()
 
-- (BOOL)_scanMacro;
+- (BOOL)_processMacroAtRange:(NSRange)range;
 
 @end
 
@@ -20,60 +20,39 @@
 {
     NSURL *_url;
     NSDictionary *_validMacros;
-    NSCharacterSet *_validMacroCharacters;
-    
-    NSUInteger _minMacroNameLength;
-    NSUInteger _maxMacroNameLength;
+    NSRegularExpression *_validMacroRegex;
     
     unichar *_characters;
+    NSString *_charactersAsString;
     NSUInteger _stringLength;
     NSUInteger _currentIndex;
 }
 
 @synthesize entryFoundCallback=_entryFoundCallback;
 
-- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros
+- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros validMacroRegex:(NSRegularExpression *)validMacroRegex
+
 {
     self = [super init];
     
     if (self)
     {
-        NSString *string = [[NSString alloc] initWithContentsOfURL:url encoding:encoding error:NULL];
+        _charactersAsString = [[NSString alloc] initWithContentsOfURL:url encoding:encoding error:NULL];
         
-        if (!string)
+        if (!_charactersAsString)
         {
             return nil;
         }
         
-        _stringLength = [string length];
+        _stringLength = [_charactersAsString length];
         _characters = calloc(_stringLength, sizeof(unichar));
-        [string getCharacters:_characters range:NSMakeRange(0, _stringLength)];
+        [_charactersAsString getCharacters:_characters range:NSMakeRange(0, _stringLength)];
         _currentIndex = 0;
         
         _url = [url copy]; // to have a reference later
         _validMacros = validMacros;
-        
-        // prebuild the valid characters
-        NSString *allChars = [[_validMacros allKeys] componentsJoinedByString:@""];
-        _validMacroCharacters = [NSCharacterSet characterSetWithCharactersInString:allChars];
-        
-        // get longest and shortest macro name
-        _minMacroNameLength = NSIntegerMax;
-        _maxMacroNameLength = 0;
-        
-        for (NSString *oneMacro in [_validMacros allKeys])
-        {
-            NSUInteger l = [oneMacro length];
-            
-            if (l<_minMacroNameLength)
-            {
-                _minMacroNameLength = l;
-            }
-            else if (l>_maxMacroNameLength)
-            {
-                _maxMacroNameLength = l;
-            }
-        }
+        _validMacroRegex = validMacroRegex;
+
     }
     
     return self;
@@ -91,24 +70,10 @@
 {
     @autoreleasepool 
     {
-        while (_currentIndex < _stringLength) 
-        {
-            unichar character = _characters[_currentIndex];
-            if ([_validMacroCharacters characterIsMember:character]) 
-            {
-                
-                NSUInteger macroStartIndex = _currentIndex;
-                if (![self _scanMacro]) 
-                {
-                    _currentIndex = macroStartIndex + 1;
-                }
-            } 
-            else 
-            {
-                // not a character that can be part of a macro name; keep going
-                _currentIndex++;
-            }
-        }
+        [_validMacroRegex enumerateMatchesInString:_charactersAsString options:0 range:NSMakeRange(0, [_charactersAsString length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
+            NSRange matchRange = [match range];
+            [self _processMacroAtRange:matchRange]; 
+        }];
     }
 }
 
@@ -224,33 +189,15 @@
     return [[NSString alloc] initWithCharacters:(_characters+parameterStartIndex) length:length];
 }
 
-- (BOOL)_scanMacro 
+- (BOOL)_processMacroAtRange:(NSRange)range
 {
-    NSUInteger macroStartIndex = _currentIndex;
-    
-    // read as much of the macroName as possible
-    while ([_validMacroCharacters characterIsMember:_characters[_currentIndex]]) 
-    {
-        _currentIndex++;
-    }
-    
-    NSUInteger macroNameLength = _currentIndex - macroStartIndex;
-    
-    if (macroNameLength < _minMacroNameLength || macroNameLength > _maxMacroNameLength)
-    {
-        // too short or too long to be one of our macros
-        return NO;
-    }
-    
-    // pull out the macroName:
-    NSString *macroName = [[NSString alloc] initWithCharactersNoCopy:(_characters+macroStartIndex) length:macroNameLength freeWhenDone:NO];
-    
-    if ([_validMacros objectForKey:macroName]) 
-    {
-        // we found a macro name!
-        
+    NSString *macroName = [_charactersAsString substringWithRange:range];
+
+    _currentIndex = range.location + range.length;
+
         NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
         
+
         // skip any whitespace between here and the (
         [self _scanWhitespace];
         
@@ -321,9 +268,9 @@
             }
             
             return YES;
+        } else {
+            NSLog(@"mismaatch");
         }
-        
-    }
     
     return NO;
 }
