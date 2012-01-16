@@ -109,9 +109,6 @@
             comment = @"No comment provided by engineer.";
         }
         
-		// single slash Unicode escapes are always decoded on keys
-		key = [key stringByDecodingUnicodeSequences];
-		
         if (_shouldDecodeUnicodeSequences) 
 		{
 			// strip the quotes
