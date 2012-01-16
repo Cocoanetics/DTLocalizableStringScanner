@@ -59,7 +59,7 @@
 
 - (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry
 {
-    return [_rawKey localizedStandardCompare:otherEntry.rawKey];
+    return [self.cleanedKey localizedStandardCompare:otherEntry.cleanedKey];
 }
 
 - (NSString *)_stringByRecognizingNil:(NSString *)string 
@@ -85,7 +85,7 @@
 
 - (void)setTableName:(NSString *)tableName
 {
-    tableName = [tableName stringByRemovingSlashEscapes];
+    tableName = [tableName stringByReplacingSlashEscapes];
     tableName = [self _stringByRecognizingNil:tableName];
 	
 	// remove the quotes
@@ -107,7 +107,10 @@
 - (void)addComment:(NSString *)comment
 {
     comment = [self _stringByRecognizingNil:comment];
-    
+
+	// remove the quotes
+	comment = [comment stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
+	
 	if (![comment length])
 	{
 		return;
@@ -146,12 +149,12 @@
 
 - (NSString *)cleanedKey 
 {
-    return [[self rawKey] stringByRemovingSlashEscapes];
+    return [[self rawKey] stringByReplacingSlashEscapes];
 }
 
 - (NSString *)cleanedValue 
 {
-    return [[self rawValue] stringByRemovingSlashEscapes];
+    return [[self rawValue] stringByReplacingSlashEscapes];
 }
 
 @end
