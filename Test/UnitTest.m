@@ -87,10 +87,10 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
 - (void)internalTestCaseWithURL:(NSURL *)URL withTempPath:(NSString *)tempPath
 {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-
+	
 	// test case temp path is global temp path plus name of this test case
 	tempPath = [tempPath stringByAppendingPathComponent:testCaseNameFromURL(URL, YES)];
-
+	
     NSString *genstrings1OutPath = [tempPath stringByAppendingPathComponent:@"genstrings1"];
     [fileManager createDirectoryAtPath:genstrings1OutPath withIntermediateDirectories:YES attributes:NULL error:NULL];
     
@@ -105,12 +105,12 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
 	DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] init];
 	
 	NSDictionary *genstrings2Parameters = [testParameters objectForKey:@"genstrings2"];
-
+	
 	if (genstrings2Parameters)
 	{
 		[aggregator setValuesForKeysWithDictionary:genstrings2Parameters];
 	}
-		
+	
 	[aggregator beginProcessingFile:URL];
 	
 	NSArray *tables = [aggregator aggregatedStringTables];
@@ -156,7 +156,7 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
     
     // check if number is the same
     STAssertEquals([genstrings1files count], [genstrings2files count], @"Different number of output strings tables");
-    
+	
     for (NSString *oneFile in genstrings1files)
     {
         STAssertTrue([genstrings2files containsObject:oneFile], @"genstring2 output is missing %@", oneFile);
@@ -178,7 +178,10 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
             
             NSString *genstrings1Contents = [NSString stringWithContentsOfFile:genstrings1File usedEncoding:NULL error:NULL];
             NSString *genstrings2Contents = [NSString stringWithContentsOfFile:genstrings2File usedEncoding:NULL error:NULL];
-            
+			
+			// size check does not work because predicate editor output repeats comment for each token	
+			// STAssertEquals([genstrings1Contents length], [genstrings2Contents length], @"Different file sizes on %@", genstrings1File);
+			
             NSDictionary *genstrings1Stuff = [genstrings1Contents propertyListFromStringsFileFormat];
             NSDictionary *genstrings2Stuff = [genstrings2Contents propertyListFromStringsFileFormat];
             
@@ -205,10 +208,8 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
         }
     }
     
-	NSLog(@"%@", tempPath);
-	
     // cleanup
-	//[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
+	[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
 }
 
 
