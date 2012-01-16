@@ -10,6 +10,7 @@
 #import "DTLocalizableStringScanner.h"
 #import "DTLocalizableStringAggregator.h"
 #import "DTLocalizableStringEntry.h"
+#import "DTLocalizableStringTable.h"
 
 void showUsage(void);
 
@@ -25,6 +26,7 @@ int main (int argc, const char *argv[])
         
         BOOL wantsPositionalParameters = YES;
 		BOOL wantsMultipleCommentWarning = YES;
+        BOOL wantsDecodedUnicodeSequences = NO;
         NSMutableSet *tablesToSkip = [NSMutableSet set];
         NSString *customMacroPrefix = nil;
         
@@ -32,6 +34,7 @@ int main (int argc, const char *argv[])
         BOOL optionsInvalid = NO;
         NSUInteger i = 1;
         NSMutableArray *files = [NSMutableArray array];
+        NSStringEncoding inputStringEncoding = NSUTF8StringEncoding;
         
         while (i<argc)
         {
@@ -104,6 +107,10 @@ int main (int argc, const char *argv[])
 				// do not warn if multiple different comments are attached to a token
 				wantsMultipleCommentWarning = NO;
 			}
+            else if (!strcmp("-u", argv[i]))
+            {
+                wantsDecodedUnicodeSequences = YES;
+            }
             else if (!strcmp("-skipTable", argv[i]))
             {
                 // tables to be ignored
@@ -127,6 +134,10 @@ int main (int argc, const char *argv[])
             {
                 outputStringEncoding = NSUTF16BigEndianStringEncoding;
             }
+            else if (!strcmp("-macRoman", argv[i]))
+            {
+                inputStringEncoding = NSMacOSRomanStringEncoding;
+            }
             
             i++;
         }
@@ -139,49 +150,51 @@ int main (int argc, const char *argv[])
         }
         
         // create the aggregator
-        DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] initWithFileURLs:files];
+        DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] init];
         
         // set the parameters
         aggregator.wantsPositionalParameters = wantsPositionalParameters;
+        aggregator.inputEncoding = inputStringEncoding;
         aggregator.customMacroPrefix = customMacroPrefix;
-        
-        if ([tablesToSkip count])
-        {
-            // do not set an empty set to improve performance
-            aggregator.tablesToSkip = tablesToSkip;
-        }
-        
-		if (wantsMultipleCommentWarning)
-		{
-			aggregator.entryWriteCallback = ^(DTLocalizableStringEntry *entry) 
-			{
-				NSArray *comments = [entry sortedComments];
-				
-				if ([comments count]>1)
-				{
-					NSString *tmpString = [comments componentsJoinedByString:@"\" & \""];
-					printf("Warning: Key \"%s\" used with multiple comments \"%s\"\n", [entry.rawKey UTF8String], [tmpString UTF8String]);
-				}	
-			};
-		}
 		
         // go, go, go!
-        [aggregator processFiles];
+        for (NSURL *file in files) {
+            [aggregator beginProcessingFile:file];
+        }
+        
+        NSArray *aggregatedTables = [aggregator aggregatedStringTables];
+        
+        DTLocalizableStringEntryWriteCallback writeCallback = nil;
+        
+        if (wantsMultipleCommentWarning) {
+            writeCallback = ^(DTLocalizableStringEntry *entry) {
+				NSArray *comments = [entry sortedComments];
+				
+				if ([comments count] > 1) {
+					NSString *tmpString = [comments componentsJoinedByString:@"\" & \""];
+					printf("Warning: Key \"%s\" used with multiple comments \"%s\"\n", [entry.rawKey UTF8String], [tmpString UTF8String]);
+				}
+            };
+        }
 		
 		// set output dir to current working dir if not set
-		if (!outputFolderURL)
-		{
+		if (!outputFolderURL) {
 			NSString *cwd = [[NSFileManager defaultManager] currentDirectoryPath];
 			outputFolderURL = [NSURL fileURLWithPath:cwd];
 		}
 		
 		// output the tables
 		NSError *error = nil;
-		if (![aggregator writeStringTablesToFolderAtURL:outputFolderURL encoding:outputStringEncoding error:&error])
-		{
-			printf("%s\n", [[error localizedDescription] UTF8String]);
-			exit(1); // exit due to error
-		}
+        
+        for (DTLocalizableStringTable *table in aggregatedTables) {
+            [table setShouldDecodeUnicodeSequences:wantsDecodedUnicodeSequences];
+            
+            if (![table writeToFolderAtURL:outputFolderURL encoding:outputStringEncoding error:&error entryWriteCallback:writeCallback]) {
+                
+                printf("%s\n", [[error localizedDescription] UTF8String]);
+                exit(1); // exit due to error
+            }
+        }
     }
     
     return 0;
@@ -197,8 +210,8 @@ void showUsage(void)
     printf("    -s substring             substitute 'substring' for NSLocalizedString.\n");
     printf("    -skipTable tablename     skip over the file for 'tablename'.\n");
     printf("    -noPositionalParameters  turns off positional parameter support.\n");
-    //   printf("    -u                       allow unicode characters.\n");
-    //   printf("    -macRoman                read files as MacRoman not UTF-8.\n");
+    printf("    -u                       allow unicode characters in the values of strings files.\n");
+    printf("    -macRoman                read files as MacRoman not UTF-8.\n");
     printf("    -q                       turns off multiple key/value pairs warning.\n");
     printf("    -bigEndian               output generated with big endian byte order.\n");
     printf("    -littleEndian            output generated with little endian byte order.\n");

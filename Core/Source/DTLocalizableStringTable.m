@@ -20,6 +20,8 @@
 	DTLocalizableStringEntryWriteCallback _entryWriteCallback;
 }
 
+@synthesize shouldDecodeUnicodeSequences = _shouldDecodeUnicodeSequences;
+
 - (id)initWithName:(NSString *)name
 {
 	self = [super init];
@@ -91,28 +93,33 @@
 	
 	for (DTLocalizableStringEntry *entry in sortedEntries)
 	{
-		if (entryWriteCallback)
-		{
-			entryWriteCallback(entry);
-		}
 		
-		// multi-line comments are indented
-		NSString *comment = [[entry sortedComments] componentsJoinedByString:@"\n   "];
 		NSString *key = [entry rawKey];
 		NSString *value = [entry rawValue];
-		
-		if (!comment)
-		{
-			comment = @"No comment provided by engineer.";
-		}
-		
-		// output comment
-		[tmpString appendFormat:@"/* %@ */\n", comment];
-		
-		// output line
-		[tmpString appendFormat:@"\"%@\" = \"%@\";\n", key, value];
-		
-		[tmpString appendString:@"\n"];
+        
+        if (entryWriteCallback)
+        {
+            entryWriteCallback(entry);
+        }
+        
+        // multi-line comments are indented
+        NSString *comment = [[entry sortedComments] componentsJoinedByString:@"\n   "];
+        if (!comment)
+        {
+            comment = @"No comment provided by engineer.";
+        }
+        
+        if (_shouldDecodeUnicodeSequences) {
+            value = [value stringByDecodingUnicodeSequences];
+        }
+        
+        // output comment
+        [tmpString appendFormat:@"/* %@ */\n", comment];
+        
+        // output line
+        [tmpString appendFormat:@"%@ = %@;\n", key, value];
+        
+        [tmpString appendString:@"\n"];
 	}
 	
 	return [tmpString writeToURL:tableURL

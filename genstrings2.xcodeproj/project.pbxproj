@@ -130,7 +130,6 @@
 				A79AC09814B1A6AD00489FA3 /* Docs */,
 				A79AC07314B1A48A00489FA3 /* Core */,
 				A79AC07E14B1A49800489FA3 /* Demo */,
-				A7F65DC214C03E990092E2EE /* UnitTest */,
 				A775234014ACEF7A0035CDCA /* Frameworks */,
 				A775233E14ACEF7A0035CDCA /* Products */,
 			);
@@ -175,10 +174,10 @@
 				A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */,
 				A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */,
 				A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */,
-				A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */,
-				A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */,
 				A7E19B9B14BF032F00493494 /* DTLocalizableStringTable.h */,
 				A7E19B9C14BF033000493494 /* DTLocalizableStringTable.m */,
+				A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */,
+				A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -230,21 +229,6 @@
 				A7F65DD614C03F920092E2EE /* UnitTest.m */,
 			);
 			path = Test;
-			sourceTree = "<group>";
-		};
-		A7F65DC214C03E990092E2EE /* UnitTest */ = {
-			isa = PBXGroup;
-			children = (
-				A7F65DC314C03E990092E2EE /* Supporting Files */,
-			);
-			path = UnitTest;
-			sourceTree = "<group>";
-		};
-		A7F65DC314C03E990092E2EE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		A7F65DDA14C040D00092E2EE /* Resources */ = {

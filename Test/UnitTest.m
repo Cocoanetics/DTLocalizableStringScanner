@@ -8,6 +8,7 @@
 
 #import "UnitTest.h"
 #import "DTLocalizableStringAggregator.h"
+#import "DTLocalizableStringTable.h"
 
 #import </usr/include/objc/objc-class.h>
 
@@ -18,7 +19,8 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
 {
 	NSString *fileName = [[URL path] lastPathComponent];
     NSString *name = [fileName stringByDeletingPathExtension];
-    if (withSpaces) {
+    if (withSpaces)
+    {
         name = [name stringByReplacingOccurrencesOfString:@"_" withString:@" "];
     }
 	
@@ -29,7 +31,8 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
 
 + (void)initialize
 {
-    if (self == [UnitTest class]) {
+    if (self == [UnitTest class])
+    {
         // get list of test case files
         NSBundle *unitTestBundle = [NSBundle bundleForClass:self];
         NSString *testcasePath = [unitTestBundle resourcePath];
@@ -72,7 +75,7 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
     
     [task launch];
     [task waitUntilExit];
-
+	
     return [task terminationStatus];
 }
 
@@ -96,13 +99,24 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
     NSDictionary *testParameters = [NSDictionary dictionaryWithContentsOfFile:parameterFile];
     
     // run our code
-    DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] initWithFileURLs:[NSArray arrayWithObject:URL]];
-    
-    NSDictionary *customArguments2 = [testParameters objectForKey:@"genstrings2"];
-    [aggregator setValuesForKeysWithDictionary:customArguments2];
-    
-    [aggregator processFiles];
-    [aggregator writeStringTablesToFolderAtURL:[NSURL fileURLWithPath:genstrings2OutPath] encoding:NSUTF16StringEncoding error:NULL];
+	DTLocalizableStringAggregator *aggregator = [[DTLocalizableStringAggregator alloc] init];
+	
+	NSDictionary *genstrings2Parameters = [testParameters objectForKey:@"genstrings2"];
+
+	if (genstrings2Parameters)
+	{
+		[aggregator setValuesForKeysWithDictionary:genstrings2Parameters];
+	}
+		
+	[aggregator beginProcessingFile:URL];
+	
+	NSArray *tables = [aggregator aggregatedStringTables];
+	NSURL *genstrings2Folder = [NSURL fileURLWithPath:genstrings2OutPath];
+	for (DTLocalizableStringTable *table in tables)
+	{
+		[table writeToFolderAtURL:genstrings2Folder encoding:NSUTF16StringEncoding error:NULL entryWriteCallback:NULL];
+	}
+	
     
     // run original genstrings
     NSArray *genstringsArguments = [NSArray arrayWithObjects:
@@ -143,10 +157,12 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
         STAssertTrue([genstrings1files containsObject:oneFile], @"genstring output is missing %@", oneFile);
     }
     
-    if ([genstrings1files count] == [genstrings2files count]) {
+    if ([genstrings1files count] == [genstrings2files count]) 
+	{
         NSUInteger count = [genstrings1files count];
         
-        for (NSUInteger i = 0; i < count; ++i) {
+        for (NSUInteger i = 0; i < count; ++i) 
+		{
             NSString *genstrings1File = [genstrings1OutPath stringByAppendingPathComponent:[genstrings1files objectAtIndex:i]];
             NSString *genstrings2File = [genstrings2OutPath stringByAppendingPathComponent:[genstrings2files objectAtIndex:i]];
             
@@ -169,7 +185,8 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
             [extraGenstrings2Keys minusSet:genstrings1Keys];
             STAssertTrue([extraGenstrings2Keys count] == 0, @"genstrings2 found these extra keys: %@", extraGenstrings2Keys);
             
-            for (NSString *genstrings2Key in genstrings2Keys) {
+            for (NSString *genstrings2Key in genstrings2Keys) 
+			{
                 NSString *genstrings2Value = [genstrings2Stuff objectForKey:genstrings2Key];
                 NSString *genstrings1Value = [genstrings1Stuff objectForKey:genstrings2Key];
                 
@@ -179,7 +196,7 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
     }
     
     // cleanup
-   // [[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
+	[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
 }
 
 

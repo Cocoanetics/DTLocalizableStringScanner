@@ -10,8 +10,6 @@
 
 @class DTLocalizableStringEntry;
 
-typedef void(^DTLocalizableStringEntryWriteCallback)(DTLocalizableStringEntry *);
-
 @interface DTLocalizableStringEntry : NSObject
 
 @property (nonatomic, copy) NSString *rawKey;

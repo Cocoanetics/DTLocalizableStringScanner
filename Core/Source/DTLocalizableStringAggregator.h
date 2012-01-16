@@ -11,16 +11,15 @@
 
 @interface DTLocalizableStringAggregator : NSObject
 
-- (id)initWithFileURLs:(NSArray *)fileURLs;
-
-- (void)processFiles;
-
-- (BOOL)writeStringTablesToFolderAtURL:(NSURL *)URL encoding:(NSStringEncoding)encoding error:(NSError **)error;
-
 @property (nonatomic, assign) BOOL wantsPositionalParameters;
+@property (nonatomic, assign) NSStringEncoding inputEncoding;
 @property (nonatomic, retain) NSSet *tablesToSkip;
 @property (nonatomic, retain) NSString *customMacroPrefix;
 
-@property (nonatomic, copy) DTLocalizableStringEntryWriteCallback entryWriteCallback;
+- (void)beginProcessingFile:(NSURL *)fileURL;
+
+// returns an array of DTLocalizableStringTables
+// blocks until all enqueued files have been processed
+- (NSArray *)aggregatedStringTables; 
 
 @end

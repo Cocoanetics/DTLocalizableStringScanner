@@ -173,17 +173,128 @@
     }
 }
 
-- (NSString *)stringByRemovingSlashEscapes {
+- (NSString *)stringByRemovingSlashEscapes
+{
     // a neat little trick from http://stackoverflow.com/a/2099484
     NSData *d = [self dataUsingEncoding:NSUTF8StringEncoding];
     NSString *unescaped = [NSPropertyListSerialization propertyListWithData:d options:NSPropertyListImmutable format:NULL error:NULL];
     
-    if (![unescaped isKindOfClass:[NSString class]] || [unescaped length] == 0) {
+    if (![unescaped isKindOfClass:[NSString class]] || [unescaped length] == 0) 
+    {
         // it didn't convert properly
         return self;
     }
     
     return unescaped;
+}
+
+- (NSString *)stringByDecodingUnicodeSequences
+{
+    NSUInteger length = [self length];
+    
+    NSCharacterSet *hex = [NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
+    
+    unichar *characters = calloc(length, sizeof(unichar));
+    
+    unichar *final = calloc(length+1, sizeof(unichar));
+    NSUInteger currentFinalIndex = 0;
+    
+    [self getCharacters:characters range:NSMakeRange(0, length)];
+    
+    int decodeCount = 0;
+    BOOL isEscaping = NO;
+    for (NSUInteger i = 0; i < length; ++i) {
+        unichar character = characters[i];
+        BOOL addToFinal = YES;
+        
+        if (isEscaping) 
+        {
+            if (character == 'U') 
+            {
+                addToFinal = NO;
+                isEscaping = NO;
+                decodeCount = 2;
+            } 
+            else
+            {
+                final[currentFinalIndex++] = '\\';
+            }
+        }
+        else
+        {
+            if (character == '\\')
+            {
+                decodeCount = 0;
+                addToFinal = NO;
+                isEscaping = YES;
+            }
+            else if ([hex characterIsMember:character] && decodeCount > 0)
+            {
+                if (i+4 <= length)
+                {
+                    BOOL canDecode = YES;
+                    char tmp[5] = { 0 };
+                    for (int j = 0; j < 4; ++j) {
+                        // all four characters have to be hex chars
+                        unichar tmpC = characters[i+j];
+                        if (![hex characterIsMember:tmpC])
+                        {
+                            canDecode = NO;
+                            break;
+                        }
+                        else
+                        {
+                            tmp[j] = tmpC & 0xFF;
+                        }
+                    }
+                    
+                    if (canDecode)
+                    {
+                        decodeCount--;
+                        
+                        character = (unichar)strtol((const char*)tmp, NULL, 16);
+                        i += 3;
+                    }
+                    else
+                    {
+                        // not all the chars are hex
+                        if (decodeCount == 2)
+                        {
+                            // these were the characters right after the \U
+                            final[currentFinalIndex++] = '\\';
+                            final[currentFinalIndex++] = 'U';
+                        }
+                        decodeCount = 0;
+                    }
+                }
+                else
+                {
+                    // not enough characters to form a full sequence
+                    if (decodeCount == 2)
+                    {
+                        // these were the characters right after the \U
+                        final[currentFinalIndex++] = '\\';
+                        final[currentFinalIndex++] = 'U';
+                    }
+                    decodeCount = 0;
+                }
+            }
+            else
+            {
+                decodeCount = 0;
+            }
+        }
+        
+        if (addToFinal)
+        {
+            final[currentFinalIndex++] = character;
+        }
+    }
+    free(characters);
+    NSString *clean = [[NSString alloc] initWithCharacters:final length:currentFinalIndex];
+    free(final);
+    
+    return clean;
 }
 
 @end

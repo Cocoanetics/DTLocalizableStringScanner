@@ -32,13 +32,13 @@
 
 @synthesize entryFoundCallback=_entryFoundCallback;
 
-- (id)initWithContentsOfURL:(NSURL *)url validMacros:(NSDictionary *)validMacros
+- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros
 {
     self = [super init];
     
     if (self)
     {
-        NSString *string = [[NSString alloc] initWithContentsOfURL:url usedEncoding:NULL error:NULL];
+        NSString *string = [[NSString alloc] initWithContentsOfURL:url encoding:encoding error:NULL];
         
         if (!string)
         {
@@ -79,8 +79,10 @@
     return self;
 }
 
-- (void)dealloc {
-    if (_characters) {
+- (void)dealloc 
+{
+    if (_characters) 
+    {
         free(_characters);
     }
 }
@@ -112,50 +114,61 @@
 
 #define IS_WHITESPACE(_c) ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:(_c)])
 
-- (void)_scanWhitespace {
-    while (IS_WHITESPACE(_characters[_currentIndex])) {
+- (void)_scanWhitespace 
+{
+    while (IS_WHITESPACE(_characters[_currentIndex]) && _currentIndex < _stringLength) 
+    {
         _currentIndex++;
     }
 }
 
-- (NSString *)_scanQuotedString {
-    NSMutableString *clean = [NSMutableString stringWithCapacity:100];
-    
-    // handle the opening quote
-    if (_characters[_currentIndex] == '"') {
-        _currentIndex++;
+- (NSString *)_scanQuotedString 
+{
+    if (_characters[_currentIndex] != '"') 
+    {
+        return nil;
     }
+    
+    NSUInteger quotedStringStart = _currentIndex;
+    
+    // move past the opening quote
+    _currentIndex++;
     
     BOOL isEscaping = NO;
     BOOL keepGoing = YES;
-    while (keepGoing) {
+    while (keepGoing && _currentIndex < _stringLength) 
+    {
         unichar character = _characters[_currentIndex];
         
-        if (isEscaping) {
+        if (isEscaping) 
+        {
+            // make "\u" become "\U"
+            if (character == 'u') 
+            {
+                _characters[_currentIndex] = 'U';
+            }
             isEscaping = NO;
-        } else {
-            if (character == '\\') {
-                unichar nextCharacter = _characters[_currentIndex+1];
-                if (nextCharacter != 'u' && nextCharacter != 'U') {
-                    isEscaping = YES;
-                } else {
-                    // prefer the upper-case variant
-                    character = 'U';
-                }
-            } else if (character == '"') {
+        }
+        else 
+        {
+            if (character == '\\') 
+            {
+                isEscaping = YES;
+            } 
+            else if (character == '"') 
+            {
                 keepGoing = NO;
             }
         }
-        
-        if (keepGoing)
-        {
-            [clean appendFormat:@"%C", character];
-        }
-        
         _currentIndex++;
     }
     
-    return clean;
+    NSUInteger stringLength = _currentIndex - quotedStringStart;
+    
+    // we don't use the NoCopy variant, because we need this string to out-live the _characters buffer
+    NSString *string = [[NSString alloc] initWithCharacters:(_characters+quotedStringStart) length:stringLength];
+    
+    return string;
 }
 
 - (NSString *)_scanParameter 
@@ -168,29 +181,35 @@
     
     NSInteger parenCount = 0;
     
-    while (keepGoing) {
+    while (keepGoing && _currentIndex < _stringLength) 
+    {
         unichar character = _characters[_currentIndex];
         if (character == ',') 
         {
             keepGoing = NO;
-        } else if (character == '(') 
+        }
+        else if (character == '(') 
         {
             _currentIndex++;
             parenCount++;
-        } else if (character == ')') 
+        }
+        else if (character == ')') 
         {
             parenCount--;
             if (parenCount >= 0) 
             {
                 _currentIndex++;
-            } else 
+            }
+            else 
             {
                 keepGoing = NO;
             }
-        } else if (character == '"') 
+        }
+        else if (character == '"') 
         {
             quotedString = [self _scanQuotedString];
-        } else 
+        }
+        else 
         {
             _currentIndex++;
         }
@@ -202,7 +221,7 @@
     }
     
     NSUInteger length = _currentIndex - parameterStartIndex;
-    return [[NSString alloc] initWithCharactersNoCopy:(_characters+parameterStartIndex) length:length freeWhenDone:NO];
+    return [[NSString alloc] initWithCharacters:(_characters+parameterStartIndex) length:length];
 }
 
 - (BOOL)_scanMacro 
@@ -215,7 +234,6 @@
         _currentIndex++;
     }
     
-    // pull out the macroName:
     NSUInteger macroNameLength = _currentIndex - macroStartIndex;
     
     if (macroNameLength < _minMacroNameLength || macroNameLength > _maxMacroNameLength)
@@ -224,6 +242,7 @@
         return NO;
     }
     
+    // pull out the macroName:
     NSString *macroName = [[NSString alloc] initWithCharactersNoCopy:(_characters+macroStartIndex) length:macroNameLength freeWhenDone:NO];
     
     if ([_validMacros objectForKey:macroName]) 
@@ -240,7 +259,7 @@
             // read the opening parenthesis
             _currentIndex++;
             
-            while (1) 
+            while (_currentIndex < _stringLength) 
             {
                 // skip any leading whitespace
                 [self _scanWhitespace];
@@ -279,7 +298,7 @@
                     // therefore something must be wrong and we should exit
                     return NO;
                 }
-            };
+            }
         }
         
         NSArray *expectedParameters = [_validMacros objectForKey:macroName];

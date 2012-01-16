@@ -16,8 +16,8 @@
 	NSArray *_sortedCommentsCache;
 }
 
-@synthesize rawKey=_key;
-@synthesize rawValue=_value;
+@synthesize rawKey=_rawKey;
+@synthesize rawValue=_rawValue;
 @synthesize tableName=_tableName;
 @synthesize bundle=_bundle;
 
@@ -25,9 +25,9 @@
 {
 	NSMutableString *tmpString = [NSMutableString stringWithFormat:@"<%@ key='%@'", NSStringFromClass([self class]), self.rawKey];
 	
-	if (_value)
+	if (_rawValue)
 	{
-		[tmpString appendFormat:@" value='%@'", _value];
+		[tmpString appendFormat:@" value='%@'", _rawValue];
 	}
 	
 	if ([_tableName length])
@@ -44,8 +44,8 @@
 - (id)copyWithZone:(NSZone *)zone
 {
 	DTLocalizableStringEntry *newEntry = [[DTLocalizableStringEntry allocWithZone:zone] init];
-	newEntry.rawKey = _key;
-	newEntry.rawValue = _value;
+	newEntry.rawKey = _rawKey;
+	newEntry.rawValue = _rawValue;
 	newEntry.tableName = _tableName;
 	newEntry.bundle = _bundle;
 	
@@ -59,12 +59,14 @@
 
 - (NSComparisonResult)compare:(DTLocalizableStringEntry *)otherEntry
 {
-    return [_key localizedStandardCompare:otherEntry.rawKey];
+    return [_rawKey localizedStandardCompare:otherEntry.rawKey];
 }
 
-- (NSString *)_stringByRecognizingNil:(NSString *)string {
+- (NSString *)_stringByRecognizingNil:(NSString *)string 
+{
     NSString *tmp = [string lowercaseString];
-    if ([tmp isEqualToString:@"nil"] || [tmp isEqualToString:@"null"] || [tmp isEqualToString:@"0"]) {
+    if ([tmp isEqualToString:@"nil"] || [tmp isEqualToString:@"null"] || [tmp isEqualToString:@"0"]) 
+    {
         string = nil;
     }
     return string;
@@ -72,8 +74,10 @@
 
 #pragma mark Properties
 
-- (NSString *)tableName {
-    if ([_tableName length] == 0) {
+- (NSString *)tableName 
+{
+    if ([_tableName length] == 0) 
+    {
         return @"Localizable";
     }
     return _tableName;
@@ -137,11 +141,13 @@
 	return _sortedCommentsCache;
 }
 
-- (NSString *)cleanedKey {
+- (NSString *)cleanedKey 
+{
     return [[self rawKey] stringByRemovingSlashEscapes];
 }
 
-- (NSString *)cleanedValue {
+- (NSString *)cleanedValue 
+{
     return [[self rawValue] stringByRemovingSlashEscapes];
 }
 

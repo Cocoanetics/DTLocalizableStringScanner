@@ -61,4 +61,14 @@ NSLocalizedStringWithDefaultValue(@"A Key %@ %@", nil, nil, @"Default Value %@ %
                         }
 
 
+NSLocalizedString(key, value)
 
+NSLocalizedString(@"\u5404\u500b\u90fd", nil)
+
+
+
+NSLocalizedString(/* comment */ @"key", // more comments
+                @"value")
+                
+
+                

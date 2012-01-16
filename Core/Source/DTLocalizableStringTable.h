@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DTLocalizableStringEntry.h"
+
+@class DTLocalizableStringEntry;
+
+typedef void(^DTLocalizableStringEntryWriteCallback)(DTLocalizableStringEntry *);
 
 @interface DTLocalizableStringTable : NSObject
 
 @property (nonatomic, readonly) NSString *name;
+@property (nonatomic, assign) BOOL shouldDecodeUnicodeSequences;
 
 - (id)initWithName:(NSString *)name;
 
