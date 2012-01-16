@@ -109,14 +109,28 @@
             comment = @"No comment provided by engineer.";
         }
         
+		// single slash Unicode escapes are always decoded on keys
+		key = [key stringByDecodingUnicodeSequences];
+		
         if (_shouldDecodeUnicodeSequences) 
 		{
+			// strip the quotes
+			if ([value hasPrefix:@"\""] && [value hasPrefix:@"\""])
+			{
+				value = [value substringWithRange:NSMakeRange(1, [value length]-2)];
+			}
+			
 			// value is what we scanned from file, so we first need to decode
-			NSString *decodedValue = [value stringByRemovingSlashEscapes];
+			value = [value stringByReplacingSlashEscapes];
 			
-            value = [decodedValue stringByDecodingUnicodeSequences];
+			// decode the unicode sequences
+            value = [value stringByDecodingUnicodeSequences];
 			
-			NSLog(@"%@", value);
+			// re-add the slash escapes
+			value = [value stringByAddingSlashEscapes];
+			
+			// re-add quotes
+			value = [NSString stringWithFormat:@"\"%@\"", value];
         }
         
         // output comment
