@@ -7,28 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55951D0014BD3C1700E4A63E /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 		A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A775234114ACEF7A0035CDCA /* Foundation.framework */; };
 		A79499AD14C0D35500A8CCDE /* NSPredicateEditor.txt in Resources */ = {isa = PBXBuildFile; fileRef = A79499AC14C0D35500A8CCDE /* NSPredicateEditor.txt */; };
 		A79499CF14C3052500A8CCDE /* CustomPrefix.txt in Resources */ = {isa = PBXBuildFile; fileRef = A79499CE14C3052500A8CCDE /* CustomPrefix.txt */; };
 		A79499D214C30B0400A8CCDE /* CustomPrefix.plist in Resources */ = {isa = PBXBuildFile; fileRef = A79499D114C30B0300A8CCDE /* CustomPrefix.plist */; };
-		A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
-		A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
 		A79AC08314B1A49800489FA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC08214B1A49800489FA3 /* main.m */; };
 		A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
 		A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */; };
-		A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 		A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 		A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
 		A79AC0A814B4A35800489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07A14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m */; };
 		A79AC0A914B4A36100489FA3 /* DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */; };
 		A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */; };
 		A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */; };
-		A7D74C6A14C43D7300F15340 /* Unicode.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7D74C6814C43D7300F15340 /* Unicode.plist */; };
 		A7D74C6B14C43D7300F15340 /* Unicode.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7D74C6914C43D7300F15340 /* Unicode.txt */; };
+		A7D74C7014C4535200F15340 /* libDTLocalizableStringScanner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08814B1A51800489FA3 /* libDTLocalizableStringScanner.a */; };
+		A7D74C7114C4697B00F15340 /* Unicode.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7D74C6814C43D7300F15340 /* Unicode.plist */; };
 		A7E19B4A14BDBD0500493494 /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 		A7E19B9D14BF033000493494 /* DTLocalizableStringTable.h in Headers */ = {isa = PBXBuildFile; fileRef = A7E19B9B14BF032F00493494 /* DTLocalizableStringTable.h */; };
-		A7E19B9E14BF033000493494 /* DTLocalizableStringTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E19B9C14BF033000493494 /* DTLocalizableStringTable.m */; };
 		A7E19B9F14BF033000493494 /* DTLocalizableStringTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E19B9C14BF033000493494 /* DTLocalizableStringTable.m */; };
 		A7F65DC014C03E980092E2EE /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F65DBF14C03E980092E2EE /* SenTestingKit.framework */; };
 		A7F65DC114C03E980092E2EE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
@@ -102,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7D74C7014C4535200F15340 /* libDTLocalizableStringScanner.a in Frameworks */,
 				A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,8 +356,8 @@
 				A79499AD14C0D35500A8CCDE /* NSPredicateEditor.txt in Resources */,
 				A79499CF14C3052500A8CCDE /* CustomPrefix.txt in Resources */,
 				A79499D214C30B0400A8CCDE /* CustomPrefix.plist in Resources */,
-				A7D74C6A14C43D7300F15340 /* Unicode.plist in Resources */,
 				A7D74C6B14C43D7300F15340 /* Unicode.txt in Resources */,
+				A7D74C7114C4697B00F15340 /* Unicode.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,12 +384,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A79AC07B14B1A48A00489FA3 /* DTLocalizableStringScanner.m in Sources */,
-				A79AC07D14B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.m in Sources */,
 				A79AC08314B1A49800489FA3 /* main.m in Sources */,
-				A79AC09E14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */,
-				55951D0014BD3C1700E4A63E /* DTLocalizableStringEntry.m in Sources */,
-				A7E19B9E14BF033000493494 /* DTLocalizableStringTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +469,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = genstrings2;
 			};
 			name = Debug;
@@ -486,6 +482,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = genstrings2;
 			};
 			name = Release;
