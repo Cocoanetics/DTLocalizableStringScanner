@@ -6,3 +6,11 @@ NSLocalizedString(@"\u5404\u500b\u90fd", nil)
 // CFSTR + Unicode
 
 CFCopyLocalizedString(CFSTR("AB\\U0043D"), "Comment")
+
+
+CFCopyLocalizedString(CFSTR("AB\n\\U0043D\t"), "combined unicode and slash escapes")
+
+
+// single slash \u are decoded on reading, double slash \\u are decoded on writing with -u option
+
+CFCopyLocalizedString(CFSTR("\\U0043 \u0043"), "mixed single and double slash")

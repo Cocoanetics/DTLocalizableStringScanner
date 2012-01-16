@@ -1,3 +1,6 @@
+
+[textView_doneMessage setString:AILocalizedString(@"Adium is now ready for you. \n\nThe Status indicator at the top of your Contact List and in the Status menu lets you determine whether others see you as Available or Away or, alternately, if you are Offline. Select Custom to type your own status message.\n\nDouble-click a name in your Contact List to begin a conversation.  You can add contacts to your Contact List via the Contact menu.\n\nWant to customize your Adium experience? Check out the Adium Preferences and Xtras Manager via the Adium menu.\n\nEnjoy! Click Done to begin using Adium.", nil)],
+
 /* Tests that the same elements are picked up if -s is used */
 
 NSLocalizedStringFromTable(@"key", @"NSTable", @"Standard Prefix");
