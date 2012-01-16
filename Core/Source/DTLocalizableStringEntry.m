@@ -87,6 +87,9 @@
 {
     tableName = [tableName stringByRemovingSlashEscapes];
     tableName = [self _stringByRecognizingNil:tableName];
+	
+	// remove the quotes
+	tableName = [tableName stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
     
 	// keep "Localizable" if the tableName is nil or @"";
 	if ([tableName length])

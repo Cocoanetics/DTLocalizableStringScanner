@@ -24,6 +24,8 @@
 		A79AC0A914B4A36100489FA3 /* DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07514B1A48A00489FA3 /* DTLocalizableStringScanner.h */; };
 		A79AC0AB14B4A36100489FA3 /* NSString+DTLocalizableStringScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC07914B1A48A00489FA3 /* NSString+DTLocalizableStringScanner.h */; };
 		A79AC0AD14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */; };
+		A7D74C6A14C43D7300F15340 /* Unicode.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7D74C6814C43D7300F15340 /* Unicode.plist */; };
+		A7D74C6B14C43D7300F15340 /* Unicode.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7D74C6914C43D7300F15340 /* Unicode.txt */; };
 		A7E19B4A14BDBD0500493494 /* DTLocalizableStringEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */; };
 		A7E19B9D14BF033000493494 /* DTLocalizableStringTable.h in Headers */ = {isa = PBXBuildFile; fileRef = A7E19B9B14BF032F00493494 /* DTLocalizableStringTable.h */; };
 		A7E19B9E14BF033000493494 /* DTLocalizableStringTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E19B9C14BF033000493494 /* DTLocalizableStringTable.m */; };
@@ -80,6 +82,8 @@
 		A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringAggregator.h; sourceTree = "<group>"; };
 		A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringAggregator.m; sourceTree = "<group>"; };
 		A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DTLocalizableStringScanner-Prefix.pch"; sourceTree = "<group>"; };
+		A7D74C6814C43D7300F15340 /* Unicode.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Unicode.plist; sourceTree = "<group>"; };
+		A7D74C6914C43D7300F15340 /* Unicode.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Unicode.txt; sourceTree = "<group>"; };
 		A7E19B9B14BF032F00493494 /* DTLocalizableStringTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringTable.h; sourceTree = "<group>"; };
 		A7E19B9C14BF033000493494 /* DTLocalizableStringTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringTable.m; sourceTree = "<group>"; };
 		A7F65DBE14C03E980092E2EE /* UnitTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,6 +244,8 @@
 				A7F65DEA14C067980092E2EE /* Multiple_Tables.txt */,
 				A7F65DE114C043850092E2EE /* Slashes_and_Quotes.txt */,
 				A7F65DDB14C040D00092E2EE /* Testcases.txt */,
+				A7D74C6814C43D7300F15340 /* Unicode.plist */,
+				A7D74C6914C43D7300F15340 /* Unicode.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -353,6 +359,8 @@
 				A79499AD14C0D35500A8CCDE /* NSPredicateEditor.txt in Resources */,
 				A79499CF14C3052500A8CCDE /* CustomPrefix.txt in Resources */,
 				A79499D214C30B0400A8CCDE /* CustomPrefix.plist in Resources */,
+				A7D74C6A14C43D7300F15340 /* Unicode.plist in Resources */,
+				A7D74C6B14C43D7300F15340 /* Unicode.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

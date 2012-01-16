@@ -109,8 +109,14 @@
             comment = @"No comment provided by engineer.";
         }
         
-        if (_shouldDecodeUnicodeSequences) {
-            value = [value stringByDecodingUnicodeSequences];
+        if (_shouldDecodeUnicodeSequences) 
+		{
+			// value is what we scanned from file, so we first need to decode
+			NSString *decodedValue = [value stringByRemovingSlashEscapes];
+			
+            value = [decodedValue stringByDecodingUnicodeSequences];
+			
+			NSLog(@"%@", value);
         }
         
         // output comment

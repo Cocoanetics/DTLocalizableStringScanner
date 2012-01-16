@@ -185,6 +185,12 @@
         return self;
     }
     
+	// preserve quotes !
+	if ([self hasPrefix:@"\""] && [self hasSuffix:@"\""])
+	{
+		return [NSString stringWithFormat:@"\"%@\"", unescaped];
+	}
+	
     return unescaped;
 }
 

@@ -1,0 +1,8 @@
+/* Tests Decoding of Unicode Characters */
+
+NSLocalizedString(@"\u5404\u500b\u90fd", nil)
+
+                
+// CFSTR + Unicode
+
+CFCopyLocalizedString(CFSTR("AB\\U0043D"), "Comment")

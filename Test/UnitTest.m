@@ -37,6 +37,10 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
         NSBundle *unitTestBundle = [NSBundle bundleForClass:self];
         NSString *testcasePath = [unitTestBundle resourcePath];
         
+		// make one temp folder for all cases
+		NSString *timeStamp = [NSString stringWithFormat:@"%.0f", [NSDate timeIntervalSinceReferenceDate] * 1000.0];
+		NSString *tempPath = [NSTemporaryDirectory() stringByAppendingPathComponent:timeStamp];
+		
         NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:testcasePath];
         
         NSString *testFile = nil;
@@ -53,7 +57,7 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
             NSString *selectorName = [NSString stringWithFormat:@"test_%@", caseName];
             
             void(^impBlock)(UnitTest *) = ^(UnitTest *test) {
-                [test internalTestCaseWithURL:URL];
+                [test internalTestCaseWithURL:URL withTempPath:tempPath];
             };
             
             IMP myIMP = imp_implementationWithBlock((__bridge void *)impBlock);
@@ -80,14 +84,13 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
 }
 
 
-- (void)internalTestCaseWithURL:(NSURL *)URL
+- (void)internalTestCaseWithURL:(NSURL *)URL withTempPath:(NSString *)tempPath
 {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	
-    NSString *timeStamp = [NSString stringWithFormat:@"%.0f", [NSDate timeIntervalSinceReferenceDate] * 1000.0];
-    
-    NSString *tempPath = [[NSTemporaryDirectory() stringByAppendingPathComponent:timeStamp] stringByAppendingPathComponent:testCaseNameFromURL(URL, YES)];
-    
+
+	// test case temp path is global temp path plus name of this test case
+	tempPath = [tempPath stringByAppendingPathComponent:testCaseNameFromURL(URL, YES)];
+
     NSString *genstrings1OutPath = [tempPath stringByAppendingPathComponent:@"genstrings1"];
     [fileManager createDirectoryAtPath:genstrings1OutPath withIntermediateDirectories:YES attributes:NULL error:NULL];
     
@@ -112,8 +115,15 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
 	
 	NSArray *tables = [aggregator aggregatedStringTables];
 	NSURL *genstrings2Folder = [NSURL fileURLWithPath:genstrings2OutPath];
+	
+	NSDictionary *tablesParameters = [testParameters objectForKey:@"tables"];
+	
 	for (DTLocalizableStringTable *table in tables)
 	{
+		if (tablesParameters)
+		{
+			[table setValuesForKeysWithDictionary:tablesParameters];
+		}
 		[table writeToFolderAtURL:genstrings2Folder encoding:NSUTF16StringEncoding error:NULL entryWriteCallback:NULL];
 	}
 	
@@ -195,8 +205,10 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
         }
     }
     
+	NSLog(@"%@", tempPath);
+	
     // cleanup
-	[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
+	//[[NSFileManager defaultManager] removeItemAtPath:tempPath error:NULL];
 }
 
 

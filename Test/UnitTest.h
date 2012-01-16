@@ -10,6 +10,6 @@
 
 @interface UnitTest : SenTestCase
 
-- (void)internalTestCaseWithURL:(NSURL *)URL;
+- (void)internalTestCaseWithURL:(NSURL *)URL withTempPath:(NSString *)tempPath;
 
 @end
