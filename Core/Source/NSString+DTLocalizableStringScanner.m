@@ -173,6 +173,7 @@
     }
 }
 
+/*
 - (NSString *)stringByRemovingSlashEscapes
 {
     // a neat little trick from http://stackoverflow.com/a/2099484
@@ -193,6 +194,7 @@
 	
     return unescaped;
 }
+ */
 
 - (NSString *)stringByDecodingUnicodeSequences
 {
@@ -224,6 +226,7 @@
             else
             {
                 final[currentFinalIndex++] = '\\';
+				isEscaping = NO;
             }
         }
         else
@@ -298,6 +301,311 @@
     }
     free(characters);
     NSString *clean = [[NSString alloc] initWithCharacters:final length:currentFinalIndex];
+    free(final);
+    
+    return clean;
+}
+
+- (NSString *)stringByReplacingSlashEscapes
+{
+	NSUInteger length = [self length];
+    
+    unichar *characters = calloc(length, sizeof(unichar));
+    unichar *final = calloc(length+1, sizeof(unichar));
+	
+	[self getCharacters:characters range:NSMakeRange(0, length)];
+	
+	NSUInteger outChars = 0;
+	
+	BOOL inEscapeSequence = NO;
+	BOOL inOctalCode = NO;
+	BOOL inHexCode = NO;
+	
+	unsigned long long scannedCode = 0;
+	
+	for (NSUInteger idx=0; idx<length;)
+	{
+		unichar character = characters[idx];
+		
+		if (inEscapeSequence)
+		{
+			if (inHexCode)
+			{
+				int value;
+				if (character>='0' && character<='9')
+				{
+					value = character - '0';
+				}
+				else if (character>='A' && character<='F')
+				{
+					value = character - 'A' + 10;
+				}
+				else if (character>='a' && character<='f')
+				{
+					value = character - 'a' + 10;
+				}
+				else
+				{
+					// hex code ended
+					final[outChars++] = scannedCode;
+					
+					inHexCode = NO;
+					inEscapeSequence = NO;
+					
+					// go back to loop start and now deal with this character
+					continue;
+				}
+				
+				scannedCode = scannedCode * 16 + value;
+			}
+			
+			if (character>='0' && character<='9')
+			{
+				if (!inOctalCode)
+				{
+					// first octal digit!
+					inOctalCode = YES;
+					scannedCode = 0;
+				}
+				
+				// add this digit to code
+				scannedCode = scannedCode * 8 + (character - '0');
+			}
+			else
+			{
+				if (inOctalCode)
+				{
+					// this character ended the octal code
+					final[outChars++] = scannedCode;
+					
+					inOctalCode = NO;
+					inEscapeSequence = NO;
+					
+					// go back to loop start and now deal with this character
+					continue;
+				}
+				
+				switch (character) 
+				{
+					case 'n':
+					{
+						character = '\n';
+						break;
+					}
+						
+					case 't':
+					{
+						character = '\t';
+						break;
+					}
+						
+					case 'v':
+					{
+						character = '\v';
+						break;
+					}
+						
+					case 'b':
+					{
+						character = '\b';
+						break;
+					}
+						
+					case 'r':
+					{
+						character = '\r';
+						break;
+					}
+						
+					case 'f':
+					{
+						character = '\f';
+						break;
+					}
+						
+					case 'a':
+					{
+						character = 'a';
+						break;
+					}
+						
+					case '\\':
+					{
+						character = '\\';
+						break;
+					}
+						
+					case '\?':
+					{
+						character = '\?';
+						break;
+					}
+						
+					case '\'':
+					{
+						character = '\'';
+						break;
+					}
+						
+					case '\"':
+					{
+						character = '\"';
+						break;
+					}
+
+					case 'x':
+					{
+						// hex number follows
+						inHexCode = YES;
+						scannedCode = 0;
+						break;
+					}
+						
+					default:
+					{
+						// unknown escape sequence
+						// copy it like it is
+						final[outChars++] = '\\';
+					}
+				}
+
+				// add the unescaped character
+				final[outChars++] = character;
+				
+				if (!inHexCode)
+				{
+					// all other sequences are done here
+					inEscapeSequence = NO;
+				}
+			}
+		}
+		else
+		{
+			if (characters[idx] == '\\')
+			{
+				// escaped sequence begins
+				inEscapeSequence = YES;
+			}
+			else
+			{
+				// just copy character
+				final[outChars++] = character;
+			}
+		}
+		
+		idx++;
+	}
+	
+	free(characters);
+    NSString *clean = [[NSString alloc] initWithCharacters:final length:outChars];
+    free(final);
+    
+    return clean;
+}
+
+- (NSString *)stringByAddingSlashEscapes
+{
+	NSUInteger length = [self length];
+    
+    unichar *characters = calloc(length, sizeof(unichar));
+    unichar *final = calloc(length*2+1, sizeof(unichar));
+	
+	[self getCharacters:characters range:NSMakeRange(0, length)];
+	
+	NSUInteger outChars = 0;
+	
+	for (NSUInteger idx=0; idx<length;idx++)
+	{
+		unichar character = characters[idx];
+		
+		switch (character) 
+		{
+			case '\n':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] = 'n';
+				break;
+			}
+				
+			case '\t':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] = 't';
+				break;
+			}
+				
+			case '\v':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] = 'v';
+				break;
+			}
+				
+			case '\b':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] = 'b';
+				break;
+			}
+				
+			case '\r':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] =  'r';
+				break;
+			}
+				
+			case '\f':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] =  'f';
+				break;
+			}
+				
+			case '\a':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] =  'a';
+				break;
+			}
+				
+			case '\\':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] =  '\\';
+				break;
+			}
+				
+			case '\?':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] = '\?';
+				break;
+			}
+				
+			case '\'':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] =  '\'';
+				break;
+			}
+				
+			case '\"':
+			{
+				final[outChars++] = '\\';
+				final[outChars++] =  '\"';
+				break;
+			}
+				
+			default:
+			{
+				final[outChars++] = character;
+			}
+		}
+	}
+	
+	free(characters);
+    NSString *clean = [[NSString alloc] initWithCharacters:final length:outChars];
     free(final);
     
     return clean;

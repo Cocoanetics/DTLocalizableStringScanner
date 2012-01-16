@@ -14,7 +14,8 @@
 
 - (NSArray *)variantsFromPredicateVariations;
 
-- (NSString *)stringByRemovingSlashEscapes;
 - (NSString *)stringByDecodingUnicodeSequences;
 
+- (NSString *)stringByReplacingSlashEscapes;
+- (NSString *)stringByAddingSlashEscapes;
 @end
