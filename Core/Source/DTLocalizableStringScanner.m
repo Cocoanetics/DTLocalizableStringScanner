@@ -270,7 +270,8 @@
                 if (parameter) 
                 {
                     // we found one!
-                    [parameters addObject:parameter];
+					// single slash unicode sequences need to be decoded on reading
+                    [parameters addObject:[parameter stringByDecodingUnicodeSequences]];
                     
                     // skip any trailing whitespace
                     [self _scanWhitespace];
