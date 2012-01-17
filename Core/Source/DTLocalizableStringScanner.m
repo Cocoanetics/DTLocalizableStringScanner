@@ -24,8 +24,8 @@
     
     unichar *_characters;
     NSString *_charactersAsString;
-    NSUInteger _stringLength;
     NSUInteger _currentIndex;
+    NSRange _charactersRange;
 }
 
 @synthesize entryFoundCallback=_entryFoundCallback;
@@ -41,13 +41,10 @@
         if (!_charactersAsString)
         {
             return nil;
-        }
+        }        
         
-        _stringLength = [_charactersAsString length];
-        _characters = calloc(_stringLength, sizeof(unichar));
-        [_charactersAsString getCharacters:_characters range:NSMakeRange(0, _stringLength)];
-        _currentIndex = 0;
-        
+        _characters = nil;
+            
         _url = [url copy]; // to have a reference later
         
         _validMacros = validMacros;
@@ -107,7 +104,7 @@
     
     BOOL isEscaping = NO;
     BOOL keepGoing = YES;
-    while (keepGoing && _currentIndex < _stringLength) 
+    while (keepGoing && _currentIndex < _charactersRange.length) 
     {
         unichar character = _characters[_currentIndex];
         
@@ -152,7 +149,7 @@
     
     NSInteger parenCount = 0;
     
-    while (keepGoing && _currentIndex < _stringLength) 
+    while (keepGoing && _currentIndex < _charactersRange.length) 
     {
         unichar character = _characters[_currentIndex];
         if (character == ',') 
@@ -196,12 +193,14 @@
 }
 
 - (BOOL)_processMacroAtRange:(NSRange)range
-{
-    NSString *macroName = [_charactersAsString substringWithRange:range];
-    
-    _currentIndex = range.location + range.length;
-    
     NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
+{        
+    if (_characters == nil) {
+        _charactersRange = NSMakeRange(range.location, [_charactersAsString length] - range.location);        
+        _characters = calloc(_charactersRange.length, sizeof(unichar));
+        [_charactersAsString getCharacters:_characters range:_charactersRange];
+    }     
+    _currentIndex = range.location + range.length - _charactersRange.location;
     
     
     // skip any whitespace between here and the (
@@ -212,7 +211,7 @@
         // read the opening parenthesis
         _currentIndex++;
         
-        while (_currentIndex < _stringLength) 
+        while (_currentIndex < _charactersRange.length) 
         {
             // skip any leading whitespace
             [self _scanWhitespace];
