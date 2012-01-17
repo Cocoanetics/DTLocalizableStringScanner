@@ -30,6 +30,122 @@
 
 @synthesize entryFoundCallback=_entryFoundCallback;
 
+
+- (void) rebuildPattern:(NSMutableString *) pattern withDictionary:(NSDictionary *) node {
+    NSUInteger count = [node count];
+    if (count == 0) {
+        return;
+    } else if (count == 1) {
+        for (NSNumber *key in node) {
+            unichar c = [key unsignedShortValue];
+            if (c == '|') {
+                return;
+            }
+            
+            CFStringAppendCharacters((__bridge CFMutableStringRef) pattern, &c, 1);
+            
+            NSDictionary *dict = [node objectForKey:key];
+            if (dict) {
+                [self rebuildPattern:pattern withDictionary:dict];
+            }
+        }
+    } else {
+        BOOL isFirst = [pattern length] == 0;
+        if (!isFirst) {
+            [pattern appendString:@"(?:"];
+        }
+        
+        BOOL ender = NO;
+        BOOL firstKey = YES;
+        
+        NSArray *keys = [[node allKeys] sortedArrayUsingSelector:@selector(compare:)];
+        for (NSNumber *key in keys) {
+            unichar c = [key unsignedShortValue];
+            
+            if (c == '|') {
+                ender = YES;
+            } else {
+                if (!firstKey) {
+                    [pattern appendString:@"|"];
+                }
+                firstKey = NO;
+                
+                CFStringAppendCharacters((__bridge CFMutableStringRef) pattern, &c, 1);
+                
+                NSDictionary *dict = [node objectForKey:key];
+                if (dict) {
+                    [self rebuildPattern:pattern withDictionary:dict];
+                }                                
+            }
+        }
+        
+        if (!isFirst) {
+            [pattern appendString:@")"];
+            if (ender) {
+                [pattern appendString:@"?"];
+            }
+        }
+    }
+}
+
+- (NSString *) optimizedAlternationPatternStringWithValidMacros:(NSDictionary *) validMacros {
+    NSArray *orderedKeys = [[validMacros allKeys] sortedArrayUsingSelector:@selector(compare:)];
+
+    NSMutableDictionary *root = [NSMutableDictionary dictionary];
+    NSMutableDictionary *node;
+        
+    for (NSString *key in orderedKeys) {
+        node = root;
+        
+        NSUInteger keyLength = [key length];
+        
+        for (NSUInteger i = 0; i <= keyLength; i++) {
+            unichar c;
+            if (i < keyLength) {
+                c = [key characterAtIndex:i];
+            } else {
+                c = '|';
+            }
+            
+            // find node for this character
+            NSMutableDictionary *thisNode = [node objectForKey:[NSNumber numberWithUnsignedShort:c]];
+            if (!thisNode) {
+                thisNode = [NSMutableDictionary dictionary];
+                [node setObject:thisNode forKey:[NSNumber numberWithUnsignedShort:c]];
+            }
+            
+            node = thisNode;
+        }
+    }
+    
+    NSMutableString *pattern = [NSMutableString string];
+    [self rebuildPattern:pattern withDictionary:root];
+    
+    return pattern;
+}
+
+- (NSRegularExpression *) regularExpressionWithValidMacros:(NSDictionary *)validMacros {
+    @synchronized ([self class]) {
+        static NSDictionary *lastValidMacrosDictionary = nil;
+        static NSRegularExpression *lastRegularExpression = nil;
+        
+        if (lastValidMacrosDictionary == validMacros) {
+            return lastRegularExpression;
+        } else {
+            // build regex to find macro words
+            NSString *innerPatternPart = [self optimizedAlternationPatternStringWithValidMacros:validMacros];
+            NSString *pattern = [NSString stringWithFormat:@"\\b(%@)\\b", innerPatternPart];
+            
+            //NSLog(@"optimized pattern: %@", pattern);
+            
+            lastValidMacrosDictionary = validMacros;
+            lastRegularExpression = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:NULL];
+            
+            return lastRegularExpression;
+        }
+    }
+}
+
 - (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros
 {
     self = [super init];
@@ -48,11 +164,7 @@
         _url = [url copy]; // to have a reference later
         
         _validMacros = validMacros;
-        
-        // build regex to find macro words
-        NSString *innerPatternPart = [[validMacros allKeys] componentsJoinedByString:@"|"];
-        NSString *pattern = [NSString stringWithFormat:@"\\b(%@)\\b", innerPatternPart];
-        _validMacroRegex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:NULL];
+        _validMacroRegex = [self regularExpressionWithValidMacros:validMacros];
     }
     
     return self;
