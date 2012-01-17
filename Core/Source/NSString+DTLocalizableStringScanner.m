@@ -12,41 +12,34 @@
 
 - (NSString *)stringByNumberingFormatPlaceholders
 {
-    NSMutableString *tmpString = [NSMutableString string];
+    static dispatch_once_t onceToken;
+    static NSRegularExpression *matchNonEscapedPercent = nil;
+    dispatch_once(&onceToken, ^{
+        matchNonEscapedPercent = [NSRegularExpression regularExpressionWithPattern:@"(?<=[^%]|^)(?:(?:%%)*)(%)(?:[^%]|$)" options:0 error:NULL];
+    });
     
-    NSScanner *scanner = [NSScanner scannerWithString:self];
-    scanner.charactersToBeSkipped = nil;
+    __block NSMutableString *tmpString = nil;
+    __block NSUInteger placeholderCount = 0;
+    __block NSUInteger lastLocation = 0;
     
-    NSUInteger placeholderCount = 0;
-    
-    while (![scanner isAtEnd])
-    {
-        // scan until percent
-        NSString *part = nil;
-        if ([scanner scanUpToString:@"%" intoString:&part])
-        {
-            [tmpString appendString:part];
-        }
-        
-        if ([scanner scanString:@"%" intoString:NULL])
-        {
-            // scan for escaped percent
-            if ([scanner scanString:@"%" intoString:NULL])
-            {
-                [tmpString appendString:@"%%"];
+    [matchNonEscapedPercent enumerateMatchesInString:self options:0 range:NSMakeRange(0, [self length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
+        placeholderCount++;
+        NSUInteger currentLocation = [match rangeAtIndex:1].location;
+        if (placeholderCount >= 2) {
+            if (placeholderCount == 2) {
+                tmpString = [NSMutableString string];
+                [tmpString appendString:[self substringToIndex:lastLocation + 1]];
+                [tmpString appendString:@"1$"];
             }
-            else
-            {
-                // just insert the number
-                placeholderCount++;
-                [tmpString appendFormat:@"%%%d$", placeholderCount];
-            }
+            [tmpString appendString:[self substringWithRange:NSMakeRange(lastLocation + 1, currentLocation - lastLocation)]];
+            [tmpString appendFormat:@"%d$", placeholderCount];
         }
-    }
+        lastLocation = currentLocation;
+    }];
     
-    // only number if there is more than one placeholder
-    if (placeholderCount>1)
+    if (placeholderCount > 1)
     {
+        [tmpString appendString:[self substringWithRange:NSMakeRange(lastLocation + 1, [self length] - (lastLocation + 1))]];
         return tmpString;
     }
     else
@@ -199,7 +192,7 @@
 - (NSString *)stringByDecodingUnicodeSequences
 {
     
-    if ([self rangeOfString:@"\\"].location == NSNotFound) {
+    if ([self rangeOfString:@"\\" options:NSLiteralSearch].location == NSNotFound) {
         return [self copy];
     }    
     
@@ -313,7 +306,7 @@
 
 - (NSString *)stringByReplacingSlashEscapes
 {
-    if ([self rangeOfString:@"\\"].location == NSNotFound) {
+    if ([self rangeOfString:@"\\" options:NSLiteralSearch].location == NSNotFound) {
         return [self copy];
     }
     
