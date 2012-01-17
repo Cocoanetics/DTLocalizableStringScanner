@@ -465,6 +465,7 @@
 		A775234D14ACEF7A0035CDCA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
 				OTHER_LDFLAGS = (
@@ -478,6 +479,7 @@
 		A775234E14ACEF7A0035CDCA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
 				OTHER_LDFLAGS = (
