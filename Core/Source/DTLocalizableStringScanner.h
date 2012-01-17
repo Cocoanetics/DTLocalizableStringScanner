@@ -14,7 +14,7 @@ typedef void(^DTLocalizableStringEntryFoundCallback)(DTLocalizableStringEntry *)
 
 @interface DTLocalizableStringScanner : NSOperation
 
-- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros;
+- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros validMacroRegex:(NSRegularExpression *)validMacroRegex;
 
 @property (nonatomic, copy) DTLocalizableStringEntryFoundCallback entryFoundCallback;
 
