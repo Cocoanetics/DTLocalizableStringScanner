@@ -14,6 +14,7 @@
 	NSMutableSet *_comments;
 	
 	NSArray *_sortedCommentsCache;
+    NSString *_cleanedKey;
 }
 
 @synthesize rawKey=_rawKey;
@@ -147,9 +148,19 @@
 	return _sortedCommentsCache;
 }
 
+- (void) setRawKey:(NSString *)rawKey {
+    if (rawKey != _rawKey) {
+        _rawKey = rawKey;
+        _cleanedKey = nil;
+    }
+}
+
 - (NSString *)cleanedKey 
 {
-    return [[self rawKey] stringByReplacingSlashEscapes];
+    if (_cleanedKey == nil && _rawKey != nil) {
+        _cleanedKey = [_rawKey stringByReplacingSlashEscapes];
+    }
+    return _cleanedKey;
 }
 
 - (NSString *)cleanedValue 
