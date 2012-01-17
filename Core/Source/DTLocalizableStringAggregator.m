@@ -116,7 +116,7 @@
         NSDictionary *validMacros = [self validMacros];
         
         NSString *innerPatternPart = [[validMacros allKeys] componentsJoinedByString:@"|"];
-        NSString *pattern = [NSString stringWithFormat:@"\\b(%@)\\b", innerPatternPart];
+        NSString *pattern = [NSString stringWithFormat:@"\\b(?:%@)\\b", innerPatternPart];
         _validMacrosRegex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:NULL];
     }
     
