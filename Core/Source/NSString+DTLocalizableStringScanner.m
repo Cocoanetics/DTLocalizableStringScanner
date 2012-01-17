@@ -198,6 +198,11 @@
 
 - (NSString *)stringByDecodingUnicodeSequences
 {
+    
+    if ([self rangeOfString:@"\\"].location == NSNotFound) {
+        return [self copy];
+    }    
+    
     NSUInteger length = [self length];
     
     NSCharacterSet *hex = [NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
@@ -308,6 +313,10 @@
 
 - (NSString *)stringByReplacingSlashEscapes
 {
+    if ([self rangeOfString:@"\\"].location == NSNotFound) {
+        return [self copy];
+    }
+    
 	NSUInteger length = [self length];
     
     unichar *characters = calloc(length, sizeof(unichar));
