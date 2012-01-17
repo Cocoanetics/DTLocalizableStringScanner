@@ -200,7 +200,12 @@
 {
     NSUInteger length = [self length];
     
-    NSCharacterSet *hex = [NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
+    static NSCharacterSet *hex = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        hex = [NSCharacterSet characterSetWithCharactersInString:@"0123456789abcdefABCDEF"];
+    });
     
     unichar *characters = calloc(length, sizeof(unichar));
     
