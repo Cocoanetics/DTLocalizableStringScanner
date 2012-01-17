@@ -70,7 +70,7 @@
 {
     @autoreleasepool 
     {
-        [_validMacroRegex enumerateMatchesInString:_charactersAsString options:0 range:NSMakeRange(0, [_charactersAsString length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
+        [_validMacroRegex enumerateMatchesInString:_charactersAsString options:0 range:NSMakeRange(0, [_charactersAsString length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) {
             NSRange matchRange = [match range];
             [self _processMacroAtRange:matchRange]; 
         }];
