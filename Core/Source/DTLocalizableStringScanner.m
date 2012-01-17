@@ -192,11 +192,12 @@
     }
 }
 
-#define IS_WHITESPACE(_c) ([[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:(_c)])
+
+#define IS_WHITESPACE(_c) (_c == ' ' || _c == '\t' || _c == 0xA || _c == 0xB || _c == 0xC || _c == 0xD || _c == 0x85)
 
 - (void)_scanWhitespace 
 {
-    while (IS_WHITESPACE(_characters[_currentIndex]) && _currentIndex < _stringLength) 
+    while (IS_WHITESPACE(_characters[_currentIndex]) && _currentIndex < _charactersRange.length) 
     {
         _currentIndex++;
     }
@@ -305,7 +306,6 @@
 }
 
 - (BOOL)_processMacroAtRange:(NSRange)range
-    NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
 {        
     if (_characters == nil) {
         _charactersRange = NSMakeRange(range.location, [_charactersAsString length] - range.location);        
@@ -314,6 +314,7 @@
     }     
     _currentIndex = range.location + range.length - _charactersRange.location;
     
+    NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:3];
     
     // skip any whitespace between here and the (
     [self _scanWhitespace];
@@ -366,29 +367,43 @@
         }
     }
     
-    NSArray *expectedParameters = [_validMacros objectForKey:macroName];
-    if ([expectedParameters count] == [parameters count]) 
-    {
-        // hooray, we successfully scanned!
-        
-        DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
-        for (NSUInteger i = 0; i < [parameters count]; ++i) 
+    if ([parameters count] > 0) {
+        NSString *macroName = [_charactersAsString substringWithRange:range];    
+        NSArray *expectedParameters = [_validMacros objectForKey:macroName];
+        if ([expectedParameters count] == [parameters count]) 
         {
-            NSString *property = [expectedParameters objectAtIndex:i];
-            NSString *value = [parameters objectAtIndex:i];
-            [entry setValue:value forKey:property];
-        }
-        
-        if (_entryFoundCallback)
+            // hooray, we successfully scanned!
+            
+            DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
+            for (NSUInteger i = 0; i < [parameters count]; ++i) 
+            {
+                NSString *property = [expectedParameters objectAtIndex:i];
+                NSString *value = [parameters objectAtIndex:i];
+                
+                if ([property isEqualToString:@"rawKey"]) {
+                    entry.rawKey = value;
+                } else if ([property isEqualToString:@"comment"]) {
+                    [entry setComment:value];
+                } else if ([property isEqualToString:@"tableName"]) {
+                    entry.tableName = value;
+                } else if ([property isEqualToString:@"bundle"]) {
+                    entry.bundle = value;
+                } else {
+                    [entry setValue:value forKey:property];
+                }
+            }
+            
+            if (_entryFoundCallback)
+            {
+                _entryFoundCallback(entry);
+            }
+            
+            return YES;
+        } 
+        else 
         {
-            _entryFoundCallback(entry);
+            NSLog(@"mismatch of parameters for %@ macro", macroName);
         }
-        
-        return YES;
-    } 
-    else 
-    {
-        NSLog(@"mismatch of parameters for %@ macro", macroName);
     }
     
     return NO;
