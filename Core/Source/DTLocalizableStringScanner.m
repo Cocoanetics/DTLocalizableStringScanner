@@ -30,8 +30,7 @@
 
 @synthesize entryFoundCallback=_entryFoundCallback;
 
-- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros validMacroRegex:(NSRegularExpression *)validMacroRegex
-
+- (id)initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding validMacros:(NSDictionary *)validMacros
 {
     self = [super init];
     
@@ -50,9 +49,13 @@
         _currentIndex = 0;
         
         _url = [url copy]; // to have a reference later
+        
         _validMacros = validMacros;
-        _validMacroRegex = validMacroRegex;
-
+        
+        // build regex to find macro words
+        NSString *innerPatternPart = [[validMacros allKeys] componentsJoinedByString:@"|"];
+        NSString *pattern = [NSString stringWithFormat:@"\\b(%@)\\b", innerPatternPart];
+        _validMacroRegex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:NULL];
     }
     
     return self;
@@ -70,10 +73,13 @@
 {
     @autoreleasepool 
     {
-        [_validMacroRegex enumerateMatchesInString:_charactersAsString options:0 range:NSMakeRange(0, [_charactersAsString length]) usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
-            NSRange matchRange = [match range];
-            [self _processMacroAtRange:matchRange]; 
-        }];
+        [_validMacroRegex enumerateMatchesInString:_charactersAsString 
+                                           options:0 range:NSMakeRange(0, [_charactersAsString length]) 
+                                        usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop) 
+         {
+             NSRange matchRange = [match range];
+             [self _processMacroAtRange:matchRange]; 
+         }];
     }
 }
 
@@ -192,85 +198,87 @@
 - (BOOL)_processMacroAtRange:(NSRange)range
 {
     NSString *macroName = [_charactersAsString substringWithRange:range];
-
+    
     _currentIndex = range.location + range.length;
-
-        NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
+    
+    NSMutableArray *parameters = [[NSMutableArray alloc] initWithCapacity:10];
+    
+    
+    // skip any whitespace between here and the (
+    [self _scanWhitespace];
+    
+    if (_characters[_currentIndex] == '(') 
+    {
+        // read the opening parenthesis
+        _currentIndex++;
         
-
-        // skip any whitespace between here and the (
-        [self _scanWhitespace];
-        
-        if (_characters[_currentIndex] == '(') 
+        while (_currentIndex < _stringLength) 
         {
-            // read the opening parenthesis
-            _currentIndex++;
+            // skip any leading whitespace
+            [self _scanWhitespace];
             
-            while (_currentIndex < _stringLength) 
+            // scan a parameter
+            NSString *parameter = [self _scanParameter];
+            
+            if (parameter) 
             {
-                // skip any leading whitespace
+                // we found one!
+                // single slash unicode sequences need to be decoded on reading
+                [parameters addObject:[parameter stringByDecodingUnicodeSequences]];
+                
+                // skip any trailing whitespace
                 [self _scanWhitespace];
                 
-                // scan a parameter
-                NSString *parameter = [self _scanParameter];
-                
-                if (parameter) 
+                if (_characters[_currentIndex] == ',') 
                 {
-                    // we found one!
-					// single slash unicode sequences need to be decoded on reading
-                    [parameters addObject:[parameter stringByDecodingUnicodeSequences]];
-                    
-                    // skip any trailing whitespace
-                    [self _scanWhitespace];
-                    
-                    if (_characters[_currentIndex] == ',') 
-                    {
-                        // consume the comma, but loop again
-                        _currentIndex++;
-                    } 
-                    else if (_characters[_currentIndex] == ')') 
-                    {
-                        // comsume the closing paren and break
-                        _currentIndex++;
-                        break;
-                    } 
-                    else 
-                    {
-                        // some other character = not syntactically valid = exit
-                        return NO;
-                    }
+                    // consume the comma, but loop again
+                    _currentIndex++;
+                } 
+                else if (_characters[_currentIndex] == ')') 
+                {
+                    // comsume the closing paren and break
+                    _currentIndex++;
+                    break;
                 } 
                 else 
                 {
-                    // we were unable to scan a valid parameter
-                    // therefore something must be wrong and we should exit
+                    // some other character = not syntactically valid = exit
                     return NO;
                 }
+            } 
+            else 
+            {
+                // we were unable to scan a valid parameter
+                // therefore something must be wrong and we should exit
+                return NO;
             }
+        }
+    }
+    
+    NSArray *expectedParameters = [_validMacros objectForKey:macroName];
+    if ([expectedParameters count] == [parameters count]) 
+    {
+        // hooray, we successfully scanned!
+        
+        DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
+        for (NSUInteger i = 0; i < [parameters count]; ++i) 
+        {
+            NSString *property = [expectedParameters objectAtIndex:i];
+            NSString *value = [parameters objectAtIndex:i];
+            [entry setValue:value forKey:property];
         }
         
-        NSArray *expectedParameters = [_validMacros objectForKey:macroName];
-        if ([expectedParameters count] == [parameters count]) 
+        if (_entryFoundCallback)
         {
-            // hooray, we successfully scanned!
-            
-            DTLocalizableStringEntry *entry = [[DTLocalizableStringEntry alloc] init];
-            for (NSUInteger i = 0; i < [parameters count]; ++i) 
-            {
-                NSString *property = [expectedParameters objectAtIndex:i];
-                NSString *value = [parameters objectAtIndex:i];
-                [entry setValue:value forKey:property];
-            }
-            
-            if (_entryFoundCallback)
-            {
-                _entryFoundCallback(entry);
-            }
-            
-            return YES;
-        } else {
-            NSLog(@"mismaatch");
+            _entryFoundCallback(entry);
         }
+        
+        return YES;
+    } 
+    else 
+    {
+        NSLog(@"mismatch of parameters for %@ macro", macroName);
+    }
     
     return NO;
 }
