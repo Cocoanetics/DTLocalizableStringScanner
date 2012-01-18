@@ -22,7 +22,6 @@
 @implementation DTLocalizableStringAggregator
 {
     NSDictionary *_validMacros;
-    NSRegularExpression *_validMacrosRegex;
     NSMutableDictionary *_stringTables;
     
     NSOperationQueue *_processingQueue;
@@ -109,30 +108,13 @@
     return _validMacros;
 }
 
-- (NSRegularExpression *)validMacrosRegex
-{
-    if (!_validMacrosRegex) 
-    {
-        NSDictionary *validMacros = [self validMacros];
-        
-        NSString *innerPatternPart = [[validMacros allKeys] componentsJoinedByString:@"|"];
-        NSString *pattern = [NSString stringWithFormat:@"\\b(?:%@)\\b", innerPatternPart];
-        _validMacrosRegex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:NULL];
-    }
-    
-    return _validMacrosRegex;
-}
-
-
 #define QUOTE @"\""
 
 - (void)beginProcessingFile:(NSURL *)fileURL
 {
-    
     NSDictionary *validMacros = [self validMacros];
-    NSRegularExpression *validMacrosRegex = [self validMacrosRegex];
     
-    DTLocalizableStringScanner *scanner = [[DTLocalizableStringScanner alloc] initWithContentsOfURL:fileURL encoding:_inputEncoding validMacros:validMacros validMacroRegex:validMacrosRegex];
+    DTLocalizableStringScanner *scanner = [[DTLocalizableStringScanner alloc] initWithContentsOfURL:fileURL encoding:_inputEncoding validMacros:validMacros];
     
     [scanner setEntryFoundCallback:^(DTLocalizableStringEntry *entry) 
     {

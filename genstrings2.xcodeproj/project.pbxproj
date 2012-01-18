@@ -12,7 +12,6 @@
 		A79499CF14C3052500A8CCDE /* CustomPrefix.txt in Resources */ = {isa = PBXBuildFile; fileRef = A79499CE14C3052500A8CCDE /* CustomPrefix.txt */; };
 		A79499D214C30B0400A8CCDE /* CustomPrefix.plist in Resources */ = {isa = PBXBuildFile; fileRef = A79499D114C30B0300A8CCDE /* CustomPrefix.plist */; };
 		A79AC08314B1A49800489FA3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC08214B1A49800489FA3 /* main.m */; };
-		A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
 		A79AC09D14B1A99E00489FA3 /* DTLocalizableStringAggregator.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */; };
 		A79AC09F14B1A99E00489FA3 /* DTLocalizableStringAggregator.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */; };
 		A79AC0A614B4A35800489FA3 /* DTLocalizableStringScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC07614B1A48A00489FA3 /* DTLocalizableStringScanner.m */; };
@@ -107,7 +106,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A79AC08A14B1A51800489FA3 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,7 +419,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -448,7 +446,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -467,6 +465,7 @@
 		A775234D14ACEF7A0035CDCA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
 				OTHER_LDFLAGS = (
@@ -480,6 +479,7 @@
 		A775234E14ACEF7A0035CDCA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Demo/genstrings2-Prefix.pch";
 				OTHER_LDFLAGS = (
@@ -493,20 +493,24 @@
 		A79AC09614B1A51800489FA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Core/DTLocalizableStringScanner-Prefix.pch";
 				PRODUCT_NAME = DTLocalizableStringScanner;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
 		A79AC09714B1A51800489FA3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Core/DTLocalizableStringScanner-Prefix.pch";
 				PRODUCT_NAME = DTLocalizableStringScanner;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
