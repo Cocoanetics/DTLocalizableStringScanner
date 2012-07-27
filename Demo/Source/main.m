@@ -232,7 +232,7 @@ void showUsage(void)
     printf("    -bigEndian               output generated with big endian byte order.\n");
     printf("    -littleEndian            output generated with little endian byte order.\n");
     printf("    -o dir                   place output files in 'dir'.\n\n");
-    printf("    -defaultTable tablename  use 'tablename' instead of 'Localized' as default table name.\n");
+    printf("    -defaultTable tablename  use 'tablename' instead of 'Localizable' as default table name.\n");
     printf("    Please see the genstrings2(1) man page for full documentation\n");
 }
 
