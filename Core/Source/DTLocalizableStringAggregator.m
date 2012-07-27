@@ -37,6 +37,7 @@
 @synthesize inputEncoding = _inputEncoding;
 @synthesize tablesToSkip = _tablesToSkip;
 @synthesize customMacroPrefix = _customMacroPrefix;
+@synthesize customTableName = _customTableName;
 
 - (id)init
 {
@@ -149,6 +150,9 @@
     {
         _stringTables = [NSMutableDictionary dictionary];
     }
+    
+    if ([entry.tableName length] == 0)
+        entry.tableName = _customTableName ?: @"Localizable";
     
     NSString *tableName = [entry tableName];
 	

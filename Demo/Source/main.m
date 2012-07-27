@@ -29,6 +29,7 @@ int main (int argc, const char *argv[])
         BOOL wantsDecodedUnicodeSequences = NO;
         NSMutableSet *tablesToSkip = [NSMutableSet set];
         NSString *customMacroPrefix = nil;
+        NSString *customTableName = nil;
         
         // analyze options
         BOOL optionsInvalid = NO;
@@ -138,6 +139,19 @@ int main (int argc, const char *argv[])
             {
                 inputStringEncoding = NSMacOSRomanStringEncoding;
             }
+            else if (!strcmp("-defaultTable", argv[i]))
+            {
+                i++;
+                
+                if (i>=argc)
+                {
+                    // table name is missing
+                    optionsInvalid = YES;
+                    break;
+                }
+                
+                customTableName = [NSString stringWithUTF8String:argv[i]];
+            }
             
             i++;
         }
@@ -156,6 +170,8 @@ int main (int argc, const char *argv[])
         aggregator.wantsPositionalParameters = wantsPositionalParameters;
         aggregator.inputEncoding = inputStringEncoding;
         aggregator.customMacroPrefix = customMacroPrefix;
+        aggregator.tablesToSkip = tablesToSkip;
+        aggregator.customTableName = customTableName;
 		
         // go, go, go!
         for (NSURL *file in files) {
@@ -216,6 +232,7 @@ void showUsage(void)
     printf("    -bigEndian               output generated with big endian byte order.\n");
     printf("    -littleEndian            output generated with little endian byte order.\n");
     printf("    -o dir                   place output files in 'dir'.\n\n");
+    printf("    -defaultTable tablename  use 'tablename' instead of 'Localizable' as default table name.\n");
     printf("    Please see the genstrings2(1) man page for full documentation\n");
 }
 

@@ -21,6 +21,7 @@ typedef void(^DTLocalizableStringEntryWriteCallback)(DTLocalizableStringEntry *)
 
 - (void)addEntry:(DTLocalizableStringEntry *)entry;
 
+- (NSString*)writeAsStringEncoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
 - (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
 
 @end
