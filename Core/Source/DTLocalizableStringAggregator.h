@@ -15,6 +15,7 @@
 @property (nonatomic, assign) NSStringEncoding inputEncoding;
 @property (nonatomic, retain) NSSet *tablesToSkip;
 @property (nonatomic, retain) NSString *customMacroPrefix;
+@property (nonatomic, retain) NSString *customTableName;
 
 - (void)beginProcessingFile:(NSURL *)fileURL;
 

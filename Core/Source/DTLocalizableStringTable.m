@@ -75,25 +75,14 @@
 	[_entryIndexByKey setObject:entry forKey:entry.rawKey];
 }
 
-- (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error  entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
+- (NSString*)writeAsStringEncoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback
 {
-	NSString *fileName = [_name stringByAppendingPathExtension:@"strings"];
-	NSString *tablePath = [[url path] stringByAppendingPathComponent:fileName];
-	NSURL *tableURL = [NSURL fileURLWithPath:tablePath];
-	
-	if (!tableURL)
-	{
-		// this must be junk
-		return NO;
-	}
-	
-	NSArray *sortedEntries = [_entries sortedArrayUsingSelector:@selector(compare:)];
+    NSArray *sortedEntries = [_entries sortedArrayUsingSelector:@selector(compare:)];
 	
 	NSMutableString *tmpString = [NSMutableString string];
 	
 	for (DTLocalizableStringEntry *entry in sortedEntries)
 	{
-		
 		NSString *key = [entry rawKey];
 		NSString *value = [entry rawValue];
         
@@ -138,6 +127,23 @@
         
         [tmpString appendString:@"\n"];
 	}
+    
+    return [NSString stringWithString:tmpString];
+}
+
+- (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error  entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
+{
+	NSString *fileName = [_name stringByAppendingPathExtension:@"strings"];
+	NSString *tablePath = [[url path] stringByAppendingPathComponent:fileName];
+	NSURL *tableURL = [NSURL fileURLWithPath:tablePath];
+	
+	if (!tableURL)
+	{
+		// this must be junk
+		return NO;
+	}
+	
+    NSString *tmpString = [self writeAsStringEncoding:encoding error:error entryWriteCallback:entryWriteCallback];
 	
 	return [tmpString writeToURL:tableURL
 					  atomically:YES
