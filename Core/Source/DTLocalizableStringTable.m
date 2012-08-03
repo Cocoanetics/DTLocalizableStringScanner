@@ -75,7 +75,7 @@
 	[_entryIndexByKey setObject:entry forKey:entry.rawKey];
 }
 
-- (NSString*)writeAsStringEncoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback
+- (NSString*)stringRepresentationWithEncoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback
 {
     NSArray *sortedEntries = [_entries sortedArrayUsingSelector:@selector(compare:)];
 	
@@ -143,7 +143,7 @@
 		return NO;
 	}
 	
-    NSString *tmpString = [self writeAsStringEncoding:encoding error:error entryWriteCallback:entryWriteCallback];
+    NSString *tmpString = [self stringRepresentationWithEncoding:encoding error:error entryWriteCallback:entryWriteCallback];
 	
 	return [tmpString writeToURL:tableURL
 					  atomically:YES

@@ -29,7 +29,7 @@ int main (int argc, const char *argv[])
         BOOL wantsDecodedUnicodeSequences = NO;
         NSMutableSet *tablesToSkip = [NSMutableSet set];
         NSString *customMacroPrefix = nil;
-        NSString *customTableName = nil;
+        NSString *defaultTableName = nil;
         
         // analyze options
         BOOL optionsInvalid = NO;
@@ -150,7 +150,7 @@ int main (int argc, const char *argv[])
                     break;
                 }
                 
-                customTableName = [NSString stringWithUTF8String:argv[i]];
+                defaultTableName = [NSString stringWithUTF8String:argv[i]];
             }
             
             i++;
@@ -171,7 +171,7 @@ int main (int argc, const char *argv[])
         aggregator.inputEncoding = inputStringEncoding;
         aggregator.customMacroPrefix = customMacroPrefix;
         aggregator.tablesToSkip = tablesToSkip;
-        aggregator.customTableName = customTableName;
+        aggregator.defaultTableName = defaultTableName;
 		
         // go, go, go!
         for (NSURL *file in files) {

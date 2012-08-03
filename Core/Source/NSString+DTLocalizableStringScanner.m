@@ -32,7 +32,7 @@
                 [tmpString appendString:@"1$"];
             }
             [tmpString appendString:[self substringWithRange:NSMakeRange(lastLocation + 1, currentLocation - lastLocation)]];
-            [tmpString appendFormat:@"%d$", placeholderCount];
+            [tmpString appendFormat:@"%ld$", placeholderCount];
         }
         lastLocation = currentLocation;
     }];
