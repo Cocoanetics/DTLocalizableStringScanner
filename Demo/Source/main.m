@@ -135,6 +135,10 @@ int main (int argc, const char *argv[])
             {
                 outputStringEncoding = NSUTF16BigEndianStringEncoding;
             }
+            else if (!strcmp("-utf8", argv[i]))
+            {
+                outputStringEncoding = NSUTF8StringEncoding;
+            }
             else if (!strcmp("-macRoman", argv[i]))
             {
                 inputStringEncoding = NSMacOSRomanStringEncoding;
@@ -231,6 +235,7 @@ void showUsage(void)
     printf("    -q                       turns off multiple key/value pairs warning.\n");
     printf("    -bigEndian               output generated with big endian byte order.\n");
     printf("    -littleEndian            output generated with little endian byte order.\n");
+    printf("    -utf8                    output generated as UTF-8 not UTF-16.\n");
     printf("    -o dir                   place output files in 'dir'.\n\n");
     printf("    -defaultTable tablename  use 'tablename' instead of 'Localizable' as default table name.\n");
     printf("    Please see the genstrings2(1) man page for full documentation\n");
