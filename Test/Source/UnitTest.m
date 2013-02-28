@@ -10,7 +10,7 @@
 #import "DTLocalizableStringAggregator.h"
 #import "DTLocalizableStringTable.h"
 
-#import </usr/include/objc/objc-class.h>
+#import <objc/objc-class.h>
 
 
 NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces);
@@ -60,7 +60,7 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
                 [test internalTestCaseWithURL:URL withTempPath:tempPath];
             };
             
-            IMP myIMP = imp_implementationWithBlock((__bridge void *)impBlock);
+            IMP myIMP = imp_implementationWithBlock((__bridge id)((__bridge void *)impBlock));
             
             SEL selector = NSSelectorFromString(selectorName);
             
