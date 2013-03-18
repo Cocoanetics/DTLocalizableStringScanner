@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		A79D903416F7491B009D8A46 /* Documentation */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A79D903516F7491B009D8A46 /* Build configuration list for PBXAggregateTarget "Documentation" */;
+			buildPhases = (
+				A79D903816F74925009D8A46 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Documentation;
+			productName = Documentation;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A775234114ACEF7A0035CDCA /* Foundation.framework */; };
 		A79499AD14C0D35500A8CCDE /* NSPredicateEditor.txt in Resources */ = {isa = PBXBuildFile; fileRef = A79499AC14C0D35500A8CCDE /* NSPredicateEditor.txt */; };
@@ -77,6 +91,7 @@
 		A79AC09B14B1A99E00489FA3 /* DTLocalizableStringAggregator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringAggregator.h; sourceTree = "<group>"; };
 		A79AC09C14B1A99E00489FA3 /* DTLocalizableStringAggregator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringAggregator.m; sourceTree = "<group>"; };
 		A79AC0AC14B4A3D100489FA3 /* DTLocalizableStringScanner-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DTLocalizableStringScanner-Prefix.pch"; sourceTree = "<group>"; };
+		A79D903316F748D5009D8A46 /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
 		A7D74C6814C43D7300F15340 /* Unicode.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Unicode.plist; sourceTree = "<group>"; };
 		A7D74C6914C43D7300F15340 /* Unicode.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Unicode.txt; sourceTree = "<group>"; };
 		A7E19B9B14BF032F00493494 /* DTLocalizableStringTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringTable.h; sourceTree = "<group>"; };
@@ -131,6 +146,7 @@
 		A775233214ACEF790035CDCA = {
 			isa = PBXGroup;
 			children = (
+				A79D903316F748D5009D8A46 /* AppledocSettings.plist */,
 				A7E19B4214BD938E00493494 /* Test */,
 				A79AC09814B1A6AD00489FA3 /* Docs */,
 				A79AC07314B1A48A00489FA3 /* Core */,
@@ -359,6 +375,7 @@
 				A775233C14ACEF7A0035CDCA /* Command Line Tool */,
 				A79AC08714B1A51800489FA3 /* Static Library */,
 				A7F65DBD14C03E980092E2EE /* UnitTest */,
+				A79D903416F7491B009D8A46 /* Documentation */,
 			);
 		};
 /* End PBXProject section */
@@ -383,6 +400,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		A79D903816F74925009D8A46 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/appledoc --print-settings --output \"${BUILD_DIR}/Documentation/\" \"${PROJECT_DIR}\"\necho \"Documentation Output directory: ${BUILD_DIR}/Documentation/\"";
+			showEnvVarsInLog = 0;
+		};
 		A7F65DBC14C03E980092E2EE /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -534,6 +565,20 @@
 			};
 			name = Release;
 		};
+		A79D903616F7491B009D8A46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A79D903716F7491B009D8A46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		A7F65DCC14C03E990092E2EE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -591,6 +636,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		A79D903516F7491B009D8A46 /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A79D903616F7491B009D8A46 /* Debug */,
+				A79D903716F7491B009D8A46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		A7F65DCE14C03E990092E2EE /* Build configuration list for PBXNativeTarget "UnitTest" */ = {
 			isa = XCConfigurationList;
