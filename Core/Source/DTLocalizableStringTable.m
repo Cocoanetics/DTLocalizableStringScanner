@@ -20,8 +20,6 @@
 	DTLocalizableStringEntryWriteCallback _entryWriteCallback;
 }
 
-@synthesize shouldDecodeUnicodeSequences = _shouldDecodeUnicodeSequences;
-
 - (id)initWithName:(NSString *)name
 {
 	self = [super init];
@@ -154,5 +152,7 @@
 #pragma mark Properties
 
 @synthesize name = _name;
+@synthesize entries = _entries;
+@synthesize shouldDecodeUnicodeSequences = _shouldDecodeUnicodeSequences;
 
 @end

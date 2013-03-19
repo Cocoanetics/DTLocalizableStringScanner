@@ -42,6 +42,12 @@
 @property (nonatomic, retain) NSString *customMacroPrefix;
 
 /**
+ The default table name, if not set it defaults to "Localizable".
+ */
+@property (nonatomic, retain) NSString *defaultTableName;
+
+
+/**
  @name Scanning Files
  */
 

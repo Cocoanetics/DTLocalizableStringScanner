@@ -34,6 +34,11 @@ typedef void(^DTLocalizableStringEntryWriteCallback)(DTLocalizableStringEntry *)
 @property (nonatomic, assign) BOOL shouldDecodeUnicodeSequences;
 
 /**
+ The string table entries of the receiver
+ */
+@property (nonatomic, readonly) NSArray *entries;
+
+/**
  @name Creating a String Table
  */
 
