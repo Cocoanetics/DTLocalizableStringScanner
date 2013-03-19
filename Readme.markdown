@@ -3,12 +3,12 @@ DTLocalizableStringScanner
 
 This project aims to duplicate and enhance the functionality found in the `genstrings` utility provided by Apple. The Demo builds a command line utility `genstrings2` which works like the original but using more modern techniques. The Core contains classes and categories to add this scanning functionality to [Linguan](http://www.cocoanetics.com/apps/linguan/).
 
-Known Issues
-------------
+Documentation
+-------------
 
-As far as we know all uses cases are implemented and working. If you find an issue then you are welcome to fix it and contribute your fix via a GitHub pull request.
+Documentation can be [browsed online](https://docs.cocoanetics.com/DTLocalizableStringScanner) or installed in your Xcode Organizer via the [Atom Feed URL](https://docs.cocoanetics.com/DTLocalizableStringScanner/DTLocalizableStringScanner.atom).
 
-Follow [@cocoanetics](http://twitter.com/cocoanetics) on Twitter.
+Follow [@cocoanetics](http://twitter.com/cocoanetics) on Twitter or subscribe to the [Cocoanetics Blog](http://www.cocoanetics.com) for news and updates.
 
 License
 -------
