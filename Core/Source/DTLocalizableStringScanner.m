@@ -288,7 +288,13 @@
         }
         else if (character == '"') 
         {
-            quotedString = [self _scanQuotedString];
+            if (quotedString) {
+              quotedString = [[quotedString substringToIndex:quotedString.length-1]
+                              stringByAppendingString:[[self _scanQuotedString] substringFromIndex:1]];
+            }
+            else {
+              quotedString = [self _scanQuotedString];
+            }
         }
         else 
         {
@@ -296,7 +302,7 @@
         }
     }
     
-    if (quotedString) 
+    if (quotedString)
     {
         return quotedString;
     }
