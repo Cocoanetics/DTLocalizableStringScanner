@@ -7,6 +7,8 @@ NSString *message = [NSString stringWithFormat:NSLocalizedString(@"\"%@\" has be
 
 NSLocalizedString(@"%@ had been successfully added to the Address Book.\nWould you like to edit the card now?", nil);
 
+NSLocalizedString(@"foo " @"bar", @"Test multi-part quoted strings");
+
 // some regular test cases
 
 
