@@ -618,4 +618,16 @@
     return clean;
 }
 
+- (NSString *)stringByRemovingSurroundingQuotes
+{
+  NSUInteger length = [self length];
+  NSString *clean = self;
+
+  if (length >= 2 && [self characterAtIndex:0] == '\"' && [self characterAtIndex:length-1] == '\"') {
+    clean = [self substringWithRange:NSMakeRange(1, length-2)];
+  }
+
+  return clean;
+}
+
 @end

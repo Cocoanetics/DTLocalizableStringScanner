@@ -101,7 +101,7 @@
     comment = [self _stringByRecognizingNil:comment];
 
 	// remove the quotes
-	comment = [comment stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
+	comment = [comment stringByRemovingSurroundingQuotes];
 	
 	if (![comment length])
 	{
