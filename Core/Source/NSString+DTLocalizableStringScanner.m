@@ -15,7 +15,7 @@
     static dispatch_once_t onceToken;
     static NSRegularExpression *matchNonEscapedPercent = nil;
     dispatch_once(&onceToken, ^{
-        matchNonEscapedPercent = [NSRegularExpression regularExpressionWithPattern:@"(?<=[^%]|^)(?:(?:%%)*)(%)(?:[^%]|$)" options:0 error:NULL];
+        matchNonEscapedPercent = [NSRegularExpression regularExpressionWithPattern:@"(?<=[^%]|^)(?:(?:%%)*)(%(?!\\d+\\$))(?:[^%]|$)" options:0 error:NULL];
     });
     
     __block NSMutableString *tmpString = nil;

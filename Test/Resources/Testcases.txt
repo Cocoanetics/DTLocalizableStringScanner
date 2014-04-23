@@ -9,6 +9,8 @@ NSLocalizedString(@"%@ had been successfully added to the Address Book.\nWould y
 
 NSLocalizedString(@"foo " @"bar", @"Test multi-part quoted strings");
 
+NSLocalizedString(@"Item %1$d of %2$d", @"Test positional params");
+
 // some regular test cases
 
 
