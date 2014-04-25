@@ -44,7 +44,6 @@
 		A7F65DC114C03E980092E2EE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08914B1A51800489FA3 /* Cocoa.framework */; };
 		A7F65DDC14C040D00092E2EE /* Testcases.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F65DDB14C040D00092E2EE /* Testcases.txt */; };
 		A7F65DE214C043850092E2EE /* Slashes_and_Quotes.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F65DE114C043850092E2EE /* Slashes_and_Quotes.txt */; };
-		A7F65DE714C0465E0092E2EE /* (null) in Sources */ = {isa = PBXBuildFile; };
 		A7F65DEB14C067990092E2EE /* Multiple_Tables.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7F65DEA14C067980092E2EE /* Multiple_Tables.txt */; };
 		A7F65DEC14C06C220092E2EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A79AC08E14B1A51800489FA3 /* Foundation.framework */; };
 		FA35A34A16DFA0F8001CB74A /* DTLocalizableStringsParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA35A34816DFA0F8001CB74A /* DTLocalizableStringsParser.h */; };
@@ -471,7 +470,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7F65DE714C0465E0092E2EE /* (null) in Sources */,
 				FA35A35516DFA1C0001CB74A /* DTLocalizableStringsParserTest.m in Sources */,
 				FA35A35616DFA1C0001CB74A /* UnitTest.m in Sources */,
 			);
