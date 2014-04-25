@@ -1,3 +1,5 @@
 /* Tests if the escaping of double quotes and slashes works */
 
 NSLocalizedString(@"here are three \\\\\\\"\"\"\nslashes&quotes: \\\\\\\"\"\"", nil)
+
+NSLocalizedString(@"bar", @"Test comment ending with \"quotes\"");

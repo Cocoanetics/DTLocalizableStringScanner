@@ -46,4 +46,11 @@
  @returns The receiver's content with control characters slash-escaped
  */
 - (NSString *)stringByAddingSlashEscapes;
+
+/**
+ Change "foo" to foo.  This will remove just one set of quotes, so that e.g. ""foo"" becomes "foo"
+ If the string does not begin and end with a quote, returns it unmodified.
+ @returns The string with one set of surrounding quotes removed.
+ */
+- (NSString *)stringByRemovingSurroundingQuotes;
 @end
