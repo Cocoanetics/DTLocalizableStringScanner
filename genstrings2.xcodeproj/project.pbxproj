@@ -55,6 +55,16 @@
 		FA35A35616DFA1C0001CB74A /* UnitTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FA35A35416DFA1C0001CB74A /* UnitTest.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		A7313BD6190A531B007E130F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A775233414ACEF790035CDCA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A79AC08714B1A51800489FA3;
+			remoteInfo = "Static Library";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		A775233B14ACEF7A0035CDCA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -348,6 +358,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7313BD7190A531B007E130F /* PBXTargetDependency */,
 			);
 			name = UnitTest;
 			productName = UnitTest;
@@ -467,6 +478,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A7313BD7190A531B007E130F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A79AC08714B1A51800489FA3 /* Static Library */;
+			targetProxy = A7313BD6190A531B007E130F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A775234A14ACEF7A0035CDCA /* Debug */ = {
