@@ -1,4 +1,4 @@
 #!/bin/sh
 set -e
 xctool -project genstrings2.xcodeproj -scheme "Static Library" test -arch x86_64 ONLY_ACTIVE_ARCH=NO
-xctool -project genstrings2.xcodeproj -scheme "Documentation"
+appledoc -o /tmp .
