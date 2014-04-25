@@ -3,10 +3,11 @@ language: objective-c
 
 before_script:
   - sudo easy_install cpp-coveralls
+  - brew install appledoc
 
 script:
  - xctool -project genstrings2.xcodeproj -scheme "Static Library" test -arch x86_64 ONLY_ACTIVE_ARCH=NO
-# - appledoc -o /tmp .
+ - appledoc -o /tmp .
 
 after_success:
   - ./coveralls.rb --extension m --exclude-folder Demo --exclude-folder Test --exclude-folder Externals
