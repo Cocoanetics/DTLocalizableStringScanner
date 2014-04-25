@@ -615,17 +615,17 @@ NSString * const DTLocalizableStringsParserErrorDomain = @"DTLocalizableStringsP
 
 - (void)setDelegate:(id<DTLocalizableStringsParserDelegate>)delegate
 {
-    if (_delegate != delegate)
-    {
-        _delegate = delegate;
-    
-        _delegateFlags.delegateSupportsDocumentStart = [_delegate respondsToSelector:@selector(parserDidStartDocument)];
-        _delegateFlags.delegateSupportsDocumentEnd = [_delegate respondsToSelector:@selector(parserDidEndDocument)];
-        _delegateFlags.delegateSupportsError = [_delegate respondsToSelector:@selector(parser:parseErrorOccurred:)];
-    
-        _delegateFlags.delegateSupportsComment = [_delegate respondsToSelector:@selector(parser:foundComment:)];
-        _delegateFlags.delegateSupportsKeyValue = [_delegate respondsToSelector:@selector(parser:foundKey:value:)];
-    }
+	if (_delegate != delegate)
+	{
+		_delegate = delegate;
+		
+		_delegateFlags.delegateSupportsDocumentStart = [_delegate respondsToSelector:@selector(parserDidStartDocument:)];
+		_delegateFlags.delegateSupportsDocumentEnd = [_delegate respondsToSelector:@selector(parserDidEndDocument:)];
+		_delegateFlags.delegateSupportsError = [_delegate respondsToSelector:@selector(parser:parseErrorOccurred:)];
+		
+		_delegateFlags.delegateSupportsComment = [_delegate respondsToSelector:@selector(parser:foundComment:)];
+		_delegateFlags.delegateSupportsKeyValue = [_delegate respondsToSelector:@selector(parser:foundKey:value:)];
+	}
 }
 
 @synthesize delegate = _delegate;
