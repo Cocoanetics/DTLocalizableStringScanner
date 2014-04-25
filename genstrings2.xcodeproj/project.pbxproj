@@ -80,6 +80,7 @@
 		55951CFE14BD3C1700E4A63E /* DTLocalizableStringEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringEntry.h; sourceTree = "<group>"; };
 		55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringEntry.m; sourceTree = "<group>"; };
 		A7313BD4190A4F72007E130F /* Multiple_Parts.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Multiple_Parts.txt; sourceTree = "<group>"; };
+		A7313BD8190A54F7007E130F /* DTLocalizableStringScanner.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = DTLocalizableStringScanner.podspec; sourceTree = "<group>"; };
 		A775233D14ACEF7A0035CDCA /* genstrings2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = genstrings2; sourceTree = BUILT_PRODUCTS_DIR; };
 		A775234114ACEF7A0035CDCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A79499AC14C0D35500A8CCDE /* NSPredicateEditor.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NSPredicateEditor.txt; sourceTree = "<group>"; };
@@ -247,6 +248,7 @@
 		A79AC09814B1A6AD00489FA3 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
+				A7313BD8190A54F7007E130F /* DTLocalizableStringScanner.podspec */,
 				A79AC09914B1A6C700489FA3 /* LICENSE */,
 				A79AC09A14B1A6C700489FA3 /* Readme.markdown */,
 			);
