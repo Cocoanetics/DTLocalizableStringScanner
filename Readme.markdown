@@ -1,6 +1,8 @@
 DTLocalizableStringScanner
 ==========================
 
+[![Build Status](https://travis-ci.org/Cocoanetics/DTLocalizableStringScanner.png?branch=develop)](https://travis-ci.org/Cocoanetics/DTLocalizableStringScanner) [![Coverage Status](https://coveralls.io/repos/Cocoanetics/DTLocalizableStringScanner/badge.png?branch=develop)](https://coveralls.io/r/Cocoanetics/DTLocalizableStringScanner?branch=develop)
+
 This project aims to duplicate and enhance the functionality found in the `genstrings` utility provided by Apple. The Demo builds a command line utility `genstrings2` which works like the original but using more modern techniques. The Core contains classes and categories to add this scanning functionality to [Linguan](http://www.cocoanetics.com/apps/linguan/).
 
 Documentation
