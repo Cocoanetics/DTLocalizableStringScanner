@@ -1,0 +1,11 @@
+/* Issue 7: A string can span multiple lines */
+
+NSString *multiLine = NSLocalizedString(@"Here is one line!"
+                                         "And another"
+                                         "And yet another", @"Multiple Lines");
+
+
+/* Issue 10: A string can have multiple parts */
+
+NSLocalizedString(@"foo " @"bar", @"Test multi-part quoted strings");
+
