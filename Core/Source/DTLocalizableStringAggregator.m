@@ -58,8 +58,10 @@
 
 - (void)dealloc
 {
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(_tableQueue);
 	dispatch_release(_tableGroup);
+#endif
 }
 
 - (void)setCustomMacroPrefix:(NSString *)customMacroPrefix
