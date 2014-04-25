@@ -1,6 +1,0 @@
-/* Issue 7: A string can span multiple lines */
-
-NSString *multiLine = NSLocalizedString(@"Here is one line!"
-                                         "And another"
-                                         "And yet another", @"Multiple Lines");
-
