@@ -107,7 +107,7 @@
 		A7F65DEA14C067980092E2EE /* Multiple_Tables.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Multiple_Tables.txt; sourceTree = "<group>"; };
 		FA35A34816DFA0F8001CB74A /* DTLocalizableStringsParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringsParser.h; sourceTree = "<group>"; };
 		FA35A34916DFA0F8001CB74A /* DTLocalizableStringsParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringsParser.m; sourceTree = "<group>"; };
-		FA35A34E16DFA12A001CB74A /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		FA35A34E16DFA12A001CB74A /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		FA35A35116DFA1C0001CB74A /* DTLocalizableStringsParserTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringsParserTest.h; sourceTree = "<group>"; };
 		FA35A35216DFA1C0001CB74A /* DTLocalizableStringsParserTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringsParserTest.m; sourceTree = "<group>"; };
 		FA35A35316DFA1C0001CB74A /* UnitTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTest.h; sourceTree = "<group>"; };
