@@ -179,8 +179,10 @@ NSString *testCaseNameFromURL(NSURL *URL, BOOL withSpaces)
             NSString *genstrings1Contents = [NSString stringWithContentsOfFile:genstrings1File usedEncoding:NULL error:NULL];
             NSString *genstrings2Contents = [NSString stringWithContentsOfFile:genstrings2File usedEncoding:NULL error:NULL];
 			
-			// size check does not work because predicate editor output repeats comment for each token	
-			// STAssertEquals([genstrings1Contents length], [genstrings2Contents length], @"Different file sizes on %@", genstrings1File);
+			// size check does not work because predicate editor output repeats comment for each token
+      if (![[URL absoluteString] hasSuffix:@"NSPredicateEditor.txt"]) {
+        STAssertEquals([genstrings1Contents length], [genstrings2Contents length], @"Different file sizes on %@", genstrings1File);
+      }
 			
             NSDictionary *genstrings1Stuff = [genstrings1Contents propertyListFromStringsFileFormat];
             NSDictionary *genstrings2Stuff = [genstrings2Contents propertyListFromStringsFileFormat];
