@@ -149,10 +149,10 @@
 			isa = PBXGroup;
 			children = (
 				A79D903316F748D5009D8A46 /* AppledocSettings.plist */,
-				A7E19B4214BD938E00493494 /* Test */,
-				A79AC09814B1A6AD00489FA3 /* Docs */,
 				A79AC07314B1A48A00489FA3 /* Core */,
 				A79AC07E14B1A49800489FA3 /* Demo */,
+				A79AC09814B1A6AD00489FA3 /* Documentation */,
+				A7E19B4214BD938E00493494 /* Test */,
 				A775234014ACEF7A0035CDCA /* Frameworks */,
 				A775233E14ACEF7A0035CDCA /* Products */,
 			);
@@ -235,13 +235,13 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		A79AC09814B1A6AD00489FA3 /* Docs */ = {
+		A79AC09814B1A6AD00489FA3 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
 				A79AC09914B1A6C700489FA3 /* LICENSE */,
 				A79AC09A14B1A6C700489FA3 /* Readme.markdown */,
 			);
-			name = Docs;
+			name = Documentation;
 			sourceTree = "<group>";
 		};
 		A7E19B4214BD938E00493494 /* Test */ = {
