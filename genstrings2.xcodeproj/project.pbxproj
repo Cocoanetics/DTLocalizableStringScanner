@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		A7313BD5190A4F72007E130F /* Multiple_Lines.txt in Resources */ = {isa = PBXBuildFile; fileRef = A7313BD4190A4F72007E130F /* Multiple_Lines.txt */; };
 		A775234214ACEF7A0035CDCA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A775234114ACEF7A0035CDCA /* Foundation.framework */; };
 		A79499AD14C0D35500A8CCDE /* NSPredicateEditor.txt in Resources */ = {isa = PBXBuildFile; fileRef = A79499AC14C0D35500A8CCDE /* NSPredicateEditor.txt */; };
 		A79499CF14C3052500A8CCDE /* CustomPrefix.txt in Resources */ = {isa = PBXBuildFile; fileRef = A79499CE14C3052500A8CCDE /* CustomPrefix.txt */; };
@@ -69,6 +70,7 @@
 /* Begin PBXFileReference section */
 		55951CFE14BD3C1700E4A63E /* DTLocalizableStringEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTLocalizableStringEntry.h; sourceTree = "<group>"; };
 		55951CFF14BD3C1700E4A63E /* DTLocalizableStringEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTLocalizableStringEntry.m; sourceTree = "<group>"; };
+		A7313BD4190A4F72007E130F /* Multiple_Lines.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Multiple_Lines.txt; sourceTree = "<group>"; };
 		A775233D14ACEF7A0035CDCA /* genstrings2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = genstrings2; sourceTree = BUILT_PRODUCTS_DIR; };
 		A775234114ACEF7A0035CDCA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A79499AC14C0D35500A8CCDE /* NSPredicateEditor.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NSPredicateEditor.txt; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 		A7F65DDA14C040D00092E2EE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A7313BD4190A4F72007E130F /* Multiple_Lines.txt */,
 				FA35A34E16DFA12A001CB74A /* Localizable.strings */,
 				A79499CE14C3052500A8CCDE /* CustomPrefix.txt */,
 				A79499D114C30B0300A8CCDE /* CustomPrefix.plist */,
@@ -385,6 +388,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7313BD5190A4F72007E130F /* Multiple_Lines.txt in Resources */,
 				A7F65DDC14C040D00092E2EE /* Testcases.txt in Resources */,
 				A7F65DE214C043850092E2EE /* Slashes_and_Quotes.txt in Resources */,
 				A7F65DEB14C067990092E2EE /* Multiple_Tables.txt in Resources */,
