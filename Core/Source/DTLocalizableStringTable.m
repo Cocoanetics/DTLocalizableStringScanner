@@ -75,58 +75,63 @@
 
 - (NSString*)stringRepresentationWithEncoding:(NSStringEncoding)encoding error:(NSError **)error entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback
 {
-    NSArray *sortedEntries = [_entries sortedArrayUsingSelector:@selector(compare:)];
-	
-	NSMutableString *tmpString = [NSMutableString string];
-	
-	for (DTLocalizableStringEntry *entry in sortedEntries)
-	{
-		NSString *key = [entry rawKey];
-		NSString *value = [entry rawValue];
-        
-        if (entryWriteCallback)
-        {
-            entryWriteCallback(entry);
-        }
-        
-        // multi-line comments are indented
-        NSString *comment = [[entry sortedComments] componentsJoinedByString:@"\n   "];
-        if (!comment)
-        {
-            comment = @"No comment provided by engineer.";
-        }
-        
-        if (_shouldDecodeUnicodeSequences) 
-		{
-			// strip the quotes
-			if ([value hasPrefix:@"\""] && [value hasPrefix:@"\""])
-			{
-				value = [value substringWithRange:NSMakeRange(1, [value length]-2)];
-			}
-			
-			// value is what we scanned from file, so we first need to decode
-			value = [value stringByReplacingSlashEscapes];
-			
-			// decode the unicode sequences
-            value = [value stringByDecodingUnicodeSequences];
-			
-			// re-add the slash escapes
-			value = [value stringByAddingSlashEscapes];
-			
-			// re-add quotes
-			value = [NSString stringWithFormat:@"\"%@\"", value];
-        }
-        
-        // output comment
-        [tmpString appendFormat:@"/* %@ */\n", comment];
-        
-        // output line
-        [tmpString appendFormat:@"%@ = %@;\n", key, value];
-        
-        [tmpString appendString:@"\n"];
-	}
+  NSArray *sortedEntries = [_entries sortedArrayUsingSelector:@selector(compare:)];
+  
+  NSMutableString *tmpString = [NSMutableString string];
+  
+  for (DTLocalizableStringEntry *entry in sortedEntries)
+  {
+    NSString *key = [entry rawKey];
+    NSString *value = [entry rawValue];
     
-    return [NSString stringWithString:tmpString];
+    if(key.length == 2) {
+      printf("Warning: Ignoring empty key entry\n");
+      continue;
+    }
+    
+    if (entryWriteCallback)
+    {
+      entryWriteCallback(entry);
+    }
+    
+    // multi-line comments are indented
+    NSString *comment = [[entry sortedComments] componentsJoinedByString:@"\n   "];
+    if (!comment)
+    {
+      comment = @"No comment provided by engineer.";
+    }
+    
+    if (_shouldDecodeUnicodeSequences)
+    {
+      // strip the quotes
+      if ([value hasPrefix:@"\""] && [value hasPrefix:@"\""])
+      {
+        value = [value substringWithRange:NSMakeRange(1, [value length]-2)];
+      }
+      
+      // value is what we scanned from file, so we first need to decode
+      value = [value stringByReplacingSlashEscapes];
+      
+      // decode the unicode sequences
+      value = [value stringByDecodingUnicodeSequences];
+      
+      // re-add the slash escapes
+      value = [value stringByAddingSlashEscapes];
+      
+      // re-add quotes
+      value = [NSString stringWithFormat:@"\"%@\"", value];
+    }
+    
+    // output comment
+    [tmpString appendFormat:@"/* %@ */\n", comment];
+    
+    // output line
+    [tmpString appendFormat:@"%@ = %@;\n", key, value];
+    
+    [tmpString appendString:@"\n"];
+  }
+  
+  return [NSString stringWithString:tmpString];
 }
 
 - (BOOL)writeToFolderAtURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error  entryWriteCallback:(DTLocalizableStringEntryWriteCallback)entryWriteCallback;
